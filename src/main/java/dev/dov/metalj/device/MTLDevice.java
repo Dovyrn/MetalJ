@@ -1,5 +1,10 @@
 package dev.dov.metalj.device;
 
+import dev.dov.metalj.debug.MTLCounterSampleBuffer;
+import dev.dov.metalj.debug.MTLCounterSampleBufferDescriptor;
+import dev.dov.metalj.debug.MTLCounterSet;
+import dev.dov.metalj.debug.MTLLogState;
+import dev.dov.metalj.debug.MTLLogStateDescriptor;
 import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.objc.NSObject;
@@ -284,6 +289,32 @@ public class MTLDevice extends NSObject {
 
     public NSArray counterSets() {
         return NSArray.of(sendPtr(id, "counterSets"));
+    }
+
+    public MTLCounterSet counterSetAtIndex(long index) {
+        return MTLCounterSet.of(counterSets().objectAtIndex(index));
+    }
+
+    @SneakyThrows
+    public MTLCounterSampleBuffer newCounterSampleBufferWithDescriptor(MTLCounterSampleBufferDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long buffer = (long) P_PA.invokeExact(id, ObjC.sel("newCounterSampleBufferWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newCounterSampleBufferWithDescriptor:error:");
+            return MTLCounterSampleBuffer.of(buffer);
+        }
+    }
+
+    @SneakyThrows
+    public MTLLogState newLogStateWithDescriptor(MTLLogStateDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PA.invokeExact(id, ObjC.sel("newLogStateWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newLogStateWithDescriptor:error:");
+            return MTLLogState.of(state);
+        }
     }
 
     @SneakyThrows

@@ -37,6 +37,10 @@ public class Block {
         literal.set(ObjC.PTR, 24, info.address());
     }
 
+    public static Block of(MethodHandle invoke, FunctionDescriptor descriptor) {
+        return new Block(invoke, descriptor);
+    }
+
     @SneakyThrows
     public static Block once(Runnable body) {
         var target = MethodHandles.lookup().findStatic(Block.class, "run",
