@@ -26,7 +26,7 @@ public class ObjC {
     public final ValueLayout.OfByte BYTE = ValueLayout.JAVA_BYTE;
     public final ValueLayout.OfLong PTR = ValueLayout.JAVA_LONG;
 
-    private final SymbolLookup RUNTIME = SymbolLookup.libraryLookup("/usr/lib/libobjc.A.dylib", ARENA);
+    private final SymbolLookup RUNTIME = runtime();
     private final SymbolLookup FOUNDATION = framework("Foundation");
     private final SymbolLookup METAL = framework("Metal");
     private final SymbolLookup QUARTZ = framework("QuartzCore");
@@ -44,6 +44,13 @@ public class ObjC {
     private final Map<String, Long> classes = new ConcurrentHashMap<>();
     private final Map<FunctionDescriptor, MethodHandle> sends = new ConcurrentHashMap<>();
     private final Map<FunctionDescriptor, MethodHandle> strets = new ConcurrentHashMap<>();
+
+    private SymbolLookup runtime() {
+        if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
+            throw new UnsupportedOperationException("MetalJ runs on macOS only");
+        }
+        return SymbolLookup.libraryLookup("/usr/lib/libobjc.A.dylib", ARENA);
+    }
 
     private SymbolLookup framework(String name) {
         return SymbolLookup.libraryLookup("/System/Library/Frameworks/" + name + ".framework/" + name, ARENA);
