@@ -8,6 +8,8 @@ import dev.dov.metalj.libraries.MTLBinaryArchive;
 import dev.dov.metalj.libraries.MTLBinaryArchiveDescriptor;
 import dev.dov.metalj.libraries.MTLDynamicLibrary;
 import dev.dov.metalj.objc.NSURL;
+import dev.dov.metalj.rate.MTLRasterizationRateMap;
+import dev.dov.metalj.rate.MTLRasterizationRateMapDescriptor;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
 import dev.dov.metalj.residency.MTLResidencySet;
 import dev.dov.metalj.residency.MTLResidencySetDescriptor;
@@ -588,6 +590,13 @@ public class MTLDevice extends NSObject {
     public MTLDepthStencilState newDepthStencilStateWithDescriptor(MTLDepthStencilDescriptor descriptor) {
         return MTLDepthStencilState.of((long) P_P.invokeExact(id, ObjC.sel("newDepthStencilStateWithDescriptor:"),
                 descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public MTLRasterizationRateMap newRasterizationRateMapWithDescriptor(
+            MTLRasterizationRateMapDescriptor descriptor) {
+        return MTLRasterizationRateMap.of((long) P_P.invokeExact(id,
+                ObjC.sel("newRasterizationRateMapWithDescriptor:"), descriptor.getId()));
     }
 
     @SneakyThrows

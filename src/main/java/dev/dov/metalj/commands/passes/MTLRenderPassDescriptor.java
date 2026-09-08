@@ -1,6 +1,7 @@
 package dev.dov.metalj.commands.passes;
 
 import dev.dov.metalj.objc.NSObject;
+import dev.dov.metalj.rate.MTLRasterizationRateMap;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import java.lang.invoke.MethodHandle;
@@ -8,6 +9,7 @@ import lombok.SneakyThrows;
 
 public class MTLRenderPassDescriptor extends NSObject {
     private static final MethodHandle L = handle(null, ObjC.LONG);
+    private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTLRenderPassDescriptor(long id) {
         super(id);
@@ -80,5 +82,14 @@ public class MTLRenderPassDescriptor extends NSObject {
 
     public MTLRenderPassSampleBufferAttachmentDescriptorArray sampleBufferAttachments() {
         return MTLRenderPassSampleBufferAttachmentDescriptorArray.of(sendPtr(id, "sampleBufferAttachments"));
+    }
+
+    public MTLRasterizationRateMap rasterizationRateMap() {
+        return MTLRasterizationRateMap.of(sendPtr(id, "rasterizationRateMap"));
+    }
+
+    @SneakyThrows
+    public void setRasterizationRateMap(MTLRasterizationRateMap map) {
+        P.invokeExact(id, ObjC.sel("setRasterizationRateMap:"), map.getId());
     }
 }
