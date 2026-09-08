@@ -6,6 +6,8 @@ import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.pipelines.compute.MTLComputePipelineState;
+import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.indirect.MTLIndirectCommandBuffer;
@@ -118,5 +120,15 @@ public class MTLArgumentEncoder extends NSObject {
     @SneakyThrows
     public MTLArgumentEncoder newArgumentEncoderForBufferAtIndex(long index) {
         return of((long) P_L.invokeExact(id, ObjC.sel("newArgumentEncoderForBufferAtIndex:"), index));
+    }
+
+    @SneakyThrows
+    public void setAccelerationStructure(MTLAccelerationStructure structure, long index) {
+        PL.invokeExact(id, ObjC.sel("setAccelerationStructure:atIndex:"), structure.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
+        PL.invokeExact(id, ObjC.sel("setIntersectionFunctionTable:atIndex:"), table.getId(), index);
     }
 }

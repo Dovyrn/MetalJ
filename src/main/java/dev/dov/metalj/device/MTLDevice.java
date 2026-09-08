@@ -1,6 +1,9 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.arguments.MTLArgumentEncoder;
+import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.raytracing.MTLAccelerationStructureDescriptor;
+import dev.dov.metalj.raytracing.MTLAccelerationStructureSizes;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.debug.MTLCounterSampleBufferDescriptor;
 import dev.dov.metalj.debug.MTLCounterSet;
@@ -55,7 +58,9 @@ public class MTLDevice extends NSObject {
     private static final MethodHandle B_L = handle(ObjC.BOOL, ObjC.LONG);
     private static final MethodHandle SA_LL = structHandle(MTLSizeAndAlign.LAYOUT, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle SA_P = structHandle(MTLSizeAndAlign.LAYOUT, ObjC.PTR);
+    private static final MethodHandle SA_L = structHandle(MTLSizeAndAlign.LAYOUT, ObjC.LONG);
     private static final MethodHandle SIZE = structHandle(MTLSize.LAYOUT);
+    private static final MethodHandle SIZES_P = structHandle(MTLAccelerationStructureSizes.LAYOUT, ObjC.PTR);
 
     public static final long MTLGPUFamilyApple7 = 1007;
     public static final long MTLGPUFamilyApple9 = 1009;
@@ -344,6 +349,32 @@ public class MTLDevice extends NSObject {
 
     public boolean supportsRaytracing() {
         return sendBool(id, "supportsRaytracing");
+    }
+
+    @SneakyThrows
+    public MTLAccelerationStructure newAccelerationStructureWithSize(long size) {
+        return MTLAccelerationStructure.of(
+                (long) L_L.invokeExact(id, ObjC.sel("newAccelerationStructureWithSize:"), size));
+    }
+
+    @SneakyThrows
+    public MTLAccelerationStructure newAccelerationStructureWithDescriptor(
+            MTLAccelerationStructureDescriptor descriptor) {
+        return MTLAccelerationStructure.of(
+                (long) P_P.invokeExact(id, ObjC.sel("newAccelerationStructureWithDescriptor:"), descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public MemorySegment accelerationStructureSizesWithDescriptor(SegmentAllocator allocator,
+            MTLAccelerationStructureDescriptor descriptor) {
+        return (MemorySegment) SIZES_P.invokeExact(allocator, id,
+                ObjC.sel("accelerationStructureSizesWithDescriptor:"), descriptor.getId());
+    }
+
+    @SneakyThrows
+    public MemorySegment heapAccelerationStructureSizeAndAlignWithSize(SegmentAllocator allocator, long size) {
+        return (MemorySegment) SA_L.invokeExact(allocator, id,
+                ObjC.sel("heapAccelerationStructureSizeAndAlignWithSize:"), size);
     }
 
     public boolean supportsFunctionPointers() {

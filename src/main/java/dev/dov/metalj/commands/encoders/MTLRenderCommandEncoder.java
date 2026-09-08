@@ -1,6 +1,8 @@
 package dev.dov.metalj.commands.encoders;
 
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
+import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.pipelines.depth.MTLDepthStencilState;
@@ -664,5 +666,30 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     public void sampleCountersInBuffer(MTLCounterSampleBuffer sampleBuffer, long sampleIndex, boolean barrier) {
         LLB.invokeExact(id, ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:"), sampleBuffer.getId(),
                 sampleIndex, barrier);
+    }
+
+    @SneakyThrows
+    public void setVertexAccelerationStructure(MTLAccelerationStructure structure, long index) {
+        LL.invokeExact(id, ObjC.sel("setVertexAccelerationStructure:atBufferIndex:"), structure.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setFragmentAccelerationStructure(MTLAccelerationStructure structure, long index) {
+        LL.invokeExact(id, ObjC.sel("setFragmentAccelerationStructure:atBufferIndex:"), structure.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setTileAccelerationStructure(MTLAccelerationStructure structure, long index) {
+        LL.invokeExact(id, ObjC.sel("setTileAccelerationStructure:atBufferIndex:"), structure.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setVertexIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
+        LL.invokeExact(id, ObjC.sel("setVertexIntersectionFunctionTable:atBufferIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setFragmentIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
+        LL.invokeExact(id, ObjC.sel("setFragmentIntersectionFunctionTable:atBufferIndex:"), table.getId(), index);
     }
 }

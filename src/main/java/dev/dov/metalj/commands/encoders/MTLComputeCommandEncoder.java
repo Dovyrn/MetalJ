@@ -1,6 +1,8 @@
 package dev.dov.metalj.commands.encoders;
 
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
+import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.pipelines.compute.MTLComputePipelineState;
@@ -178,5 +180,20 @@ public class MTLComputeCommandEncoder extends MTLCommandEncoder {
     public void sampleCountersInBuffer(MTLCounterSampleBuffer sampleBuffer, long sampleIndex, boolean barrier) {
         LLB.invokeExact(id, ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:"), sampleBuffer.getId(),
                 sampleIndex, barrier);
+    }
+
+    @SneakyThrows
+    public void setAccelerationStructure(MTLAccelerationStructure structure, long index) {
+        LL.invokeExact(id, ObjC.sel("setAccelerationStructure:atBufferIndex:"), structure.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
+        LL.invokeExact(id, ObjC.sel("setIntersectionFunctionTable:atBufferIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setIntersectionFunctionTables(MemorySegment tables, MemorySegment range) {
+        AR.invokeExact(id, ObjC.sel("setIntersectionFunctionTables:withBufferRange:"), tables, range);
     }
 }

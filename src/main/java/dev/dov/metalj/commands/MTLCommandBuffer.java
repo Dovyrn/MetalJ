@@ -9,6 +9,7 @@ import dev.dov.metalj.commands.encoders.MTLBlitCommandEncoder;
 import dev.dov.metalj.device.CAMetalDrawable;
 import dev.dov.metalj.objc.Block;
 import dev.dov.metalj.objc.NSError;
+import dev.dov.metalj.raytracing.MTLAccelerationStructureCommandEncoder;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
@@ -126,5 +127,9 @@ public class MTLCommandBuffer extends NSObject {
     public MTLBlitCommandEncoder blitCommandEncoderWithDescriptor(MTLBlitPassDescriptor descriptor) {
         return MTLBlitCommandEncoder.of((long) P_P.invokeExact(id,
                 ObjC.sel("blitCommandEncoderWithDescriptor:"), descriptor.getId()));
+    }
+
+    public MTLAccelerationStructureCommandEncoder accelerationStructureCommandEncoder() {
+        return MTLAccelerationStructureCommandEncoder.of(sendPtr(id, "accelerationStructureCommandEncoder"));
     }
 }

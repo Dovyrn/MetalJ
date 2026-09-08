@@ -12,6 +12,7 @@ public class NSObject {
     private static final FunctionDescriptor PTR = ObjC.of(ObjC.PTR);
     private static final FunctionDescriptor LONG = ObjC.of(ObjC.LONG);
     private static final FunctionDescriptor BOOL = ObjC.of(ObjC.BOOL);
+    private static final FunctionDescriptor FLOAT = ObjC.of(ObjC.FLOAT);
 
     @Getter
     protected final long id;
@@ -54,6 +55,11 @@ public class NSObject {
     @SneakyThrows
     public static long sendLong(long target, String selector) {
         return (long) ObjC.send(LONG).invokeExact(target, ObjC.sel(selector));
+    }
+
+    @SneakyThrows
+    public static float sendFloat(long target, String selector) {
+        return (float) ObjC.send(FLOAT).invokeExact(target, ObjC.sel(selector));
     }
 
     @SneakyThrows
