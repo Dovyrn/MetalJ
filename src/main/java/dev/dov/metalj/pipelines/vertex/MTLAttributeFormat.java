@@ -1,0 +1,61 @@
+package dev.dov.metalj.pipelines.vertex;
+
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class MTLAttributeFormat {
+    public final long MTLAttributeFormatInvalid = 0;
+    public final long MTLAttributeFormatUChar2 = 1;
+    public final long MTLAttributeFormatUChar3 = 2;
+    public final long MTLAttributeFormatUChar4 = 3;
+    public final long MTLAttributeFormatChar2 = 4;
+    public final long MTLAttributeFormatChar3 = 5;
+    public final long MTLAttributeFormatChar4 = 6;
+    public final long MTLAttributeFormatUChar2Normalized = 7;
+    public final long MTLAttributeFormatUChar3Normalized = 8;
+    public final long MTLAttributeFormatUChar4Normalized = 9;
+    public final long MTLAttributeFormatChar2Normalized = 10;
+    public final long MTLAttributeFormatChar3Normalized = 11;
+    public final long MTLAttributeFormatChar4Normalized = 12;
+    public final long MTLAttributeFormatUShort2 = 13;
+    public final long MTLAttributeFormatUShort3 = 14;
+    public final long MTLAttributeFormatUShort4 = 15;
+    public final long MTLAttributeFormatShort2 = 16;
+    public final long MTLAttributeFormatShort3 = 17;
+    public final long MTLAttributeFormatShort4 = 18;
+    public final long MTLAttributeFormatUShort2Normalized = 19;
+    public final long MTLAttributeFormatUShort3Normalized = 20;
+    public final long MTLAttributeFormatUShort4Normalized = 21;
+    public final long MTLAttributeFormatShort2Normalized = 22;
+    public final long MTLAttributeFormatShort3Normalized = 23;
+    public final long MTLAttributeFormatShort4Normalized = 24;
+    public final long MTLAttributeFormatHalf2 = 25;
+    public final long MTLAttributeFormatHalf3 = 26;
+    public final long MTLAttributeFormatHalf4 = 27;
+    public final long MTLAttributeFormatFloat = 28;
+    public final long MTLAttributeFormatFloat2 = 29;
+    public final long MTLAttributeFormatFloat3 = 30;
+    public final long MTLAttributeFormatFloat4 = 31;
+    public final long MTLAttributeFormatInt = 32;
+    public final long MTLAttributeFormatInt2 = 33;
+    public final long MTLAttributeFormatInt3 = 34;
+    public final long MTLAttributeFormatInt4 = 35;
+    public final long MTLAttributeFormatUInt = 36;
+    public final long MTLAttributeFormatUInt2 = 37;
+    public final long MTLAttributeFormatUInt3 = 38;
+    public final long MTLAttributeFormatUInt4 = 39;
+    public final long MTLAttributeFormatInt1010102Normalized = 40;
+    public final long MTLAttributeFormatUInt1010102Normalized = 41;
+    public final long MTLAttributeFormatUChar4Normalized_BGRA = 42;
+    public final long MTLAttributeFormatUChar = 45;
+    public final long MTLAttributeFormatChar = 46;
+    public final long MTLAttributeFormatUCharNormalized = 47;
+    public final long MTLAttributeFormatCharNormalized = 48;
+    public final long MTLAttributeFormatUShort = 49;
+    public final long MTLAttributeFormatShort = 50;
+    public final long MTLAttributeFormatUShortNormalized = 51;
+    public final long MTLAttributeFormatShortNormalized = 52;
+    public final long MTLAttributeFormatHalf = 53;
+    public final long MTLAttributeFormatFloatRG11B10 = 54;
+    public final long MTLAttributeFormatFloatRGB9E5 = 55;
+}
