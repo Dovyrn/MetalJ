@@ -1,6 +1,7 @@
 package dev.dov.metalj.arguments;
 
 import dev.dov.metalj.device.MTLDevice;
+import dev.dov.metalj.functions.MTLVisibleFunctionTable;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.NSString;
@@ -130,5 +131,10 @@ public class MTLArgumentEncoder extends NSObject {
     @SneakyThrows
     public void setIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
         PL.invokeExact(id, ObjC.sel("setIntersectionFunctionTable:atIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
+        PL.invokeExact(id, ObjC.sel("setVisibleFunctionTable:atIndex:"), table.getId(), index);
     }
 }

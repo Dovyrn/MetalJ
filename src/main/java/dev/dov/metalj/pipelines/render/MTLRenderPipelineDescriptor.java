@@ -2,6 +2,8 @@ package dev.dov.metalj.pipelines.render;
 
 import dev.dov.metalj.pipelines.vertex.MTLVertexDescriptor;
 import dev.dov.metalj.pipelines.shaders.MTLFunction;
+import dev.dov.metalj.functions.MTLLinkedFunctions;
+import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
@@ -273,5 +275,50 @@ public class MTLRenderPipelineDescriptor extends NSObject {
 
     public void reset() {
         sendVoid(id, "reset");
+    }
+
+    public MTLLinkedFunctions vertexLinkedFunctions() {
+        return MTLLinkedFunctions.of(sendPtr(id, "vertexLinkedFunctions"));
+    }
+
+    @SneakyThrows
+    public void setVertexLinkedFunctions(MTLLinkedFunctions functions) {
+        P.invokeExact(id, ObjC.sel("setVertexLinkedFunctions:"), functions.getId());
+    }
+
+    public MTLLinkedFunctions fragmentLinkedFunctions() {
+        return MTLLinkedFunctions.of(sendPtr(id, "fragmentLinkedFunctions"));
+    }
+
+    @SneakyThrows
+    public void setFragmentLinkedFunctions(MTLLinkedFunctions functions) {
+        P.invokeExact(id, ObjC.sel("setFragmentLinkedFunctions:"), functions.getId());
+    }
+
+    public NSArray binaryArchives() {
+        return NSArray.of(sendPtr(id, "binaryArchives"));
+    }
+
+    @SneakyThrows
+    public void setBinaryArchives(NSArray archives) {
+        P.invokeExact(id, ObjC.sel("setBinaryArchives:"), archives.getId());
+    }
+
+    public NSArray vertexPreloadedLibraries() {
+        return NSArray.of(sendPtr(id, "vertexPreloadedLibraries"));
+    }
+
+    @SneakyThrows
+    public void setVertexPreloadedLibraries(NSArray libraries) {
+        P.invokeExact(id, ObjC.sel("setVertexPreloadedLibraries:"), libraries.getId());
+    }
+
+    public NSArray fragmentPreloadedLibraries() {
+        return NSArray.of(sendPtr(id, "fragmentPreloadedLibraries"));
+    }
+
+    @SneakyThrows
+    public void setFragmentPreloadedLibraries(NSArray libraries) {
+        P.invokeExact(id, ObjC.sel("setFragmentPreloadedLibraries:"), libraries.getId());
     }
 }

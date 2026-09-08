@@ -5,6 +5,8 @@ import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.pipelines.shaders.MTLFunction;
 import dev.dov.metalj.pipelines.shaders.MTLFunctionHandle;
+import dev.dov.metalj.functions.MTLVisibleFunctionTable;
+import dev.dov.metalj.functions.MTLVisibleFunctionTableDescriptor;
 import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
 import dev.dov.metalj.raytracing.MTLIntersectionFunctionTableDescriptor;
 import dev.dov.metalj.objc.ObjC;
@@ -69,5 +71,12 @@ public class MTLComputePipelineState extends NSObject {
             MTLIntersectionFunctionTableDescriptor descriptor) {
         return MTLIntersectionFunctionTable.of((long) P_P.invokeExact(id,
                 ObjC.sel("newIntersectionFunctionTableWithDescriptor:"), descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public MTLVisibleFunctionTable newVisibleFunctionTableWithDescriptor(
+            MTLVisibleFunctionTableDescriptor descriptor) {
+        return MTLVisibleFunctionTable.of((long) P_P.invokeExact(id,
+                ObjC.sel("newVisibleFunctionTableWithDescriptor:"), descriptor.getId()));
     }
 }

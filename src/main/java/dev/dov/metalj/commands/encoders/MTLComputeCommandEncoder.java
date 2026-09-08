@@ -3,6 +3,7 @@ package dev.dov.metalj.commands.encoders;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
 import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
+import dev.dov.metalj.functions.MTLVisibleFunctionTable;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.sync.MTLFence;
 import dev.dov.metalj.objc.ObjC;
@@ -206,5 +207,15 @@ public class MTLComputeCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void waitForFence(MTLFence fence) {
         L.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
+    }
+
+    @SneakyThrows
+    public void setVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
+        LL.invokeExact(id, ObjC.sel("setVisibleFunctionTable:atBufferIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void setVisibleFunctionTables(MemorySegment tables, MemorySegment range) {
+        AR.invokeExact(id, ObjC.sel("setVisibleFunctionTables:withBufferRange:"), tables, range);
     }
 }

@@ -1,5 +1,6 @@
 package dev.dov.metalj.raytracing;
 
+import dev.dov.metalj.functions.MTLVisibleFunctionTable;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.pipelines.shaders.MTLFunctionHandle;
@@ -53,5 +54,10 @@ public class MTLIntersectionFunctionTable extends MTLResource {
     public void setOpaqueTriangleIntersectionFunctionWithSignature(long signature, MemorySegment range) {
         LR.invokeExact(id, ObjC.sel("setOpaqueTriangleIntersectionFunctionWithSignature:withRange:"), signature,
                 range);
+    }
+
+    @SneakyThrows
+    public void setVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
+        PL.invokeExact(id, ObjC.sel("setVisibleFunctionTable:atBufferIndex:"), table.getId(), index);
     }
 }

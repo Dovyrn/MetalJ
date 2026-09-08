@@ -1,5 +1,6 @@
 package dev.dov.metalj.pipelines.shaders;
 
+import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
@@ -129,5 +130,14 @@ public class MTLCompileOptions extends NSObject {
     @SneakyThrows
     public void setEnableLogging(boolean enableLogging) {
         B.invokeExact(id, ObjC.sel("setEnableLogging:"), enableLogging);
+    }
+
+    public NSArray libraries() {
+        return NSArray.of(sendPtr(id, "libraries"));
+    }
+
+    @SneakyThrows
+    public void setLibraries(NSArray libraries) {
+        P.invokeExact(id, ObjC.sel("setLibraries:"), libraries.getId());
     }
 }

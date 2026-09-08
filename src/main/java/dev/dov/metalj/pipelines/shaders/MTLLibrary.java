@@ -1,6 +1,7 @@
 package dev.dov.metalj.pipelines.shaders;
 
 import dev.dov.metalj.device.MTLDevice;
+import dev.dov.metalj.functions.MTLFunctionDescriptor;
 import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.objc.NSObject;
@@ -15,6 +16,7 @@ public class MTLLibrary extends NSObject {
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
     private static final MethodHandle P_PPA = handle(ObjC.PTR, ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
+    private static final MethodHandle P_PA = handle(ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
 
     private MTLLibrary(long id) {
         super(id);
@@ -63,5 +65,16 @@ public class MTLLibrary extends NSObject {
 
     public NSString installName() {
         return NSString.of(sendPtr(id, "installName"));
+    }
+
+    @SneakyThrows
+    public MTLFunction newFunctionWithDescriptor(MTLFunctionDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long function = (long) P_PA.invokeExact(id, ObjC.sel("newFunctionWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newFunctionWithDescriptor:error:");
+            return MTLFunction.of(function);
+        }
     }
 }

@@ -2,6 +2,8 @@ package dev.dov.metalj.pipelines.compute;
 
 import dev.dov.metalj.pipelines.shaders.MTLFunction;
 import dev.dov.metalj.pipelines.render.MTLPipelineBufferDescriptorArray;
+import dev.dov.metalj.functions.MTLLinkedFunctions;
+import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
@@ -94,5 +96,32 @@ public class MTLComputePipelineDescriptor extends NSObject {
 
     public void reset() {
         sendVoid(id, "reset");
+    }
+
+    public MTLLinkedFunctions linkedFunctions() {
+        return MTLLinkedFunctions.of(sendPtr(id, "linkedFunctions"));
+    }
+
+    @SneakyThrows
+    public void setLinkedFunctions(MTLLinkedFunctions functions) {
+        P.invokeExact(id, ObjC.sel("setLinkedFunctions:"), functions.getId());
+    }
+
+    public NSArray binaryArchives() {
+        return NSArray.of(sendPtr(id, "binaryArchives"));
+    }
+
+    @SneakyThrows
+    public void setBinaryArchives(NSArray archives) {
+        P.invokeExact(id, ObjC.sel("setBinaryArchives:"), archives.getId());
+    }
+
+    public NSArray preloadedLibraries() {
+        return NSArray.of(sendPtr(id, "preloadedLibraries"));
+    }
+
+    @SneakyThrows
+    public void setPreloadedLibraries(NSArray libraries) {
+        P.invokeExact(id, ObjC.sel("setPreloadedLibraries:"), libraries.getId());
     }
 }

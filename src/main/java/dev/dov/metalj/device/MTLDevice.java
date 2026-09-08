@@ -1,6 +1,10 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.arguments.MTLArgumentEncoder;
+import dev.dov.metalj.libraries.MTLBinaryArchive;
+import dev.dov.metalj.libraries.MTLBinaryArchiveDescriptor;
+import dev.dov.metalj.libraries.MTLDynamicLibrary;
+import dev.dov.metalj.objc.NSURL;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
 import dev.dov.metalj.sync.MTLEvent;
 import dev.dov.metalj.sync.MTLFence;
@@ -378,6 +382,37 @@ public class MTLDevice extends NSObject {
     @SneakyThrows
     public boolean supportsCounterSampling(long samplingPoint) {
         return (boolean) B_L.invokeExact(id, ObjC.sel("supportsCounterSampling:"), samplingPoint);
+    }
+
+    @SneakyThrows
+    public MTLDynamicLibrary newDynamicLibrary(MTLLibrary library) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long result = (long) P_PA.invokeExact(id, ObjC.sel("newDynamicLibrary:error:"), library.getId(), error);
+            NSError.check(error, "newDynamicLibrary:error:");
+            return MTLDynamicLibrary.of(result);
+        }
+    }
+
+    @SneakyThrows
+    public MTLDynamicLibrary newDynamicLibraryWithURL(NSURL url) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long result = (long) P_PA.invokeExact(id, ObjC.sel("newDynamicLibraryWithURL:error:"), url.getId(), error);
+            NSError.check(error, "newDynamicLibraryWithURL:error:");
+            return MTLDynamicLibrary.of(result);
+        }
+    }
+
+    @SneakyThrows
+    public MTLBinaryArchive newBinaryArchiveWithDescriptor(MTLBinaryArchiveDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long archive = (long) P_PA.invokeExact(id, ObjC.sel("newBinaryArchiveWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newBinaryArchiveWithDescriptor:error:");
+            return MTLBinaryArchive.of(archive);
+        }
     }
 
     public boolean supportsDynamicLibraries() {
