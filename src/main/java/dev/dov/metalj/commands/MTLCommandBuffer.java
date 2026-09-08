@@ -10,6 +10,7 @@ import dev.dov.metalj.device.CAMetalDrawable;
 import dev.dov.metalj.objc.Block;
 import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.raytracing.MTLAccelerationStructureCommandEncoder;
+import dev.dov.metalj.sync.MTLEvent;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
@@ -19,6 +20,7 @@ import lombok.SneakyThrows;
 public class MTLCommandBuffer extends NSObject {
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
+    private static final MethodHandle PL = handle(null, ObjC.PTR, ObjC.LONG);
     private static final MethodHandle D = handle(ObjC.DOUBLE);
 
     public static final long MTLCommandBufferStatusNotEnqueued = 0;
@@ -131,5 +133,15 @@ public class MTLCommandBuffer extends NSObject {
 
     public MTLAccelerationStructureCommandEncoder accelerationStructureCommandEncoder() {
         return MTLAccelerationStructureCommandEncoder.of(sendPtr(id, "accelerationStructureCommandEncoder"));
+    }
+
+    @SneakyThrows
+    public void encodeSignalEvent(MTLEvent event, long value) {
+        PL.invokeExact(id, ObjC.sel("encodeSignalEvent:value:"), event.getId(), value);
+    }
+
+    @SneakyThrows
+    public void encodeWaitForEvent(MTLEvent event, long value) {
+        PL.invokeExact(id, ObjC.sel("encodeWaitForEvent:value:"), event.getId(), value);
     }
 }

@@ -3,6 +3,7 @@ package dev.dov.metalj.commands.encoders;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.objc.NSRange;
 import dev.dov.metalj.objc.ObjC;
+import dev.dov.metalj.sync.MTLFence;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.indirect.MTLIndirectCommandBuffer;
 import dev.dov.metalj.resources.MTLOrigin;
@@ -189,5 +190,15 @@ public class MTLBlitCommandEncoder extends MTLCommandEncoder {
             MTLBuffer destinationBuffer, long destinationOffset) {
         LRLL.invokeExact(id, ObjC.sel("resolveCounters:inRange:destinationBuffer:destinationOffset:"),
                 sampleBuffer.getId(), range, destinationBuffer.getId(), destinationOffset);
+    }
+
+    @SneakyThrows
+    public void updateFence(MTLFence fence) {
+        L.invokeExact(id, ObjC.sel("updateFence:"), fence.getId());
+    }
+
+    @SneakyThrows
+    public void waitForFence(MTLFence fence) {
+        L.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
     }
 }

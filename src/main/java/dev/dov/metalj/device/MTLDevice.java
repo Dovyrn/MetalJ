@@ -2,6 +2,10 @@ package dev.dov.metalj.device;
 
 import dev.dov.metalj.arguments.MTLArgumentEncoder;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.sync.MTLEvent;
+import dev.dov.metalj.sync.MTLFence;
+import dev.dov.metalj.sync.MTLSharedEvent;
+import dev.dov.metalj.sync.MTLSharedEventHandle;
 import dev.dov.metalj.raytracing.MTLAccelerationStructureDescriptor;
 import dev.dov.metalj.raytracing.MTLAccelerationStructureSizes;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
@@ -24,6 +28,7 @@ import dev.dov.metalj.pipelines.shaders.MTLLibrary;
 import dev.dov.metalj.pipelines.render.MTLMeshRenderPipelineDescriptor;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineDescriptor;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
+import dev.dov.metalj.pipelines.render.MTLTileRenderPipelineDescriptor;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.heaps.MTLHeap;
 import dev.dov.metalj.resources.heaps.MTLHeapDescriptor;
@@ -180,6 +185,42 @@ public class MTLDevice extends NSObject {
 
     public long currentAllocatedSize() {
         return sendLong(id, "currentAllocatedSize");
+    }
+
+    @SneakyThrows
+    public MTLCommandQueue newCommandQueueWithDescriptor(MTLCommandQueueDescriptor descriptor) {
+        return MTLCommandQueue.of((long) P_P.invokeExact(id, ObjC.sel("newCommandQueueWithDescriptor:"),
+                descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public MTLRenderPipelineState newRenderPipelineStateWithTileDescriptor(
+            MTLTileRenderPipelineDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newRenderPipelineStateWithTileDescriptor:options:reflection:error:"),
+                    descriptor.getId(), 0L, MemorySegment.NULL, error);
+            NSError.check(error, "newRenderPipelineStateWithTileDescriptor:options:reflection:error:");
+            return MTLRenderPipelineState.of(state);
+        }
+    }
+
+    public MTLFence newFence() {
+        return MTLFence.of(sendPtr(id, "newFence"));
+    }
+
+    public MTLEvent newEvent() {
+        return MTLEvent.of(sendPtr(id, "newEvent"));
+    }
+
+    public MTLSharedEvent newSharedEvent() {
+        return MTLSharedEvent.of(sendPtr(id, "newSharedEvent"));
+    }
+
+    @SneakyThrows
+    public MTLSharedEvent newSharedEventWithHandle(MTLSharedEventHandle handle) {
+        return MTLSharedEvent.of((long) P_P.invokeExact(id, ObjC.sel("newSharedEventWithHandle:"), handle.getId()));
     }
 
     public MTLCommandQueue newCommandQueue() {

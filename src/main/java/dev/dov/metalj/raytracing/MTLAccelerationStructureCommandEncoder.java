@@ -4,6 +4,7 @@ import dev.dov.metalj.commands.encoders.MTLCommandEncoder;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.resources.MTLResource;
+import dev.dov.metalj.sync.MTLFence;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.heaps.MTLHeap;
 import java.lang.foreign.MemorySegment;
@@ -90,5 +91,15 @@ public class MTLAccelerationStructureCommandEncoder extends MTLCommandEncoder {
     public void sampleCountersInBuffer(MTLCounterSampleBuffer sampleBuffer, long sampleIndex, boolean barrier) {
         PLB.invokeExact(id, ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:"), sampleBuffer.getId(),
                 sampleIndex, barrier);
+    }
+
+    @SneakyThrows
+    public void updateFence(MTLFence fence) {
+        P.invokeExact(id, ObjC.sel("updateFence:"), fence.getId());
+    }
+
+    @SneakyThrows
+    public void waitForFence(MTLFence fence) {
+        P.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
     }
 }

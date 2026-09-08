@@ -4,6 +4,7 @@ import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
 import dev.dov.metalj.raytracing.MTLIntersectionFunctionTable;
 import dev.dov.metalj.objc.NSRange;
+import dev.dov.metalj.sync.MTLFence;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.pipelines.depth.MTLDepthStencilState;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
@@ -691,5 +692,15 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void setFragmentIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
         LL.invokeExact(id, ObjC.sel("setFragmentIntersectionFunctionTable:atBufferIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void updateFence(MTLFence fence, long stages) {
+        LL.invokeExact(id, ObjC.sel("updateFence:afterStages:"), fence.getId(), stages);
+    }
+
+    @SneakyThrows
+    public void waitForFence(MTLFence fence, long stages) {
+        LL.invokeExact(id, ObjC.sel("waitForFence:beforeStages:"), fence.getId(), stages);
     }
 }
