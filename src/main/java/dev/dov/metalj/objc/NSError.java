@@ -19,11 +19,11 @@ public class NSError extends NSObject {
     public static void check(MemorySegment slot, String what) {
         long id = slot.get(ObjC.PTR, 0);
         if (id != 0) {
-            throw new IllegalStateException(what + ": " + new NSError(id).message());
+            throw new IllegalStateException(what + ": " + new NSError(id).localizedDescription().UTF8String());
         }
     }
 
-    public String message() {
-        return NSString.of(sendPtr(id, "localizedDescription")).toJava();
+    public NSString localizedDescription() {
+        return NSString.of(sendPtr(id, "localizedDescription"));
     }
 }

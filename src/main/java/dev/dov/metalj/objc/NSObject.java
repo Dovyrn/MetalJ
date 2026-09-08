@@ -38,7 +38,7 @@ public class NSObject {
     }
 
     public String description() {
-        return NSString.of(sendPtr(id, "description")).toJava();
+        return NSString.of(sendPtr(id, "description")).UTF8String();
     }
 
     @SneakyThrows

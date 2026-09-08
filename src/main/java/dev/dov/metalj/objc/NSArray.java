@@ -14,12 +14,12 @@ public class NSArray extends NSObject {
         return new NSArray(id);
     }
 
-    public int count() {
-        return (int) sendLong(id, "count");
+    public long count() {
+        return sendLong(id, "count");
     }
 
     @SneakyThrows
-    public long at(int index) {
-        return (long) AT.invokeExact(id, ObjC.sel("objectAtIndex:"), (long) index);
+    public long objectAtIndex(long index) {
+        return (long) AT.invokeExact(id, ObjC.sel("objectAtIndex:"), index);
     }
 }

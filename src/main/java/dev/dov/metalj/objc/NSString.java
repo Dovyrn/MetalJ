@@ -18,7 +18,7 @@ public class NSString extends NSObject {
     }
 
     @SneakyThrows
-    public static NSString of(String text) {
+    public static NSString stringWithUTF8String(String text) {
         try (var arena = Arena.ofConfined()) {
             long id = (long) FROM.invokeExact(ObjC.cls("NSString"), ObjC.sel("stringWithUTF8String:"),
                     arena.allocateFrom(text));
@@ -27,7 +27,7 @@ public class NSString extends NSObject {
     }
 
     @SneakyThrows
-    public String toJava() {
+    public String UTF8String() {
         if (isNull()) {
             return null;
         }
