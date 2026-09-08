@@ -11,7 +11,11 @@ import dev.dov.metalj.objc.NSURL;
 import dev.dov.metalj.rate.MTLRasterizationRateMap;
 import dev.dov.metalj.rate.MTLRasterizationRateMapDescriptor;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.pools.MTLResourceViewPoolDescriptor;
+import dev.dov.metalj.pools.MTLTextureViewPool;
 import dev.dov.metalj.residency.MTLResidencySet;
+import dev.dov.metalj.tensors.MTLTensor;
+import dev.dov.metalj.tensors.MTLTensorDescriptor;
 import dev.dov.metalj.residency.MTLResidencySetDescriptor;
 import dev.dov.metalj.sync.MTLEvent;
 import dev.dov.metalj.sync.MTLFence;
@@ -258,6 +262,28 @@ public class MTLDevice extends NSObject {
                     url.getId(), compressionMethod, error);
             NSError.check(error, "newIOFileHandleWithURL:compressionMethod:error:");
             return MTLIOFileHandle.of(handle);
+        }
+    }
+
+    @SneakyThrows
+    public MTLTensor newTensorWithDescriptor(MTLTensorDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long tensor = (long) P_PA.invokeExact(id, ObjC.sel("newTensorWithDescriptor:error:"), descriptor.getId(),
+                    error);
+            NSError.check(error, "newTensorWithDescriptor:error:");
+            return MTLTensor.of(tensor);
+        }
+    }
+
+    @SneakyThrows
+    public MTLTextureViewPool newTextureViewPoolWithDescriptor(MTLResourceViewPoolDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long pool = (long) P_PA.invokeExact(id, ObjC.sel("newTextureViewPoolWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newTextureViewPoolWithDescriptor:error:");
+            return MTLTextureViewPool.of(pool);
         }
     }
 

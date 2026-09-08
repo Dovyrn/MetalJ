@@ -6,12 +6,18 @@ import dev.dov.metalj.resources.textures.MTLTextureDescriptor;
 import dev.dov.metalj.device.MTLDevice;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.NSRange;
+import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.objc.ObjC;
+import dev.dov.metalj.tensors.MTLTensor;
+import dev.dov.metalj.tensors.MTLTensorDescriptor;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLBuffer extends MTLResource {
+    private static final MethodHandle P_PLA = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS);
     private static final MethodHandle R = handle(null, NSRange.LAYOUT);
     private static final MethodHandle PR = handle(null, ObjC.PTR, NSRange.LAYOUT);
     private static final MethodHandle P_PLL = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ObjC.LONG);
@@ -64,5 +70,16 @@ public class MTLBuffer extends MTLResource {
     @SneakyThrows
     public MTLBuffer newRemoteBufferViewForDevice(MTLDevice device) {
         return new MTLBuffer((long) P_P.invokeExact(id, ObjC.sel("newRemoteBufferViewForDevice:"), device.getId()));
+    }
+
+    @SneakyThrows
+    public MTLTensor newTensorWithDescriptor(MTLTensorDescriptor descriptor, long offset) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long tensor = (long) P_PLA.invokeExact(id, ObjC.sel("newTensorWithDescriptor:offset:error:"),
+                    descriptor.getId(), offset, error);
+            NSError.check(error, "newTensorWithDescriptor:offset:error:");
+            return MTLTensor.of(tensor);
+        }
     }
 }

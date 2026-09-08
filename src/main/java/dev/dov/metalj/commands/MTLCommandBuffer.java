@@ -10,7 +10,10 @@ import dev.dov.metalj.device.CAMetalDrawable;
 import dev.dov.metalj.objc.Block;
 import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.raytracing.MTLAccelerationStructureCommandEncoder;
+import dev.dov.metalj.commands.encoders.MTLParallelRenderCommandEncoder;
 import dev.dov.metalj.residency.MTLResidencySet;
+import dev.dov.metalj.state.MTLResourceStateCommandEncoder;
+import dev.dov.metalj.state.MTLResourceStatePassDescriptor;
 import dev.dov.metalj.sync.MTLEvent;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
@@ -149,5 +152,23 @@ public class MTLCommandBuffer extends NSObject {
     @SneakyThrows
     public void useResidencySet(MTLResidencySet set) {
         P.invokeExact(id, ObjC.sel("useResidencySet:"), set.getId());
+    }
+
+    @SneakyThrows
+    public MTLParallelRenderCommandEncoder parallelRenderCommandEncoderWithDescriptor(
+            MTLRenderPassDescriptor descriptor) {
+        return MTLParallelRenderCommandEncoder.of((long) P_P.invokeExact(id,
+                ObjC.sel("parallelRenderCommandEncoderWithDescriptor:"), descriptor.getId()));
+    }
+
+    public MTLResourceStateCommandEncoder resourceStateCommandEncoder() {
+        return MTLResourceStateCommandEncoder.of(sendPtr(id, "resourceStateCommandEncoder"));
+    }
+
+    @SneakyThrows
+    public MTLResourceStateCommandEncoder resourceStateCommandEncoderWithDescriptor(
+            MTLResourceStatePassDescriptor descriptor) {
+        return MTLResourceStateCommandEncoder.of((long) P_P.invokeExact(id,
+                ObjC.sel("resourceStateCommandEncoderWithDescriptor:"), descriptor.getId()));
     }
 }

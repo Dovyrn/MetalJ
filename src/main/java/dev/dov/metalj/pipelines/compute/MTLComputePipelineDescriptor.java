@@ -124,4 +124,13 @@ public class MTLComputePipelineDescriptor extends NSObject {
     public void setPreloadedLibraries(NSArray libraries) {
         P.invokeExact(id, ObjC.sel("setPreloadedLibraries:"), libraries.getId());
     }
+
+    public MTLStageInputOutputDescriptor stageInputDescriptor() {
+        return MTLStageInputOutputDescriptor.of(sendPtr(id, "stageInputDescriptor"));
+    }
+
+    @SneakyThrows
+    public void setStageInputDescriptor(MTLStageInputOutputDescriptor descriptor) {
+        P.invokeExact(id, ObjC.sel("setStageInputDescriptor:"), descriptor.getId());
+    }
 }

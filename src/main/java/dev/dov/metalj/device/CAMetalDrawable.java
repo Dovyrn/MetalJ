@@ -1,9 +1,8 @@
 package dev.dov.metalj.device;
 
-import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.resources.textures.MTLTexture;
 
-public class CAMetalDrawable extends NSObject {
+public class CAMetalDrawable extends MTLDrawable {
     private CAMetalDrawable(long id) {
         super(id);
     }
@@ -16,7 +15,7 @@ public class CAMetalDrawable extends NSObject {
         return MTLTexture.of(sendPtr(id, "texture"));
     }
 
-    public void present() {
-        sendVoid(id, "present");
+    public CAMetalLayer layer() {
+        return CAMetalLayer.of(sendPtr(id, "layer"));
     }
 }

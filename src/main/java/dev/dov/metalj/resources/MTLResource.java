@@ -2,13 +2,12 @@ package dev.dov.metalj.resources;
 
 import dev.dov.metalj.resources.heaps.MTLHeap;
 import dev.dov.metalj.device.MTLDevice;
-import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
 import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
-public class MTLResource extends NSObject {
+public class MTLResource extends MTLAllocation {
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle L_L = handle(ObjC.LONG, ObjC.LONG);
 
@@ -60,10 +59,6 @@ public class MTLResource extends NSObject {
 
     public long heapOffset() {
         return sendLong(id, "heapOffset");
-    }
-
-    public long allocatedSize() {
-        return sendLong(id, "allocatedSize");
     }
 
     public void makeAliasable() {
