@@ -23,6 +23,7 @@ public class ObjC {
     public final ValueLayout.OfDouble DOUBLE = ValueLayout.JAVA_DOUBLE;
     public final ValueLayout.OfFloat FLOAT = ValueLayout.JAVA_FLOAT;
     public final ValueLayout.OfBoolean BOOL = ValueLayout.JAVA_BOOLEAN;
+    public final ValueLayout.OfByte BYTE = ValueLayout.JAVA_BYTE;
     public final ValueLayout.OfLong PTR = ValueLayout.JAVA_LONG;
 
     private final SymbolLookup RUNTIME = SymbolLookup.libraryLookup("/usr/lib/libobjc.A.dylib", ARENA);

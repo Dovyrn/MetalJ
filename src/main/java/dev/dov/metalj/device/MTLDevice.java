@@ -1,6 +1,9 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.arguments.MTLArgumentEncoder;
+import dev.dov.metalj.io.MTLIOCommandQueue;
+import dev.dov.metalj.io.MTLIOCommandQueueDescriptor;
+import dev.dov.metalj.io.MTLIOFileHandle;
 import dev.dov.metalj.libraries.MTLBinaryArchive;
 import dev.dov.metalj.libraries.MTLBinaryArchiveDescriptor;
 import dev.dov.metalj.libraries.MTLDynamicLibrary;
@@ -62,6 +65,7 @@ public class MTLDevice extends NSObject {
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
     private static final MethodHandle P_PLL = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle P_PA = handle(ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
+    private static final MethodHandle P_PLA = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS);
     private static final MethodHandle P_PPA = handle(ObjC.PTR, ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
     private static final MethodHandle P_PLAA = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS,
             ValueLayout.ADDRESS);
@@ -220,6 +224,38 @@ public class MTLDevice extends NSObject {
                     descriptor.getId(), error);
             NSError.check(error, "newResidencySetWithDescriptor:error:");
             return MTLResidencySet.of(set);
+        }
+    }
+
+    @SneakyThrows
+    public MTLIOCommandQueue newIOCommandQueueWithDescriptor(MTLIOCommandQueueDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long queue = (long) P_PA.invokeExact(id, ObjC.sel("newIOCommandQueueWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newIOCommandQueueWithDescriptor:error:");
+            return MTLIOCommandQueue.of(queue);
+        }
+    }
+
+    @SneakyThrows
+    public MTLIOFileHandle newIOFileHandleWithURL(NSURL url) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long handle = (long) P_PA.invokeExact(id, ObjC.sel("newIOFileHandleWithURL:error:"), url.getId(), error);
+            NSError.check(error, "newIOFileHandleWithURL:error:");
+            return MTLIOFileHandle.of(handle);
+        }
+    }
+
+    @SneakyThrows
+    public MTLIOFileHandle newIOFileHandleWithURL(NSURL url, long compressionMethod) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long handle = (long) P_PLA.invokeExact(id, ObjC.sel("newIOFileHandleWithURL:compressionMethod:error:"),
+                    url.getId(), compressionMethod, error);
+            NSError.check(error, "newIOFileHandleWithURL:compressionMethod:error:");
+            return MTLIOFileHandle.of(handle);
         }
     }
 
