@@ -8,6 +8,7 @@ import dev.dov.metalj.commands.encoders.MTLRenderCommandEncoder;
 import dev.dov.metalj.commands.encoders.MTLBlitCommandEncoder;
 import dev.dov.metalj.device.CAMetalDrawable;
 import dev.dov.metalj.objc.Block;
+import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.raytracing.MTLAccelerationStructureCommandEncoder;
 import dev.dov.metalj.commands.encoders.MTLParallelRenderCommandEncoder;
@@ -170,5 +171,9 @@ public class MTLCommandBuffer extends NSObject {
             MTLResourceStatePassDescriptor descriptor) {
         return MTLResourceStateCommandEncoder.of((long) P_P.invokeExact(id,
                 ObjC.sel("resourceStateCommandEncoderWithDescriptor:"), descriptor.getId()));
+    }
+
+    public NSArray logs() {
+        return NSArray.of(sendPtr(id, "logs"));
     }
 }

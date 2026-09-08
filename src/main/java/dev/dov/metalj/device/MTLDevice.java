@@ -42,6 +42,8 @@ import dev.dov.metalj.pipelines.shaders.MTLFunction;
 import dev.dov.metalj.pipelines.shaders.MTLLibrary;
 import dev.dov.metalj.pipelines.render.MTLMeshRenderPipelineDescriptor;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineDescriptor;
+import dev.dov.metalj.pipelines.compute.MTLComputePipelineReflection;
+import dev.dov.metalj.pipelines.render.MTLRenderPipelineReflection;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
 import dev.dov.metalj.pipelines.render.MTLTileRenderPipelineDescriptor;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
@@ -53,6 +55,7 @@ import dev.dov.metalj.resources.samplers.MTLSamplerDescriptor;
 import dev.dov.metalj.resources.samplers.MTLSamplerState;
 import dev.dov.metalj.resources.MTLSize;
 import dev.dov.metalj.resources.heaps.MTLSizeAndAlign;
+import dev.dov.metalj.resources.textures.MTLSharedTextureHandle;
 import dev.dov.metalj.resources.textures.MTLTexture;
 import dev.dov.metalj.resources.textures.MTLTextureDescriptor;
 import java.lang.foreign.Arena;
@@ -574,6 +577,60 @@ public class MTLDevice extends NSObject {
             NSError.check(error, "newRenderPipelineStateWithDescriptor:error:");
             return MTLRenderPipelineState.of(state);
         }
+    }
+
+    @SneakyThrows
+    public MTLRenderPipelineState newRenderPipelineStateWithDescriptor(MTLRenderPipelineDescriptor descriptor,
+            long options, MTLRenderPipelineReflection[] reflection) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            var slot = arena.allocate(ObjC.PTR);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newRenderPipelineStateWithDescriptor:options:reflection:error:"), descriptor.getId(),
+                    options, slot, error);
+            NSError.check(error, "newRenderPipelineStateWithDescriptor:options:reflection:error:");
+            reflection[0] = MTLRenderPipelineReflection.of(slot.get(ObjC.PTR, 0));
+            return MTLRenderPipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLComputePipelineState newComputePipelineStateWithFunction(MTLFunction function, long options,
+            MTLComputePipelineReflection[] reflection) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            var slot = arena.allocate(ObjC.PTR);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newComputePipelineStateWithFunction:options:reflection:error:"), function.getId(),
+                    options, slot, error);
+            NSError.check(error, "newComputePipelineStateWithFunction:options:reflection:error:");
+            reflection[0] = MTLComputePipelineReflection.of(slot.get(ObjC.PTR, 0));
+            return MTLComputePipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLComputePipelineState newComputePipelineStateWithDescriptor(MTLComputePipelineDescriptor descriptor,
+            long options, MTLComputePipelineReflection[] reflection) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            var slot = arena.allocate(ObjC.PTR);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newComputePipelineStateWithDescriptor:options:reflection:error:"), descriptor.getId(),
+                    options, slot, error);
+            NSError.check(error, "newComputePipelineStateWithDescriptor:options:reflection:error:");
+            reflection[0] = MTLComputePipelineReflection.of(slot.get(ObjC.PTR, 0));
+            return MTLComputePipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLTexture newSharedTextureWithHandle(MTLSharedTextureHandle handle) {
+        return MTLTexture.of((long) P_P.invokeExact(id, ObjC.sel("newSharedTextureWithHandle:"), handle.getId()));
+    }
+
+    public MTLArchitecture architecture() {
+        return MTLArchitecture.of(sendPtr(id, "architecture"));
     }
 
     @SneakyThrows

@@ -321,4 +321,13 @@ public class MTLRenderPipelineDescriptor extends NSObject {
     public void setFragmentPreloadedLibraries(NSArray libraries) {
         P.invokeExact(id, ObjC.sel("setFragmentPreloadedLibraries:"), libraries.getId());
     }
+
+    public MTLLogicalToPhysicalColorAttachmentMap colorAttachmentMap() {
+        return MTLLogicalToPhysicalColorAttachmentMap.of(sendPtr(id, "colorAttachmentMap"));
+    }
+
+    @SneakyThrows
+    public void setColorAttachmentMap(MTLLogicalToPhysicalColorAttachmentMap map) {
+        P.invokeExact(id, ObjC.sel("setColorAttachmentMap:"), map.getId());
+    }
 }

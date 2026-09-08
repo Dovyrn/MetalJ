@@ -28,11 +28,11 @@ public class MTLBinding extends NSObject {
         return sendLong(id, "index");
     }
 
-    public boolean used() {
-        return sendBool(id, "used");
+    public boolean isUsed() {
+        return sendBool(id, "isUsed");
     }
 
-    public boolean argument() {
-        return sendBool(id, "argument");
+    public boolean isArgument() {
+        return sendBool(id, "isArgument");
     }
 }

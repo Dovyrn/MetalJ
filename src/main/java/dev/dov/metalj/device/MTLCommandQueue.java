@@ -1,7 +1,9 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.commands.MTLCommandBuffer;
+import dev.dov.metalj.commands.MTLCommandBufferDescriptor;
 import dev.dov.metalj.objc.NSObject;
+import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
 import dev.dov.metalj.residency.MTLResidencySet;
 import java.lang.foreign.MemorySegment;
@@ -11,6 +13,7 @@ import lombok.SneakyThrows;
 
 public class MTLCommandQueue extends NSObject {
     private static final MethodHandle P = handle(null, ObjC.PTR);
+    private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
     private static final MethodHandle AL = handle(null, ValueLayout.ADDRESS, ObjC.LONG);
 
     private MTLCommandQueue(long id) {
@@ -43,5 +46,24 @@ public class MTLCommandQueue extends NSObject {
     @SneakyThrows
     public void removeResidencySets(MemorySegment sets, long count) {
         AL.invokeExact(id, ObjC.sel("removeResidencySets:count:"), sets, count);
+    }
+
+    @SneakyThrows
+    public MTLCommandBuffer commandBufferWithDescriptor(MTLCommandBufferDescriptor descriptor) {
+        return MTLCommandBuffer.of((long) P_P.invokeExact(id, ObjC.sel("commandBufferWithDescriptor:"),
+                descriptor.getId()));
+    }
+
+    public MTLCommandBuffer commandBufferWithUnretainedReferences() {
+        return MTLCommandBuffer.of(sendPtr(id, "commandBufferWithUnretainedReferences"));
+    }
+
+    public NSString label() {
+        return NSString.of(sendPtr(id, "label"));
+    }
+
+    @SneakyThrows
+    public void setLabel(NSString label) {
+        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
     }
 }

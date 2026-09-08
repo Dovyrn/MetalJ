@@ -169,8 +169,8 @@ public class MTLTexture extends MTLResource {
                 textureType, levels, slices, swizzle));
     }
 
-    public long newSharedTextureHandle() {
-        return sendPtr(id, "newSharedTextureHandle");
+    public MTLSharedTextureHandle newSharedTextureHandle() {
+        return MTLSharedTextureHandle.of(sendPtr(id, "newSharedTextureHandle"));
     }
 
     @SneakyThrows

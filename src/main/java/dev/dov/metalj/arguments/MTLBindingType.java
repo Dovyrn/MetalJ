@@ -4,8 +4,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class MTLBindingType {
-    public final long MTLBindingTypeThreadgroupMemory = 0;
-    public final long MTLBindingTypeBuffer = 8;
+    public final long MTLBindingTypeBuffer = 0;
+    public final long MTLBindingTypeThreadgroupMemory = 1;
     public final long MTLBindingTypeTexture = 2;
     public final long MTLBindingTypeSampler = 3;
     public final long MTLBindingTypeImageblockData = 16;
@@ -15,4 +15,5 @@ public class MTLBindingType {
     public final long MTLBindingTypeInstanceAccelerationStructure = 26;
     public final long MTLBindingTypeIntersectionFunctionTable = 27;
     public final long MTLBindingTypeObjectPayload = 34;
+    public final long MTLBindingTypeTensor = 37;
 }
