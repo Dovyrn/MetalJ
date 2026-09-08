@@ -1,7 +1,7 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.objc.NSObject;
-import dev.dov.metalj.resources.MTLTexture;
+import dev.dov.metalj.resources.textures.MTLTexture;
 
 public class CAMetalDrawable extends NSObject {
     private CAMetalDrawable(long id) {

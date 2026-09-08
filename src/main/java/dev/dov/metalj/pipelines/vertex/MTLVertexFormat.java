@@ -1,0 +1,61 @@
+package dev.dov.metalj.pipelines.vertex;
+
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class MTLVertexFormat {
+    public final long MTLVertexFormatInvalid = 0;
+    public final long MTLVertexFormatUChar2 = 1;
+    public final long MTLVertexFormatUChar3 = 2;
+    public final long MTLVertexFormatUChar4 = 3;
+    public final long MTLVertexFormatChar2 = 4;
+    public final long MTLVertexFormatChar3 = 5;
+    public final long MTLVertexFormatChar4 = 6;
+    public final long MTLVertexFormatUChar2Normalized = 7;
+    public final long MTLVertexFormatUChar3Normalized = 8;
+    public final long MTLVertexFormatUChar4Normalized = 9;
+    public final long MTLVertexFormatChar2Normalized = 10;
+    public final long MTLVertexFormatChar3Normalized = 11;
+    public final long MTLVertexFormatChar4Normalized = 12;
+    public final long MTLVertexFormatUShort2 = 13;
+    public final long MTLVertexFormatUShort3 = 14;
+    public final long MTLVertexFormatUShort4 = 15;
+    public final long MTLVertexFormatShort2 = 16;
+    public final long MTLVertexFormatShort3 = 17;
+    public final long MTLVertexFormatShort4 = 18;
+    public final long MTLVertexFormatUShort2Normalized = 19;
+    public final long MTLVertexFormatUShort3Normalized = 20;
+    public final long MTLVertexFormatUShort4Normalized = 21;
+    public final long MTLVertexFormatShort2Normalized = 22;
+    public final long MTLVertexFormatShort3Normalized = 23;
+    public final long MTLVertexFormatShort4Normalized = 24;
+    public final long MTLVertexFormatHalf2 = 25;
+    public final long MTLVertexFormatHalf3 = 26;
+    public final long MTLVertexFormatHalf4 = 27;
+    public final long MTLVertexFormatFloat = 28;
+    public final long MTLVertexFormatFloat2 = 29;
+    public final long MTLVertexFormatFloat3 = 30;
+    public final long MTLVertexFormatFloat4 = 31;
+    public final long MTLVertexFormatInt = 32;
+    public final long MTLVertexFormatInt2 = 33;
+    public final long MTLVertexFormatInt3 = 34;
+    public final long MTLVertexFormatInt4 = 35;
+    public final long MTLVertexFormatUInt = 36;
+    public final long MTLVertexFormatUInt2 = 37;
+    public final long MTLVertexFormatUInt3 = 38;
+    public final long MTLVertexFormatUInt4 = 39;
+    public final long MTLVertexFormatInt1010102Normalized = 40;
+    public final long MTLVertexFormatUInt1010102Normalized = 41;
+    public final long MTLVertexFormatUChar4Normalized_BGRA = 42;
+    public final long MTLVertexFormatUChar = 45;
+    public final long MTLVertexFormatChar = 46;
+    public final long MTLVertexFormatUCharNormalized = 47;
+    public final long MTLVertexFormatCharNormalized = 48;
+    public final long MTLVertexFormatUShort = 49;
+    public final long MTLVertexFormatShort = 50;
+    public final long MTLVertexFormatUShortNormalized = 51;
+    public final long MTLVertexFormatShortNormalized = 52;
+    public final long MTLVertexFormatHalf = 53;
+    public final long MTLVertexFormatFloatRG11B10 = 54;
+    public final long MTLVertexFormatFloatRGB9E5 = 55;
+}

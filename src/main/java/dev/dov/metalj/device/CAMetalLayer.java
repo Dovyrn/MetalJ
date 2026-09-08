@@ -1,5 +1,6 @@
 package dev.dov.metalj.device;
 
+import dev.dov.metalj.objc.CGSize;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.ObjC;
 import java.lang.foreign.MemorySegment;

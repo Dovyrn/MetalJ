@@ -1,20 +1,32 @@
 package dev.dov.metalj.device;
 
 import dev.dov.metalj.objc.NSArray;
+import dev.dov.metalj.objc.NSError;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
 import dev.dov.metalj.objc.ObjC;
-import dev.dov.metalj.resources.MTLBuffer;
-import dev.dov.metalj.resources.MTLHeap;
-import dev.dov.metalj.resources.MTLHeapDescriptor;
-import dev.dov.metalj.resources.MTLIndirectCommandBuffer;
-import dev.dov.metalj.resources.MTLIndirectCommandBufferDescriptor;
-import dev.dov.metalj.resources.MTLSamplerDescriptor;
-import dev.dov.metalj.resources.MTLSamplerState;
+import dev.dov.metalj.pipelines.shaders.MTLCompileOptions;
+import dev.dov.metalj.pipelines.compute.MTLComputePipelineDescriptor;
+import dev.dov.metalj.pipelines.compute.MTLComputePipelineState;
+import dev.dov.metalj.pipelines.depth.MTLDepthStencilDescriptor;
+import dev.dov.metalj.pipelines.depth.MTLDepthStencilState;
+import dev.dov.metalj.pipelines.shaders.MTLFunction;
+import dev.dov.metalj.pipelines.shaders.MTLLibrary;
+import dev.dov.metalj.pipelines.render.MTLMeshRenderPipelineDescriptor;
+import dev.dov.metalj.pipelines.render.MTLRenderPipelineDescriptor;
+import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
+import dev.dov.metalj.resources.buffers.MTLBuffer;
+import dev.dov.metalj.resources.heaps.MTLHeap;
+import dev.dov.metalj.resources.heaps.MTLHeapDescriptor;
+import dev.dov.metalj.resources.indirect.MTLIndirectCommandBuffer;
+import dev.dov.metalj.resources.indirect.MTLIndirectCommandBufferDescriptor;
+import dev.dov.metalj.resources.samplers.MTLSamplerDescriptor;
+import dev.dov.metalj.resources.samplers.MTLSamplerState;
 import dev.dov.metalj.resources.MTLSize;
-import dev.dov.metalj.resources.MTLSizeAndAlign;
-import dev.dov.metalj.resources.MTLTexture;
-import dev.dov.metalj.resources.MTLTextureDescriptor;
+import dev.dov.metalj.resources.heaps.MTLSizeAndAlign;
+import dev.dov.metalj.resources.textures.MTLTexture;
+import dev.dov.metalj.resources.textures.MTLTextureDescriptor;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.ValueLayout;
@@ -29,6 +41,10 @@ public class MTLDevice extends NSObject {
     private static final MethodHandle P_ALLP = handle(ObjC.PTR, ValueLayout.ADDRESS, ObjC.LONG, ObjC.LONG, ObjC.PTR);
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
     private static final MethodHandle P_PLL = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ObjC.LONG);
+    private static final MethodHandle P_PA = handle(ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
+    private static final MethodHandle P_PPA = handle(ObjC.PTR, ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
+    private static final MethodHandle P_PLAA = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS,
+            ValueLayout.ADDRESS);
     private static final MethodHandle L_L = handle(ObjC.LONG, ObjC.LONG);
     private static final MethodHandle B_L = handle(ObjC.BOOL, ObjC.LONG);
     private static final MethodHandle SA_LL = structHandle(MTLSizeAndAlign.LAYOUT, ObjC.LONG, ObjC.LONG);
@@ -310,5 +326,78 @@ public class MTLDevice extends NSObject {
 
     public long maximumConcurrentCompilationTaskCount() {
         return sendLong(id, "maximumConcurrentCompilationTaskCount");
+    }
+
+    @SneakyThrows
+    public MTLLibrary newLibraryWithSource(NSString source, MTLCompileOptions options) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long library = (long) P_PPA.invokeExact(id, ObjC.sel("newLibraryWithSource:options:error:"),
+                    source.getId(), options.getId(), error);
+            NSError.check(error, "newLibraryWithSource:options:error:");
+            return MTLLibrary.of(library);
+        }
+    }
+
+    public MTLLibrary newDefaultLibrary() {
+        return MTLLibrary.of(sendPtr(id, "newDefaultLibrary"));
+    }
+
+    @SneakyThrows
+    public MTLRenderPipelineState newRenderPipelineStateWithDescriptor(MTLRenderPipelineDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PA.invokeExact(id, ObjC.sel("newRenderPipelineStateWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newRenderPipelineStateWithDescriptor:error:");
+            return MTLRenderPipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLRenderPipelineState newRenderPipelineStateWithMeshDescriptor(
+            MTLMeshRenderPipelineDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newRenderPipelineStateWithMeshDescriptor:options:reflection:error:"),
+                    descriptor.getId(), 0L, MemorySegment.NULL, error);
+            NSError.check(error, "newRenderPipelineStateWithMeshDescriptor:options:reflection:error:");
+            return MTLRenderPipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLComputePipelineState newComputePipelineStateWithFunction(MTLFunction function) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PA.invokeExact(id, ObjC.sel("newComputePipelineStateWithFunction:error:"),
+                    function.getId(), error);
+            NSError.check(error, "newComputePipelineStateWithFunction:error:");
+            return MTLComputePipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLComputePipelineState newComputePipelineStateWithDescriptor(MTLComputePipelineDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long state = (long) P_PLAA.invokeExact(id,
+                    ObjC.sel("newComputePipelineStateWithDescriptor:options:reflection:error:"), descriptor.getId(),
+                    0L, MemorySegment.NULL, error);
+            NSError.check(error, "newComputePipelineStateWithDescriptor:options:reflection:error:");
+            return MTLComputePipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLDepthStencilState newDepthStencilStateWithDescriptor(MTLDepthStencilDescriptor descriptor) {
+        return MTLDepthStencilState.of((long) P_P.invokeExact(id, ObjC.sel("newDepthStencilStateWithDescriptor:"),
+                descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public boolean supportsRasterizationRateMapWithLayerCount(long layerCount) {
+        return (boolean) B_L.invokeExact(id, ObjC.sel("supportsRasterizationRateMapWithLayerCount:"), layerCount);
     }
 }

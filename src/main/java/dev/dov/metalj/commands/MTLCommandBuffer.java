@@ -1,5 +1,11 @@
 package dev.dov.metalj.commands;
 
+import dev.dov.metalj.commands.passes.MTLComputePassDescriptor;
+import dev.dov.metalj.commands.passes.MTLBlitPassDescriptor;
+import dev.dov.metalj.commands.passes.MTLRenderPassDescriptor;
+import dev.dov.metalj.commands.encoders.MTLComputeCommandEncoder;
+import dev.dov.metalj.commands.encoders.MTLRenderCommandEncoder;
+import dev.dov.metalj.commands.encoders.MTLBlitCommandEncoder;
 import dev.dov.metalj.device.CAMetalDrawable;
 import dev.dov.metalj.objc.Block;
 import dev.dov.metalj.objc.NSError;

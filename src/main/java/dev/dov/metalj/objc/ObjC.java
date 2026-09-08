@@ -1,5 +1,6 @@
 package dev.dov.metalj.objc;
 
+import dev.dov.metalj.device.Metal;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;

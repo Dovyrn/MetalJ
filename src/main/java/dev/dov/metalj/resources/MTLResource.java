@@ -1,5 +1,6 @@
 package dev.dov.metalj.resources;
 
+import dev.dov.metalj.resources.heaps.MTLHeap;
 import dev.dov.metalj.device.MTLDevice;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
