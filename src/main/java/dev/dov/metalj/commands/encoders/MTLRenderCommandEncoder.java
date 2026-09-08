@@ -12,6 +12,7 @@ import dev.dov.metalj.pipelines.render.MTLRenderPipelineState;
 import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.indirect.MTLIndirectCommandBuffer;
 import dev.dov.metalj.resources.MTLResource;
+import dev.dov.metalj.resources.heaps.MTLHeap;
 import dev.dov.metalj.resources.samplers.MTLSamplerState;
 import dev.dov.metalj.resources.MTLSize;
 import dev.dov.metalj.resources.textures.MTLTexture;
@@ -713,5 +714,25 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void setFragmentVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
         LL.invokeExact(id, ObjC.sel("setFragmentVisibleFunctionTable:atBufferIndex:"), table.getId(), index);
+    }
+
+    @SneakyThrows
+    public void useHeap(MTLHeap heap) {
+        L.invokeExact(id, ObjC.sel("useHeap:"), heap.getId());
+    }
+
+    @SneakyThrows
+    public void useHeaps(MemorySegment heaps, long count) {
+        AL.invokeExact(id, ObjC.sel("useHeaps:count:"), heaps, count);
+    }
+
+    @SneakyThrows
+    public void useHeap(MTLHeap heap, long stages) {
+        LL.invokeExact(id, ObjC.sel("useHeap:stages:"), heap.getId(), stages);
+    }
+
+    @SneakyThrows
+    public void useHeaps(MemorySegment heaps, long count, long stages) {
+        ALL.invokeExact(id, ObjC.sel("useHeaps:count:stages:"), heaps, count, stages);
     }
 }

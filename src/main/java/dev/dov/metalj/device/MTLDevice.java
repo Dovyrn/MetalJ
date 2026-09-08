@@ -6,6 +6,8 @@ import dev.dov.metalj.libraries.MTLBinaryArchiveDescriptor;
 import dev.dov.metalj.libraries.MTLDynamicLibrary;
 import dev.dov.metalj.objc.NSURL;
 import dev.dov.metalj.raytracing.MTLAccelerationStructure;
+import dev.dov.metalj.residency.MTLResidencySet;
+import dev.dov.metalj.residency.MTLResidencySetDescriptor;
 import dev.dov.metalj.sync.MTLEvent;
 import dev.dov.metalj.sync.MTLFence;
 import dev.dov.metalj.sync.MTLSharedEvent;
@@ -207,6 +209,17 @@ public class MTLDevice extends NSObject {
                     descriptor.getId(), 0L, MemorySegment.NULL, error);
             NSError.check(error, "newRenderPipelineStateWithTileDescriptor:options:reflection:error:");
             return MTLRenderPipelineState.of(state);
+        }
+    }
+
+    @SneakyThrows
+    public MTLResidencySet newResidencySetWithDescriptor(MTLResidencySetDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long set = (long) P_PA.invokeExact(id, ObjC.sel("newResidencySetWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newResidencySetWithDescriptor:error:");
+            return MTLResidencySet.of(set);
         }
     }
 

@@ -12,6 +12,7 @@ import dev.dov.metalj.resources.buffers.MTLBuffer;
 import dev.dov.metalj.resources.indirect.MTLIndirectCommandBuffer;
 import dev.dov.metalj.resources.MTLRegion;
 import dev.dov.metalj.resources.MTLResource;
+import dev.dov.metalj.resources.heaps.MTLHeap;
 import dev.dov.metalj.resources.samplers.MTLSamplerState;
 import dev.dov.metalj.resources.MTLSize;
 import dev.dov.metalj.resources.textures.MTLTexture;
@@ -217,5 +218,15 @@ public class MTLComputeCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void setVisibleFunctionTables(MemorySegment tables, MemorySegment range) {
         AR.invokeExact(id, ObjC.sel("setVisibleFunctionTables:withBufferRange:"), tables, range);
+    }
+
+    @SneakyThrows
+    public void useHeap(MTLHeap heap) {
+        L.invokeExact(id, ObjC.sel("useHeap:"), heap.getId());
+    }
+
+    @SneakyThrows
+    public void useHeaps(MemorySegment heaps, long count) {
+        AL.invokeExact(id, ObjC.sel("useHeaps:count:"), heaps, count);
     }
 }
