@@ -1,5 +1,6 @@
 package dev.dov.metalj.pipelines.shaders;
 
+import dev.dov.metalj.arguments.MTLArgumentEncoder;
 import dev.dov.metalj.device.MTLDevice;
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
@@ -9,6 +10,7 @@ import lombok.SneakyThrows;
 
 public class MTLFunction extends NSObject {
     private static final MethodHandle P = handle(null, ObjC.PTR);
+    private static final MethodHandle P_L = handle(ObjC.PTR, ObjC.LONG);
 
     private MTLFunction(long id) {
         super(id);
@@ -49,5 +51,10 @@ public class MTLFunction extends NSObject {
 
     public long options() {
         return sendLong(id, "options");
+    }
+
+    @SneakyThrows
+    public MTLArgumentEncoder newArgumentEncoderWithBufferIndex(long index) {
+        return MTLArgumentEncoder.of((long) P_L.invokeExact(id, ObjC.sel("newArgumentEncoderWithBufferIndex:"), index));
     }
 }

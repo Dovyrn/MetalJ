@@ -1,5 +1,6 @@
 package dev.dov.metalj.device;
 
+import dev.dov.metalj.arguments.MTLArgumentEncoder;
 import dev.dov.metalj.debug.MTLCounterSampleBuffer;
 import dev.dov.metalj.debug.MTLCounterSampleBufferDescriptor;
 import dev.dov.metalj.debug.MTLCounterSet;
@@ -128,6 +129,12 @@ public class MTLDevice extends NSObject {
 
     public long readWriteTextureSupport() {
         return sendLong(id, "readWriteTextureSupport");
+    }
+
+    @SneakyThrows
+    public MTLArgumentEncoder newArgumentEncoderWithArguments(NSArray arguments) {
+        return MTLArgumentEncoder.of((long) P_P.invokeExact(id, ObjC.sel("newArgumentEncoderWithArguments:"),
+                arguments.getId()));
     }
 
     public long argumentBuffersSupport() {
