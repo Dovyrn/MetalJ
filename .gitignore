@@ -6,4 +6,3 @@ out/
 *.iml
 hs_err_pid*
 .cache
-src/test/
