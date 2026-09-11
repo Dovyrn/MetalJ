@@ -16,7 +16,7 @@ public class MTLInstanceAccelerationStructureDescriptor extends MTLAccelerationS
 
     public static MTLInstanceAccelerationStructureDescriptor descriptor() {
         return new MTLInstanceAccelerationStructureDescriptor(
-                sendPtr(ObjC.cls("MTLInstanceAccelerationStructureDescriptor"), "descriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLInstanceAccelerationStructureDescriptor"), "descriptor")));
     }
 
     public MTLBuffer instanceDescriptorBuffer() {

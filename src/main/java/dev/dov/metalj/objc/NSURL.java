@@ -16,9 +16,13 @@ public class NSURL extends NSObject {
 
     @SneakyThrows
     public static NSURL fileURLWithPath(String path) {
-        long id = (long) P_P.invokeExact(ObjC.cls("NSURL"), ObjC.sel("fileURLWithPath:"),
-                NSString.stringWithUTF8String(path).getId());
-        return new NSURL(id);
+        var text = NSString.stringWithUTF8String(path);
+        try {
+            return new NSURL(owned(() -> (long) P_P.invokeExact(ObjC.cls("NSURL"), ObjC.sel("fileURLWithPath:"),
+                    text.getId())));
+        } finally {
+            text.release();
+        }
     }
 
     public NSString path() {

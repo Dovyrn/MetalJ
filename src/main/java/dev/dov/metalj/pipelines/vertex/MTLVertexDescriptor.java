@@ -17,7 +17,7 @@ public class MTLVertexDescriptor extends NSObject {
     }
 
     public static MTLVertexDescriptor vertexDescriptor() {
-        return new MTLVertexDescriptor(sendPtr(ObjC.cls("MTLVertexDescriptor"), "vertexDescriptor"));
+        return new MTLVertexDescriptor(owned(() -> sendPtr(ObjC.cls("MTLVertexDescriptor"), "vertexDescriptor")));
     }
 
     public MTLVertexBufferLayoutDescriptorArray layouts() {

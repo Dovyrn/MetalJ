@@ -4,6 +4,7 @@ import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
+import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -39,7 +40,34 @@ public class NSObject {
     }
 
     public String description() {
-        return NSString.of(sendPtr(id, "description")).UTF8String();
+        return drained(() -> NSString.of(sendPtr(id, "description")).UTF8String());
+    }
+
+    public interface Call {
+        long get() throws Throwable;
+    }
+
+    @SneakyThrows
+    public static long owned(Call call) {
+        long pool = ObjC.push();
+        try {
+            long created = call.get();
+            if (created != 0) {
+                sendPtr(created, "retain");
+            }
+            return created;
+        } finally {
+            ObjC.pop(pool);
+        }
+    }
+
+    public static <T> T drained(Supplier<T> call) {
+        long pool = ObjC.push();
+        try {
+            return call.get();
+        } finally {
+            ObjC.pop(pool);
+        }
     }
 
     @SneakyThrows

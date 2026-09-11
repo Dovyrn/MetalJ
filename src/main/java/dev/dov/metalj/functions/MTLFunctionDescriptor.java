@@ -20,7 +20,7 @@ public class MTLFunctionDescriptor extends NSObject {
     }
 
     public static MTLFunctionDescriptor functionDescriptor() {
-        return new MTLFunctionDescriptor(sendPtr(ObjC.cls("MTLFunctionDescriptor"), "functionDescriptor"));
+        return new MTLFunctionDescriptor(owned(() -> sendPtr(ObjC.cls("MTLFunctionDescriptor"), "functionDescriptor")));
     }
 
     public NSString name() {

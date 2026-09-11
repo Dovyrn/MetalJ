@@ -19,7 +19,7 @@ public class MTLMotionKeyframeData extends NSObject {
     }
 
     public static MTLMotionKeyframeData data() {
-        return new MTLMotionKeyframeData(sendPtr(ObjC.cls("MTLMotionKeyframeData"), "data"));
+        return new MTLMotionKeyframeData(owned(() -> sendPtr(ObjC.cls("MTLMotionKeyframeData"), "data")));
     }
 
     public MTLBuffer buffer() {

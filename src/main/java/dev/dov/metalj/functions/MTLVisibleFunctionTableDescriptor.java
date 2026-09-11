@@ -18,7 +18,7 @@ public class MTLVisibleFunctionTableDescriptor extends NSObject {
 
     public static MTLVisibleFunctionTableDescriptor visibleFunctionTableDescriptor() {
         return new MTLVisibleFunctionTableDescriptor(
-                sendPtr(ObjC.cls("MTLVisibleFunctionTableDescriptor"), "visibleFunctionTableDescriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLVisibleFunctionTableDescriptor"), "visibleFunctionTableDescriptor")));
     }
 
     public long functionCount() {

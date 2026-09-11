@@ -15,7 +15,7 @@ public class MTLAccelerationStructureMotionTriangleGeometryDescriptor extends MT
     }
 
     public static MTLAccelerationStructureMotionTriangleGeometryDescriptor descriptor() {
-        return new MTLAccelerationStructureMotionTriangleGeometryDescriptor(sendPtr(ObjC.cls("MTLAccelerationStructureMotionTriangleGeometryDescriptor"), "descriptor"));
+        return new MTLAccelerationStructureMotionTriangleGeometryDescriptor(owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureMotionTriangleGeometryDescriptor"), "descriptor")));
     }
 
     public NSArray vertexBuffers() {

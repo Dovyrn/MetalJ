@@ -24,8 +24,8 @@ public class NSArray extends NSObject {
             for (int i = 0; i < objects.length; i++) {
                 ids.setAtIndex(ObjC.PTR, i, objects[i].getId());
             }
-            long id = (long) WITH.invokeExact(ObjC.cls("NSArray"), ObjC.sel("arrayWithObjects:count:"), ids,
-                    (long) objects.length);
+            long id = owned(() -> (long) WITH.invokeExact(ObjC.cls("NSArray"), ObjC.sel("arrayWithObjects:count:"),
+                    ids, (long) objects.length));
             return new NSArray(id);
         }
     }

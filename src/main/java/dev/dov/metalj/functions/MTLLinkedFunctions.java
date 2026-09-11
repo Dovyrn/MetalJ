@@ -18,7 +18,7 @@ public class MTLLinkedFunctions extends NSObject {
     }
 
     public static MTLLinkedFunctions linkedFunctions() {
-        return new MTLLinkedFunctions(sendPtr(ObjC.cls("MTLLinkedFunctions"), "linkedFunctions"));
+        return new MTLLinkedFunctions(owned(() -> sendPtr(ObjC.cls("MTLLinkedFunctions"), "linkedFunctions")));
     }
 
     public NSArray functions() {

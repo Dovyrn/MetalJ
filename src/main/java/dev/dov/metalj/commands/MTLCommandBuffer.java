@@ -7,6 +7,8 @@ import dev.dov.metalj.commands.encoders.MTLComputeCommandEncoder;
 import dev.dov.metalj.commands.encoders.MTLRenderCommandEncoder;
 import dev.dov.metalj.commands.encoders.MTLBlitCommandEncoder;
 import dev.dov.metalj.device.CAMetalDrawable;
+import dev.dov.metalj.device.MTLCommandQueue;
+import dev.dov.metalj.device.MTLDevice;
 import dev.dov.metalj.objc.Block;
 import dev.dov.metalj.objc.NSArray;
 import dev.dov.metalj.objc.NSError;
@@ -41,6 +43,14 @@ public class MTLCommandBuffer extends NSObject {
 
     public static MTLCommandBuffer of(long id) {
         return new MTLCommandBuffer(id);
+    }
+
+    public MTLDevice device() {
+        return MTLDevice.of(sendPtr(id, "device"));
+    }
+
+    public MTLCommandQueue commandQueue() {
+        return MTLCommandQueue.of(sendPtr(id, "commandQueue"));
     }
 
     public void enqueue() {
@@ -112,32 +122,32 @@ public class MTLCommandBuffer extends NSObject {
 
     @SneakyThrows
     public MTLRenderCommandEncoder renderCommandEncoderWithDescriptor(MTLRenderPassDescriptor descriptor) {
-        return MTLRenderCommandEncoder.of((long) P_P.invokeExact(id,
-                ObjC.sel("renderCommandEncoderWithDescriptor:"), descriptor.getId()));
+        return MTLRenderCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                ObjC.sel("renderCommandEncoderWithDescriptor:"), descriptor.getId())));
     }
 
     public MTLComputeCommandEncoder computeCommandEncoder() {
-        return MTLComputeCommandEncoder.of(sendPtr(id, "computeCommandEncoder"));
+        return MTLComputeCommandEncoder.of(owned(() -> sendPtr(id, "computeCommandEncoder")));
     }
 
     @SneakyThrows
     public MTLComputeCommandEncoder computeCommandEncoderWithDescriptor(MTLComputePassDescriptor descriptor) {
-        return MTLComputeCommandEncoder.of((long) P_P.invokeExact(id,
-                ObjC.sel("computeCommandEncoderWithDescriptor:"), descriptor.getId()));
+        return MTLComputeCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                ObjC.sel("computeCommandEncoderWithDescriptor:"), descriptor.getId())));
     }
 
     public MTLBlitCommandEncoder blitCommandEncoder() {
-        return MTLBlitCommandEncoder.of(sendPtr(id, "blitCommandEncoder"));
+        return MTLBlitCommandEncoder.of(owned(() -> sendPtr(id, "blitCommandEncoder")));
     }
 
     @SneakyThrows
     public MTLBlitCommandEncoder blitCommandEncoderWithDescriptor(MTLBlitPassDescriptor descriptor) {
-        return MTLBlitCommandEncoder.of((long) P_P.invokeExact(id,
-                ObjC.sel("blitCommandEncoderWithDescriptor:"), descriptor.getId()));
+        return MTLBlitCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                ObjC.sel("blitCommandEncoderWithDescriptor:"), descriptor.getId())));
     }
 
     public MTLAccelerationStructureCommandEncoder accelerationStructureCommandEncoder() {
-        return MTLAccelerationStructureCommandEncoder.of(sendPtr(id, "accelerationStructureCommandEncoder"));
+        return MTLAccelerationStructureCommandEncoder.of(owned(() -> sendPtr(id, "accelerationStructureCommandEncoder")));
     }
 
     @SneakyThrows
@@ -158,19 +168,19 @@ public class MTLCommandBuffer extends NSObject {
     @SneakyThrows
     public MTLParallelRenderCommandEncoder parallelRenderCommandEncoderWithDescriptor(
             MTLRenderPassDescriptor descriptor) {
-        return MTLParallelRenderCommandEncoder.of((long) P_P.invokeExact(id,
-                ObjC.sel("parallelRenderCommandEncoderWithDescriptor:"), descriptor.getId()));
+        return MTLParallelRenderCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                ObjC.sel("parallelRenderCommandEncoderWithDescriptor:"), descriptor.getId())));
     }
 
     public MTLResourceStateCommandEncoder resourceStateCommandEncoder() {
-        return MTLResourceStateCommandEncoder.of(sendPtr(id, "resourceStateCommandEncoder"));
+        return MTLResourceStateCommandEncoder.of(owned(() -> sendPtr(id, "resourceStateCommandEncoder")));
     }
 
     @SneakyThrows
     public MTLResourceStateCommandEncoder resourceStateCommandEncoderWithDescriptor(
             MTLResourceStatePassDescriptor descriptor) {
-        return MTLResourceStateCommandEncoder.of((long) P_P.invokeExact(id,
-                ObjC.sel("resourceStateCommandEncoderWithDescriptor:"), descriptor.getId()));
+        return MTLResourceStateCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                ObjC.sel("resourceStateCommandEncoderWithDescriptor:"), descriptor.getId())));
     }
 
     public NSArray logs() {

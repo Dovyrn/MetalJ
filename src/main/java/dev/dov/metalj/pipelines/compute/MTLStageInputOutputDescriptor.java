@@ -18,7 +18,7 @@ public class MTLStageInputOutputDescriptor extends NSObject {
 
     public static MTLStageInputOutputDescriptor stageInputOutputDescriptor() {
         return new MTLStageInputOutputDescriptor(
-                sendPtr(ObjC.cls("MTLStageInputOutputDescriptor"), "stageInputOutputDescriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLStageInputOutputDescriptor"), "stageInputOutputDescriptor")));
     }
 
     public MTLBufferLayoutDescriptorArray layouts() {

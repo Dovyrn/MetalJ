@@ -20,9 +20,9 @@ public class NSString extends NSObject {
     @SneakyThrows
     public static NSString stringWithUTF8String(String text) {
         try (var arena = Arena.ofConfined()) {
-            long id = (long) FROM.invokeExact(ObjC.cls("NSString"), ObjC.sel("stringWithUTF8String:"),
-                    arena.allocateFrom(text));
-            return new NSString(id);
+            var chars = arena.allocateFrom(text);
+            return new NSString(owned(() -> (long) FROM.invokeExact(ObjC.cls("NSString"),
+                    ObjC.sel("stringWithUTF8String:"), chars)));
         }
     }
 

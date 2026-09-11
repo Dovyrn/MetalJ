@@ -13,7 +13,7 @@ public class MTLBlitPassDescriptor extends NSObject {
     }
 
     public static MTLBlitPassDescriptor blitPassDescriptor() {
-        return new MTLBlitPassDescriptor(sendPtr(ObjC.cls("MTLBlitPassDescriptor"), "blitPassDescriptor"));
+        return new MTLBlitPassDescriptor(owned(() -> sendPtr(ObjC.cls("MTLBlitPassDescriptor"), "blitPassDescriptor")));
     }
 
     public MTLBlitPassSampleBufferAttachmentDescriptorArray sampleBufferAttachments() {

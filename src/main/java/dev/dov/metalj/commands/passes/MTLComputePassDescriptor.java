@@ -17,7 +17,7 @@ public class MTLComputePassDescriptor extends NSObject {
     }
 
     public static MTLComputePassDescriptor computePassDescriptor() {
-        return new MTLComputePassDescriptor(sendPtr(ObjC.cls("MTLComputePassDescriptor"), "computePassDescriptor"));
+        return new MTLComputePassDescriptor(owned(() -> sendPtr(ObjC.cls("MTLComputePassDescriptor"), "computePassDescriptor")));
     }
 
     @SneakyThrows

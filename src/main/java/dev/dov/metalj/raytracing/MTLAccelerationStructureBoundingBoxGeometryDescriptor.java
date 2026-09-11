@@ -16,7 +16,7 @@ public class MTLAccelerationStructureBoundingBoxGeometryDescriptor
 
     public static MTLAccelerationStructureBoundingBoxGeometryDescriptor descriptor() {
         return new MTLAccelerationStructureBoundingBoxGeometryDescriptor(
-                sendPtr(ObjC.cls("MTLAccelerationStructureBoundingBoxGeometryDescriptor"), "descriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureBoundingBoxGeometryDescriptor"), "descriptor")));
     }
 
     public MTLBuffer boundingBoxBuffer() {

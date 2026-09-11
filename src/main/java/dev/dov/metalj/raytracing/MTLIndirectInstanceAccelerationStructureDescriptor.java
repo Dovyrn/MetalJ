@@ -14,7 +14,7 @@ public class MTLIndirectInstanceAccelerationStructureDescriptor extends MTLAccel
     }
 
     public static MTLIndirectInstanceAccelerationStructureDescriptor descriptor() {
-        return new MTLIndirectInstanceAccelerationStructureDescriptor(sendPtr(ObjC.cls("MTLIndirectInstanceAccelerationStructureDescriptor"), "descriptor"));
+        return new MTLIndirectInstanceAccelerationStructureDescriptor(owned(() -> sendPtr(ObjC.cls("MTLIndirectInstanceAccelerationStructureDescriptor"), "descriptor")));
     }
 
     public MTLBuffer instanceDescriptorBuffer() {

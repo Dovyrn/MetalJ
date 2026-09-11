@@ -18,7 +18,7 @@ public class MTLIntersectionFunctionTableDescriptor extends NSObject {
 
     public static MTLIntersectionFunctionTableDescriptor intersectionFunctionTableDescriptor() {
         return new MTLIntersectionFunctionTableDescriptor(
-                sendPtr(ObjC.cls("MTLIntersectionFunctionTableDescriptor"), "intersectionFunctionTableDescriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLIntersectionFunctionTableDescriptor"), "intersectionFunctionTableDescriptor")));
     }
 
     public long functionCount() {

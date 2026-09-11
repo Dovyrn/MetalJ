@@ -15,7 +15,7 @@ public class MTLAccelerationStructureTriangleGeometryDescriptor extends MTLAccel
 
     public static MTLAccelerationStructureTriangleGeometryDescriptor descriptor() {
         return new MTLAccelerationStructureTriangleGeometryDescriptor(
-                sendPtr(ObjC.cls("MTLAccelerationStructureTriangleGeometryDescriptor"), "descriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureTriangleGeometryDescriptor"), "descriptor")));
     }
 
     public MTLBuffer vertexBuffer() {

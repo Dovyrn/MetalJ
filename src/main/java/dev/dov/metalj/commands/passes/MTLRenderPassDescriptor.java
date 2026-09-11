@@ -20,7 +20,7 @@ public class MTLRenderPassDescriptor extends NSObject {
     }
 
     public static MTLRenderPassDescriptor renderPassDescriptor() {
-        return new MTLRenderPassDescriptor(sendPtr(ObjC.cls("MTLRenderPassDescriptor"), "renderPassDescriptor"));
+        return new MTLRenderPassDescriptor(owned(() -> sendPtr(ObjC.cls("MTLRenderPassDescriptor"), "renderPassDescriptor")));
     }
 
     public MTLRenderPassColorAttachmentDescriptorArray colorAttachments() {

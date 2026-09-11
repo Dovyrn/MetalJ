@@ -15,7 +15,7 @@ public class MTLPrimitiveAccelerationStructureDescriptor extends MTLAcceleration
 
     public static MTLPrimitiveAccelerationStructureDescriptor descriptor() {
         return new MTLPrimitiveAccelerationStructureDescriptor(
-                sendPtr(ObjC.cls("MTLPrimitiveAccelerationStructureDescriptor"), "descriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLPrimitiveAccelerationStructureDescriptor"), "descriptor")));
     }
 
     public NSArray geometryDescriptors() {

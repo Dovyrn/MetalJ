@@ -15,7 +15,7 @@ public class MTLAccelerationStructureMotionCurveGeometryDescriptor extends MTLAc
     }
 
     public static MTLAccelerationStructureMotionCurveGeometryDescriptor descriptor() {
-        return new MTLAccelerationStructureMotionCurveGeometryDescriptor(sendPtr(ObjC.cls("MTLAccelerationStructureMotionCurveGeometryDescriptor"), "descriptor"));
+        return new MTLAccelerationStructureMotionCurveGeometryDescriptor(owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureMotionCurveGeometryDescriptor"), "descriptor")));
     }
 
     public NSArray controlPointBuffers() {

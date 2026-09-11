@@ -17,7 +17,7 @@ public class MTLParallelRenderCommandEncoder extends MTLCommandEncoder {
     }
 
     public MTLRenderCommandEncoder renderCommandEncoder() {
-        return MTLRenderCommandEncoder.of(sendPtr(id, "renderCommandEncoder"));
+        return MTLRenderCommandEncoder.of(owned(() -> sendPtr(id, "renderCommandEncoder")));
     }
 
     @SneakyThrows

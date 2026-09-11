@@ -37,7 +37,7 @@ public class MTLCounterSampleBuffer extends NSObject {
     public NSData resolveCounterRange(long location, long length) {
         try (var arena = Arena.ofConfined()) {
             var range = NSRange.of(arena, location, length);
-            return NSData.of((long) P_R.invokeExact(id, ObjC.sel("resolveCounterRange:"), range));
+            return NSData.of(owned(() -> (long) P_R.invokeExact(id, ObjC.sel("resolveCounterRange:"), range)));
         }
     }
 }

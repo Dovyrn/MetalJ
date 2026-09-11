@@ -23,7 +23,7 @@ public class CAMetalLayer extends NSObject {
     }
 
     public static CAMetalLayer layer() {
-        return new CAMetalLayer(sendPtr(ObjC.cls("CAMetalLayer"), "layer"));
+        return new CAMetalLayer(owned(() -> sendPtr(ObjC.cls("CAMetalLayer"), "layer")));
     }
 
     @SneakyThrows
@@ -34,6 +34,11 @@ public class CAMetalLayer extends NSObject {
     @SneakyThrows
     public void setPixelFormat(long format) {
         SET_LONG.invokeExact(id, ObjC.sel("setPixelFormat:"), format);
+    }
+
+    @SneakyThrows
+    public void setOpaque(boolean opaque) {
+        SET_BOOL.invokeExact(id, ObjC.sel("setOpaque:"), opaque);
     }
 
     @SneakyThrows
@@ -62,6 +67,6 @@ public class CAMetalLayer extends NSObject {
     }
 
     public CAMetalDrawable nextDrawable() {
-        return CAMetalDrawable.of(sendPtr(id, "nextDrawable"));
+        return CAMetalDrawable.of(owned(() -> sendPtr(id, "nextDrawable")));
     }
 }

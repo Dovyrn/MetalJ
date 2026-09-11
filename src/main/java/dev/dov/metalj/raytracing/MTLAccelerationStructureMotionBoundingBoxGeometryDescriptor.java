@@ -14,7 +14,7 @@ public class MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor extends
     }
 
     public static MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor descriptor() {
-        return new MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor(sendPtr(ObjC.cls("MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor"), "descriptor"));
+        return new MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor(owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor"), "descriptor")));
     }
 
     public NSArray boundingBoxBuffers() {

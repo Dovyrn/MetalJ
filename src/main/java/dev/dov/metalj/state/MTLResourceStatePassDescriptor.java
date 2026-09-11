@@ -14,7 +14,7 @@ public class MTLResourceStatePassDescriptor extends NSObject {
 
     public static MTLResourceStatePassDescriptor resourceStatePassDescriptor() {
         return new MTLResourceStatePassDescriptor(
-                sendPtr(ObjC.cls("MTLResourceStatePassDescriptor"), "resourceStatePassDescriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLResourceStatePassDescriptor"), "resourceStatePassDescriptor")));
     }
 
     public MTLResourceStatePassSampleBufferAttachmentDescriptorArray sampleBufferAttachments() {

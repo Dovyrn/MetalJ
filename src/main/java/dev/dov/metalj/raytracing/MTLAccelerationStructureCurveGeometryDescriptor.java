@@ -14,7 +14,7 @@ public class MTLAccelerationStructureCurveGeometryDescriptor extends MTLAccelera
     }
 
     public static MTLAccelerationStructureCurveGeometryDescriptor descriptor() {
-        return new MTLAccelerationStructureCurveGeometryDescriptor(sendPtr(ObjC.cls("MTLAccelerationStructureCurveGeometryDescriptor"), "descriptor"));
+        return new MTLAccelerationStructureCurveGeometryDescriptor(owned(() -> sendPtr(ObjC.cls("MTLAccelerationStructureCurveGeometryDescriptor"), "descriptor")));
     }
 
     public MTLBuffer controlPointBuffer() {

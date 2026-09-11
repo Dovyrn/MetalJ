@@ -28,16 +28,16 @@ public class MTLRasterizationRateMapDescriptor extends NSObject {
 
     @SneakyThrows
     public static MTLRasterizationRateMapDescriptor rasterizationRateMapDescriptor(MemorySegment screenSize) {
-        long id = (long) P_S.invokeExact(ObjC.cls("MTLRasterizationRateMapDescriptor"),
-                ObjC.sel("rasterizationRateMapDescriptorWithScreenSize:"), screenSize);
+        long id = owned(() -> (long) P_S.invokeExact(ObjC.cls("MTLRasterizationRateMapDescriptor"),
+                ObjC.sel("rasterizationRateMapDescriptorWithScreenSize:"), screenSize));
         return new MTLRasterizationRateMapDescriptor(id);
     }
 
     @SneakyThrows
     public static MTLRasterizationRateMapDescriptor rasterizationRateMapDescriptor(MemorySegment screenSize,
             MTLRasterizationRateLayerDescriptor layer) {
-        long id = (long) P_SP.invokeExact(ObjC.cls("MTLRasterizationRateMapDescriptor"),
-                ObjC.sel("rasterizationRateMapDescriptorWithScreenSize:layer:"), screenSize, layer.getId());
+        long id = owned(() -> (long) P_SP.invokeExact(ObjC.cls("MTLRasterizationRateMapDescriptor"),
+                ObjC.sel("rasterizationRateMapDescriptorWithScreenSize:layer:"), screenSize, layer.getId()));
         return new MTLRasterizationRateMapDescriptor(id);
     }
 

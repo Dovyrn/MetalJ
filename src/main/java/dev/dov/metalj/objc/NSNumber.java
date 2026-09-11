@@ -17,13 +17,13 @@ public class NSNumber extends NSObject {
 
     @SneakyThrows
     public static NSNumber numberWithFloat(float value) {
-        return new NSNumber((long) P_F.invokeExact(ObjC.cls("NSNumber"), ObjC.sel("numberWithFloat:"), value));
+        return new NSNumber(owned(() -> (long) P_F.invokeExact(ObjC.cls("NSNumber"), ObjC.sel("numberWithFloat:"), value)));
     }
 
     @SneakyThrows
     public static NSNumber numberWithUnsignedInteger(long value) {
-        return new NSNumber((long) P_L.invokeExact(ObjC.cls("NSNumber"), ObjC.sel("numberWithUnsignedInteger:"),
-                value));
+        return new NSNumber(owned(() -> (long) P_L.invokeExact(ObjC.cls("NSNumber"),
+                ObjC.sel("numberWithUnsignedInteger:"), value)));
     }
 
     public float floatValue() {

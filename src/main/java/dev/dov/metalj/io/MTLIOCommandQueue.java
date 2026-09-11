@@ -18,11 +18,11 @@ public class MTLIOCommandQueue extends NSObject {
     }
 
     public MTLIOCommandBuffer commandBuffer() {
-        return MTLIOCommandBuffer.of(sendPtr(id, "commandBuffer"));
+        return MTLIOCommandBuffer.of(owned(() -> sendPtr(id, "commandBuffer")));
     }
 
     public MTLIOCommandBuffer commandBufferWithUnretainedReferences() {
-        return MTLIOCommandBuffer.of(sendPtr(id, "commandBufferWithUnretainedReferences"));
+        return MTLIOCommandBuffer.of(owned(() -> sendPtr(id, "commandBufferWithUnretainedReferences")));
     }
 
     public void enqueueBarrier() {

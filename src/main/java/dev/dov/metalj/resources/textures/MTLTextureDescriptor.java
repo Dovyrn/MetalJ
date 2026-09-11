@@ -31,24 +31,24 @@ public class MTLTextureDescriptor extends NSObject {
     @SneakyThrows
     public static MTLTextureDescriptor texture2DDescriptorWithPixelFormat(long pixelFormat, long width, long height,
             boolean mipmapped) {
-        return new MTLTextureDescriptor((long) P_LLLB.invokeExact(ObjC.cls("MTLTextureDescriptor"),
+        return new MTLTextureDescriptor(owned(() -> (long) P_LLLB.invokeExact(ObjC.cls("MTLTextureDescriptor"),
                 ObjC.sel("texture2DDescriptorWithPixelFormat:width:height:mipmapped:"), pixelFormat, width, height,
-                mipmapped));
+                mipmapped)));
     }
 
     @SneakyThrows
     public static MTLTextureDescriptor textureCubeDescriptorWithPixelFormat(long pixelFormat, long size,
             boolean mipmapped) {
-        return new MTLTextureDescriptor((long) P_LLB.invokeExact(ObjC.cls("MTLTextureDescriptor"),
-                ObjC.sel("textureCubeDescriptorWithPixelFormat:size:mipmapped:"), pixelFormat, size, mipmapped));
+        return new MTLTextureDescriptor(owned(() -> (long) P_LLB.invokeExact(ObjC.cls("MTLTextureDescriptor"),
+                ObjC.sel("textureCubeDescriptorWithPixelFormat:size:mipmapped:"), pixelFormat, size, mipmapped)));
     }
 
     @SneakyThrows
     public static MTLTextureDescriptor textureBufferDescriptorWithPixelFormat(long pixelFormat, long width,
             long resourceOptions, long usage) {
-        return new MTLTextureDescriptor((long) P_LLLL.invokeExact(ObjC.cls("MTLTextureDescriptor"),
+        return new MTLTextureDescriptor(owned(() -> (long) P_LLLL.invokeExact(ObjC.cls("MTLTextureDescriptor"),
                 ObjC.sel("textureBufferDescriptorWithPixelFormat:width:resourceOptions:usage:"), pixelFormat, width,
-                resourceOptions, usage));
+                resourceOptions, usage)));
     }
 
     public long textureType() {

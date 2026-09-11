@@ -13,6 +13,6 @@ public class MTLIntersectionFunctionDescriptor extends MTLFunctionDescriptor {
 
     public static MTLIntersectionFunctionDescriptor functionDescriptor() {
         return new MTLIntersectionFunctionDescriptor(
-                sendPtr(ObjC.cls("MTLIntersectionFunctionDescriptor"), "functionDescriptor"));
+                owned(() -> sendPtr(ObjC.cls("MTLIntersectionFunctionDescriptor"), "functionDescriptor")));
     }
 }

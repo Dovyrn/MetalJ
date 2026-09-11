@@ -25,7 +25,7 @@ public class MTLCommandQueue extends NSObject {
     }
 
     public MTLCommandBuffer commandBuffer() {
-        return MTLCommandBuffer.of(sendPtr(id, "commandBuffer"));
+        return MTLCommandBuffer.of(owned(() -> sendPtr(id, "commandBuffer")));
     }
 
     @SneakyThrows
@@ -50,12 +50,12 @@ public class MTLCommandQueue extends NSObject {
 
     @SneakyThrows
     public MTLCommandBuffer commandBufferWithDescriptor(MTLCommandBufferDescriptor descriptor) {
-        return MTLCommandBuffer.of((long) P_P.invokeExact(id, ObjC.sel("commandBufferWithDescriptor:"),
-                descriptor.getId()));
+        return MTLCommandBuffer.of(owned(() -> (long) P_P.invokeExact(id, ObjC.sel("commandBufferWithDescriptor:"),
+                descriptor.getId())));
     }
 
     public MTLCommandBuffer commandBufferWithUnretainedReferences() {
-        return MTLCommandBuffer.of(sendPtr(id, "commandBufferWithUnretainedReferences"));
+        return MTLCommandBuffer.of(owned(() -> sendPtr(id, "commandBufferWithUnretainedReferences")));
     }
 
     public NSString label() {

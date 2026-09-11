@@ -36,6 +36,8 @@ public class ObjC {
             FunctionDescriptor.of(PTR, ValueLayout.ADDRESS));
     private final MethodHandle CLASS = downcall(RUNTIME, "objc_getClass",
             FunctionDescriptor.of(PTR, ValueLayout.ADDRESS));
+    private final MethodHandle PUSH = downcall(RUNTIME, "objc_autoreleasePoolPush", FunctionDescriptor.of(PTR));
+    private final MethodHandle POP = downcall(RUNTIME, "objc_autoreleasePoolPop", FunctionDescriptor.ofVoid(PTR));
     private final MemorySegment SEND = RUNTIME.find("objc_msgSend").orElseThrow();
     private final MemorySegment SEND_STRET = RUNTIME.find("objc_msgSend_stret").orElse(SEND);
     private final boolean ARM = System.getProperty("os.arch").contains("aarch64");
@@ -98,6 +100,16 @@ public class ObjC {
                 throw new IllegalStateException(t);
             }
         });
+    }
+
+    @SneakyThrows
+    public long push() {
+        return (long) PUSH.invokeExact();
+    }
+
+    @SneakyThrows
+    public void pop(long pool) {
+        POP.invokeExact(pool);
     }
 
     public MethodHandle send(FunctionDescriptor descriptor) {

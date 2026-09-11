@@ -17,7 +17,7 @@ public class MTLArgumentDescriptor extends NSObject {
     }
 
     public static MTLArgumentDescriptor argumentDescriptor() {
-        return new MTLArgumentDescriptor(sendPtr(ObjC.cls("MTLArgumentDescriptor"), "argumentDescriptor"));
+        return new MTLArgumentDescriptor(owned(() -> sendPtr(ObjC.cls("MTLArgumentDescriptor"), "argumentDescriptor")));
     }
 
     public long dataType() {
