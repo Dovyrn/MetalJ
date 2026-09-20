@@ -7,6 +7,21 @@ import dev.dov.metalj.io.MTLIOFileHandle;
 import dev.dov.metalj.libraries.MTLBinaryArchive;
 import dev.dov.metalj.libraries.MTLBinaryArchiveDescriptor;
 import dev.dov.metalj.libraries.MTLDynamicLibrary;
+import dev.dov.metalj.metal4.MTL4ArgumentTable;
+import dev.dov.metalj.metal4.MTL4ArgumentTableDescriptor;
+import dev.dov.metalj.metal4.MTL4CommandAllocator;
+import dev.dov.metalj.metal4.MTL4CommandAllocatorDescriptor;
+import dev.dov.metalj.metal4.MTL4CommandBuffer;
+import dev.dov.metalj.metal4.MTL4CommandQueue;
+import dev.dov.metalj.metal4.MTL4CommandQueueDescriptor;
+import dev.dov.metalj.metal4.compiler.MTL4Archive;
+import dev.dov.metalj.metal4.compiler.MTL4BinaryFunction;
+import dev.dov.metalj.metal4.compiler.MTL4Compiler;
+import dev.dov.metalj.metal4.compiler.MTL4CompilerDescriptor;
+import dev.dov.metalj.metal4.compiler.MTL4PipelineDataSetSerializer;
+import dev.dov.metalj.metal4.compiler.MTL4PipelineDataSetSerializerDescriptor;
+import dev.dov.metalj.metal4.counters.MTL4CounterHeap;
+import dev.dov.metalj.metal4.counters.MTL4CounterHeapDescriptor;
 import dev.dov.metalj.objc.NSURL;
 import dev.dov.metalj.rate.MTLRasterizationRateMap;
 import dev.dov.metalj.rate.MTLRasterizationRateMapDescriptor;
@@ -39,6 +54,7 @@ import dev.dov.metalj.pipelines.compute.MTLComputePipelineState;
 import dev.dov.metalj.pipelines.depth.MTLDepthStencilDescriptor;
 import dev.dov.metalj.pipelines.depth.MTLDepthStencilState;
 import dev.dov.metalj.pipelines.shaders.MTLFunction;
+import dev.dov.metalj.pipelines.shaders.MTLFunctionHandle;
 import dev.dov.metalj.pipelines.shaders.MTLLibrary;
 import dev.dov.metalj.pipelines.render.MTLMeshRenderPipelineDescriptor;
 import dev.dov.metalj.pipelines.render.MTLRenderPipelineDescriptor;
@@ -685,5 +701,104 @@ public class MTLDevice extends NSObject {
     @SneakyThrows
     public boolean supportsRasterizationRateMapWithLayerCount(long layerCount) {
         return (boolean) B_L.invokeExact(id, ObjC.sel("supportsRasterizationRateMapWithLayerCount:"), layerCount);
+    }
+
+    public MTL4CommandAllocator newCommandAllocator() {
+        return MTL4CommandAllocator.of(sendPtr(id, "newCommandAllocator"));
+    }
+
+    @SneakyThrows
+    public MTL4CommandAllocator newCommandAllocatorWithDescriptor(MTL4CommandAllocatorDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long allocator = (long) P_PA.invokeExact(id, ObjC.sel("newCommandAllocatorWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newCommandAllocatorWithDescriptor:error:");
+            return MTL4CommandAllocator.of(allocator);
+        }
+    }
+
+    public MTL4CommandQueue newMTL4CommandQueue() {
+        return MTL4CommandQueue.of(sendPtr(id, "newMTL4CommandQueue"));
+    }
+
+    @SneakyThrows
+    public MTL4CommandQueue newMTL4CommandQueueWithDescriptor(MTL4CommandQueueDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long queue = (long) P_PA.invokeExact(id, ObjC.sel("newMTL4CommandQueueWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newMTL4CommandQueueWithDescriptor:error:");
+            return MTL4CommandQueue.of(queue);
+        }
+    }
+
+    public MTL4CommandBuffer newCommandBuffer() {
+        return MTL4CommandBuffer.of(sendPtr(id, "newCommandBuffer"));
+    }
+
+    @SneakyThrows
+    public MTL4ArgumentTable newArgumentTableWithDescriptor(MTL4ArgumentTableDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long table = (long) P_PA.invokeExact(id, ObjC.sel("newArgumentTableWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newArgumentTableWithDescriptor:error:");
+            return MTL4ArgumentTable.of(table);
+        }
+    }
+
+    @SneakyThrows
+    public MTL4Compiler newCompilerWithDescriptor(MTL4CompilerDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long compiler = (long) P_PA.invokeExact(id, ObjC.sel("newCompilerWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newCompilerWithDescriptor:error:");
+            return MTL4Compiler.of(compiler);
+        }
+    }
+
+    @SneakyThrows
+    public MTL4Archive newArchiveWithURL(NSURL url) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long archive = (long) P_PA.invokeExact(id, ObjC.sel("newArchiveWithURL:error:"), url.getId(), error);
+            NSError.check(error, "newArchiveWithURL:error:");
+            return MTL4Archive.of(archive);
+        }
+    }
+
+    @SneakyThrows
+    public MTL4PipelineDataSetSerializer newPipelineDataSetSerializerWithDescriptor(
+            MTL4PipelineDataSetSerializerDescriptor descriptor) {
+        return MTL4PipelineDataSetSerializer.of((long) P_P.invokeExact(id,
+                ObjC.sel("newPipelineDataSetSerializerWithDescriptor:"), descriptor.getId()));
+    }
+
+    @SneakyThrows
+    public MTL4CounterHeap newCounterHeapWithDescriptor(MTL4CounterHeapDescriptor descriptor) {
+        try (var arena = Arena.ofConfined()) {
+            var error = NSError.slot(arena);
+            long heap = (long) P_PA.invokeExact(id, ObjC.sel("newCounterHeapWithDescriptor:error:"),
+                    descriptor.getId(), error);
+            NSError.check(error, "newCounterHeapWithDescriptor:error:");
+            return MTL4CounterHeap.of(heap);
+        }
+    }
+
+    @SneakyThrows
+    public long sizeOfCounterHeapEntry(long type) {
+        return (long) L_L.invokeExact(id, ObjC.sel("sizeOfCounterHeapEntry:"), type);
+    }
+
+    public long queryTimestampFrequency() {
+        return sendLong(id, "queryTimestampFrequency");
+    }
+
+    @SneakyThrows
+    public MTLFunctionHandle functionHandleWithBinaryFunction(MTL4BinaryFunction function) {
+        return MTLFunctionHandle.of((long) P_P.invokeExact(id, ObjC.sel("functionHandleWithBinaryFunction:"),
+                function.getId()));
     }
 }
