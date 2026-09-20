@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Dovyrn:MetalJ:0.2.0")
+    implementation("com.github.Dovyrn:MetalJ:0.3.0")
 }
 ```
 
