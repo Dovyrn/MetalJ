@@ -81,23 +81,24 @@ public class MTL4CommandBuffer extends NSObject {
 
     @SneakyThrows
     public MTL4RenderCommandEncoder renderCommandEncoderWithDescriptor(MTL4RenderPassDescriptor descriptor) {
-        return MTL4RenderCommandEncoder.of((long) P_P.invokeExact(id, RENDER_COMMAND_ENCODER_WITH_DESCRIPTOR,
-                descriptor.getId()));
+        return MTL4RenderCommandEncoder.of(owned(() -> (long) P_P.invokeExact(id,
+                RENDER_COMMAND_ENCODER_WITH_DESCRIPTOR, descriptor.getId())));
     }
 
     @SneakyThrows
     public MTL4RenderCommandEncoder renderCommandEncoderWithDescriptor(MTL4RenderPassDescriptor descriptor,
             long options) {
-        return MTL4RenderCommandEncoder.of((long) P_PL.invokeExact(id,
-                RENDER_COMMAND_ENCODER_WITH_DESCRIPTOR_OPTIONS, descriptor.getId(), options));
+        return MTL4RenderCommandEncoder.of(owned(() -> (long) P_PL.invokeExact(id,
+                RENDER_COMMAND_ENCODER_WITH_DESCRIPTOR_OPTIONS, descriptor.getId(), options)));
     }
 
     public MTL4ComputeCommandEncoder computeCommandEncoder() {
-        return MTL4ComputeCommandEncoder.of(sendPtr(id, COMPUTE_COMMAND_ENCODER));
+        return MTL4ComputeCommandEncoder.of(owned(() -> sendPtr(id, COMPUTE_COMMAND_ENCODER)));
     }
 
     public MTL4MachineLearningCommandEncoder machineLearningCommandEncoder() {
-        return MTL4MachineLearningCommandEncoder.of(sendPtr(id, MACHINE_LEARNING_COMMAND_ENCODER));
+        return MTL4MachineLearningCommandEncoder.of(owned(() -> sendPtr(id,
+                MACHINE_LEARNING_COMMAND_ENCODER)));
     }
 
     @SneakyThrows

@@ -15,8 +15,17 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Dovyrn:MetalJ:0.3.0")
+    implementation("com.github.Dovyrn:MetalJ:0.4.2")
 }
 ```
 
 Or take the jar straight off a [release](https://github.com/Dovyrn/MetalJ/releases).
+
+## Ownership
+
+Every method that creates an object returns it retained, and you release it when you are
+done. This covers `new*` factories and the command encoder factories on `MTLCommandBuffer`
+and `MTL4CommandBuffer`, in both Metal generations.
+
+Property accessors return borrowed references, so never release what `colorAttachments()`,
+`depthAttachment()`, `device()` or `label()` hand back.
