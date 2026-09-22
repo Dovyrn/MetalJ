@@ -20,6 +20,21 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
+    private static final long COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_SLICE_COUNT_LEVEL_COUNT = ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:toTexture:destinationSlice:"
+                + "destinationLevel:sliceCount:levelCount:");
+    private static final long COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN = ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
+                + "toTexture:destinationSlice:destinationLevel:destinationOrigin:");
+    private static final long COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_BUFFER_DESTINATION_OFFSET_DESTINATION_BYTES_PER_ROW_DESTINATION_BYTES_PER_IMAGE = ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
+                + "toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:");
+    private static final long COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_BUFFER_DESTINATION_OFFSET_DESTINATION_BYTES_PER_ROW_DESTINATION_BYTES_PER_IMAGE_OPTIONS = ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
+                + "toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:");
+    private static final long COPY_FROM_BUFFER_SOURCE_OFFSET_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN = ObjC.sel("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:"
+                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:");
+    private static final long COPY_FROM_BUFFER_SOURCE_OFFSET_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN_OPTIONS = ObjC.sel("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:"
+                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:");
+    private static final long COPY_FROM_TENSOR_SOURCE_ORIGIN_SOURCE_DIMENSIONS_TO_TENSOR_DESTINATION_ORIGIN_DESTINATION_DIMENSIONS = ObjC.sel("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:"
+                + "destinationDimensions:");
+
     private static final long BUILD_ACCELERATION_STRUCTURE_DESCRIPTOR_SCRATCH_BUFFER = ObjC.sel("buildAccelerationStructure:descriptor:scratchBuffer:");
     private static final long COPY_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE = ObjC.sel("copyAccelerationStructure:toAccelerationStructure:");
     private static final long COPY_AND_COMPACT_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE = ObjC.sel("copyAndCompactAccelerationStructure:toAccelerationStructure:");
@@ -152,8 +167,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void copyFromTexture(MTLTexture source, long sourceSlice, long sourceLevel, MTLTexture destination,
             long destinationSlice, long destinationLevel, long sliceCount, long levelCount) {
-        L8.invokeExact(id, ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:toTexture:destinationSlice:"
-                + "destinationLevel:sliceCount:levelCount:"),
+        L8.invokeExact(id, COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_SLICE_COUNT_LEVEL_COUNT,
                 source.getId(), sourceSlice, sourceLevel, destination.getId(), destinationSlice, destinationLevel,
                 sliceCount, levelCount);
     }
@@ -162,8 +176,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void copyFromTexture(MTLTexture source, long sourceSlice, long sourceLevel, MemorySegment sourceOrigin,
             MemorySegment sourceSize, MTLTexture destination, long destinationSlice, long destinationLevel,
             MemorySegment destinationOrigin) {
-        TEX_TEX.invokeExact(id, ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
-                + "toTexture:destinationSlice:destinationLevel:destinationOrigin:"),
+        TEX_TEX.invokeExact(id, COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN,
                 source.getId(), sourceSlice, sourceLevel, sourceOrigin, sourceSize, destination.getId(),
                 destinationSlice, destinationLevel, destinationOrigin);
     }
@@ -172,8 +185,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void copyFromTexture(MTLTexture source, long sourceSlice, long sourceLevel, MemorySegment sourceOrigin,
             MemorySegment sourceSize, MTLBuffer destination, long destinationOffset, long destinationBytesPerRow,
             long destinationBytesPerImage) {
-        TEX_BUF.invokeExact(id, ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
-                + "toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:"),
+        TEX_BUF.invokeExact(id, COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_BUFFER_DESTINATION_OFFSET_DESTINATION_BYTES_PER_ROW_DESTINATION_BYTES_PER_IMAGE,
                 source.getId(), sourceSlice, sourceLevel, sourceOrigin, sourceSize, destination.getId(),
                 destinationOffset, destinationBytesPerRow, destinationBytesPerImage);
     }
@@ -182,8 +194,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void copyFromTexture(MTLTexture source, long sourceSlice, long sourceLevel, MemorySegment sourceOrigin,
             MemorySegment sourceSize, MTLBuffer destination, long destinationOffset, long destinationBytesPerRow,
             long destinationBytesPerImage, long options) {
-        TEX_BUF_OPT.invokeExact(id, ObjC.sel("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:"
-                + "toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:"),
+        TEX_BUF_OPT.invokeExact(id, COPY_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_BUFFER_DESTINATION_OFFSET_DESTINATION_BYTES_PER_ROW_DESTINATION_BYTES_PER_IMAGE_OPTIONS,
                 source.getId(), sourceSlice, sourceLevel, sourceOrigin, sourceSize, destination.getId(),
                 destinationOffset, destinationBytesPerRow, destinationBytesPerImage, options);
     }
@@ -199,8 +210,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void copyFromBuffer(MTLBuffer source, long sourceOffset, long sourceBytesPerRow, long sourceBytesPerImage,
             MemorySegment sourceSize, MTLTexture destination, long destinationSlice, long destinationLevel,
             MemorySegment destinationOrigin) {
-        BUF_TEX.invokeExact(id, ObjC.sel("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:"
-                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:"),
+        BUF_TEX.invokeExact(id, COPY_FROM_BUFFER_SOURCE_OFFSET_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN,
                 source.getId(), sourceOffset, sourceBytesPerRow, sourceBytesPerImage, sourceSize,
                 destination.getId(), destinationSlice, destinationLevel, destinationOrigin);
     }
@@ -209,8 +219,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void copyFromBuffer(MTLBuffer source, long sourceOffset, long sourceBytesPerRow, long sourceBytesPerImage,
             MemorySegment sourceSize, MTLTexture destination, long destinationSlice, long destinationLevel,
             MemorySegment destinationOrigin, long options) {
-        BUF_TEX_OPT.invokeExact(id, ObjC.sel("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:"
-                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:"),
+        BUF_TEX_OPT.invokeExact(id, COPY_FROM_BUFFER_SOURCE_OFFSET_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN_OPTIONS,
                 source.getId(), sourceOffset, sourceBytesPerRow, sourceBytesPerImage, sourceSize,
                 destination.getId(), destinationSlice, destinationLevel, destinationOrigin, options);
     }
@@ -218,8 +227,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void copyFromTensor(MTLTensor source, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions,
             MTLTensor destination, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions) {
-        LLLLLL.invokeExact(id, ObjC.sel("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:"
-                + "destinationDimensions:"),
+        LLLLLL.invokeExact(id, COPY_FROM_TENSOR_SOURCE_ORIGIN_SOURCE_DIMENSIONS_TO_TENSOR_DESTINATION_ORIGIN_DESTINATION_DIMENSIONS,
                 source.getId(), sourceOrigin.getId(), sourceDimensions.getId(), destination.getId(),
                 destinationOrigin.getId(), destinationDimensions.getId());
     }

@@ -9,6 +9,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLTextureViewPool extends MTLResourceViewPool {
+    private static final long SET_TEXTURE_VIEW_FROM_BUFFER_DESCRIPTOR_OFFSET_BYTES_PER_ROW_AT_INDEX = ObjC.sel("setTextureViewFromBuffer:descriptor:offset:bytesPerRow:"
+                + "atIndex:");
+
     private static final long SET_TEXTURE_VIEW_AT_INDEX = ObjC.sel("setTextureView:atIndex:");
     private static final long SET_TEXTURE_VIEW_DESCRIPTOR_AT_INDEX = ObjC.sel("setTextureView:descriptor:atIndex:");
 
@@ -39,7 +42,6 @@ public class MTLTextureViewPool extends MTLResourceViewPool {
     @SneakyThrows
     public long setTextureViewFromBuffer(MTLBuffer buffer, MTLTextureDescriptor descriptor, long offset,
             long bytesPerRow, long index) {
-        return (long) L_PPLLL.invokeExact(id, ObjC.sel("setTextureViewFromBuffer:descriptor:offset:bytesPerRow:"
-                + "atIndex:"), buffer.getId(), descriptor.getId(), offset, bytesPerRow, index);
+        return (long) L_PPLLL.invokeExact(id, SET_TEXTURE_VIEW_FROM_BUFFER_DESCRIPTOR_OFFSET_BYTES_PER_ROW_AT_INDEX, buffer.getId(), descriptor.getId(), offset, bytesPerRow, index);
     }
 }

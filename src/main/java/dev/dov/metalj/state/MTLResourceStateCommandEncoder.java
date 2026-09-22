@@ -14,6 +14,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLResourceStateCommandEncoder extends MTLCommandEncoder {
+    private static final long MOVE_TEXTURE_MAPPINGS_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN = ObjC.sel("moveTextureMappingsFromTexture:sourceSlice:sourceLevel:sourceOrigin:"
+                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:");
+
     private static final long UPDATE_FENCE = ObjC.sel("updateFence:");
     private static final long UPDATE_TEXTURE_MAPPING_MODE_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("updateTextureMapping:mode:indirectBuffer:indirectBufferOffset:");
     private static final long UPDATE_TEXTURE_MAPPING_MODE_REGION_MIP_LEVEL_SLICE = ObjC.sel("updateTextureMapping:mode:region:mipLevel:slice:");
@@ -59,8 +62,7 @@ public class MTLResourceStateCommandEncoder extends MTLCommandEncoder {
     public void moveTextureMappingsFromTexture(MTLTexture source, long sourceSlice, long sourceLevel,
             MemorySegment sourceOrigin, MemorySegment sourceSize, MTLTexture destination, long destinationSlice,
             long destinationLevel, MemorySegment destinationOrigin) {
-        MOVE.invokeExact(id, ObjC.sel("moveTextureMappingsFromTexture:sourceSlice:sourceLevel:sourceOrigin:"
-                + "sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:"), source.getId(),
+        MOVE.invokeExact(id, MOVE_TEXTURE_MAPPINGS_FROM_TEXTURE_SOURCE_SLICE_SOURCE_LEVEL_SOURCE_ORIGIN_SOURCE_SIZE_TO_TEXTURE_DESTINATION_SLICE_DESTINATION_LEVEL_DESTINATION_ORIGIN, source.getId(),
                 sourceSlice, sourceLevel, sourceOrigin, sourceSize, destination.getId(), destinationSlice,
                 destinationLevel, destinationOrigin);
     }

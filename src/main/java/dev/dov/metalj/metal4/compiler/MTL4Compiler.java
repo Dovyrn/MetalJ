@@ -21,6 +21,15 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4Compiler extends NSObject {
+    private static final long NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_ERROR = ObjC.sel("newComputePipelineStateWithDescriptor:"
+                    + "dynamicLinkingDescriptor:compilerTaskOptions:error:");
+    private static final long NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_ERROR = ObjC.sel("newRenderPipelineStateWithDescriptor:"
+                    + "dynamicLinkingDescriptor:compilerTaskOptions:error:");
+    private static final long NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_COMPLETION_HANDLER = ObjC.sel("newComputePipelineStateWithDescriptor:"
+                + "dynamicLinkingDescriptor:compilerTaskOptions:completionHandler:");
+    private static final long NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_COMPLETION_HANDLER = ObjC.sel("newRenderPipelineStateWithDescriptor:"
+                + "dynamicLinkingDescriptor:compilerTaskOptions:completionHandler:");
+
     private static final long DEVICE = ObjC.sel("device");
     private static final long LABEL = ObjC.sel("label");
     private static final long NEW_BINARY_FUNCTION_WITH_DESCRIPTOR_COMPILER_TASK_OPTIONS_COMPLETION_HANDLER = ObjC.sel("newBinaryFunctionWithDescriptor:compilerTaskOptions:completionHandler:");
@@ -118,8 +127,7 @@ public class MTL4Compiler extends NSObject {
             MTL4PipelineStageDynamicLinkingDescriptor linking, MTL4CompilerTaskOptions options) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long state = (long) P_PPPA.invokeExact(id, ObjC.sel("newComputePipelineStateWithDescriptor:"
-                    + "dynamicLinkingDescriptor:compilerTaskOptions:error:"),
+            long state = (long) P_PPPA.invokeExact(id, NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_ERROR,
                     descriptor.getId(), linking.getId(), options.getId(), error);
             NSError.check(error, "newComputePipelineStateWithDescriptor:dynamicLinkingDescriptor:"
                     + "compilerTaskOptions:error:");
@@ -145,8 +153,7 @@ public class MTL4Compiler extends NSObject {
             MTL4RenderPipelineDynamicLinkingDescriptor linking, MTL4CompilerTaskOptions options) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long state = (long) P_PPPA.invokeExact(id, ObjC.sel("newRenderPipelineStateWithDescriptor:"
-                    + "dynamicLinkingDescriptor:compilerTaskOptions:error:"),
+            long state = (long) P_PPPA.invokeExact(id, NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_ERROR,
                     descriptor.getId(), linking.getId(), options.getId(), error);
             NSError.check(error, "newRenderPipelineStateWithDescriptor:dynamicLinkingDescriptor:"
                     + "compilerTaskOptions:error:");
@@ -221,8 +228,7 @@ public class MTL4Compiler extends NSObject {
     @SneakyThrows
     public MTL4CompilerTask newComputePipelineStateWithDescriptor(MTL4ComputePipelineDescriptor descriptor,
             MTL4PipelineStageDynamicLinkingDescriptor linking, MTL4CompilerTaskOptions options, Block completion) {
-        return MTL4CompilerTask.of((long) P_PPPP.invokeExact(id, ObjC.sel("newComputePipelineStateWithDescriptor:"
-                + "dynamicLinkingDescriptor:compilerTaskOptions:completionHandler:"),
+        return MTL4CompilerTask.of((long) P_PPPP.invokeExact(id, NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_COMPLETION_HANDLER,
                 descriptor.getId(), linking.getId(), options.getId(), completion.address()));
     }
 
@@ -237,8 +243,7 @@ public class MTL4Compiler extends NSObject {
     @SneakyThrows
     public MTL4CompilerTask newRenderPipelineStateWithDescriptor(MTL4PipelineDescriptor descriptor,
             MTL4RenderPipelineDynamicLinkingDescriptor linking, MTL4CompilerTaskOptions options, Block completion) {
-        return MTL4CompilerTask.of((long) P_PPPP.invokeExact(id, ObjC.sel("newRenderPipelineStateWithDescriptor:"
-                + "dynamicLinkingDescriptor:compilerTaskOptions:completionHandler:"),
+        return MTL4CompilerTask.of((long) P_PPPP.invokeExact(id, NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_COMPILER_TASK_OPTIONS_COMPLETION_HANDLER,
                 descriptor.getId(), linking.getId(), options.getId(), completion.address()));
     }
 

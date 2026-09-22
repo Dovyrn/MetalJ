@@ -17,6 +17,15 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INSTANCE_COUNT = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:"
+                + "instanceCount:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:"
+                + "instanceCount:baseVertex:baseInstance:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INDIRECT_BUFFER = ObjC.sel("drawIndexedPrimitives:indexType:indexBuffer:indexBufferLength:"
+                + "indirectBuffer:");
+    private static final long DRAW_MESH_THREADGROUPS_WITH_INDIRECT_BUFFER_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroupsWithIndirectBuffer:threadsPerObjectThreadgroup:"
+                + "threadsPerMeshThreadgroup:");
+
     private static final long DISPATCH_THREADS_PER_TILE = ObjC.sel("dispatchThreadsPerTile:");
     private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:");
     private static final long DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
@@ -237,16 +246,14 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void drawIndexedPrimitives(long type, long indexCount, long indexType, long indexBuffer,
             long indexBufferLength, long instanceCount) {
-        LLLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:"
-                + "instanceCount:"),
+        LLLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INSTANCE_COUNT,
                 type, indexCount, indexType, indexBuffer, indexBufferLength, instanceCount);
     }
 
     @SneakyThrows
     public void drawIndexedPrimitives(long type, long indexCount, long indexType, long indexBuffer,
             long indexBufferLength, long instanceCount, long baseVertex, long baseInstance) {
-        L8.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:"
-                + "instanceCount:baseVertex:baseInstance:"),
+        L8.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE,
                 type, indexCount, indexType, indexBuffer, indexBufferLength, instanceCount, baseVertex,
                 baseInstance);
     }
@@ -254,8 +261,7 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void drawIndexedPrimitivesWithIndirectBuffer(long type, long indexType, long indexBuffer,
             long indexBufferLength, long indirectBuffer) {
-        LLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexType:indexBuffer:indexBufferLength:"
-                + "indirectBuffer:"),
+        LLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH_INDIRECT_BUFFER,
                 type, indexType, indexBuffer, indexBufferLength, indirectBuffer);
     }
 
@@ -296,8 +302,7 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void drawMeshThreadgroupsWithIndirectBuffer(long indirectBuffer,
             MemorySegment threadsPerObjectThreadgroup, MemorySegment threadsPerMeshThreadgroup) {
-        LSS.invokeExact(id, ObjC.sel("drawMeshThreadgroupsWithIndirectBuffer:threadsPerObjectThreadgroup:"
-                + "threadsPerMeshThreadgroup:"),
+        LSS.invokeExact(id, DRAW_MESH_THREADGROUPS_WITH_INDIRECT_BUFFER_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 indirectBuffer, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 

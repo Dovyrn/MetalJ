@@ -10,6 +10,10 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIndirectRenderCommand extends NSObject {
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:"
+            + "indexBufferOffset:instanceCount:baseVertex:baseInstance:");
+
+    private static final long DRAW_INDEXED_PRIMITIVES = DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE;
     private static final long DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
     private static final long DRAW_MESH_THREADS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
     private static final long DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT_BASE_INSTANCE = ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:");
@@ -58,8 +62,7 @@ public class MTLIndirectRenderCommand extends NSObject {
     @SneakyThrows
     public void drawIndexedPrimitives(long primitiveType, long indexCount, long indexType, MTLBuffer indexBuffer,
             long indexBufferOffset, long instanceCount, long baseVertex, long baseInstance) {
-        LLLLLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:"
-                + "indexBufferOffset:instanceCount:baseVertex:baseInstance:"), primitiveType, indexCount,
+        LLLLLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES, primitiveType, indexCount,
                 indexType, indexBuffer.getId(), indexBufferOffset, instanceCount, baseVertex, baseInstance);
     }
 

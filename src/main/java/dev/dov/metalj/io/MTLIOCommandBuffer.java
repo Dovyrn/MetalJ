@@ -16,6 +16,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIOCommandBuffer extends NSObject {
+    private static final long LOAD_TEXTURE_SLICE_LEVEL_SIZE_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_DESTINATION_ORIGIN_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET = ObjC.sel("loadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:"
+                + "destinationOrigin:sourceHandle:sourceHandleOffset:");
+
     private static final long ADD_BARRIER = ObjC.sel("addBarrier");
     private static final long ADD_COMPLETED_HANDLER = ObjC.sel("addCompletedHandler:");
     private static final long COMMIT = ObjC.sel("commit");
@@ -64,8 +67,7 @@ public class MTLIOCommandBuffer extends NSObject {
     @SneakyThrows
     public void loadTexture(MTLTexture texture, long slice, long level, MemorySegment size, long bytesPerRow,
             long bytesPerImage, MemorySegment origin, MTLIOFileHandle source, long sourceOffset) {
-        TEXTURE.invokeExact(id, ObjC.sel("loadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:"
-                + "destinationOrigin:sourceHandle:sourceHandleOffset:"), texture.getId(), slice, level, size,
+        TEXTURE.invokeExact(id, LOAD_TEXTURE_SLICE_LEVEL_SIZE_SOURCE_BYTES_PER_ROW_SOURCE_BYTES_PER_IMAGE_DESTINATION_ORIGIN_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET, texture.getId(), slice, level, size,
                 bytesPerRow, bytesPerImage, origin, source.getId(), sourceOffset);
     }
 

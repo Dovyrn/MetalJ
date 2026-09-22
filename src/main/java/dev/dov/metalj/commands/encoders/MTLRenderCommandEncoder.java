@@ -22,6 +22,24 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderCommandEncoder extends MTLCommandEncoder {
+    private static final long DRAW_MESH_THREADGROUPS_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroupsWithIndirectBuffer:indirectBufferOffset:"
+                + "threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:"
+                + "instanceCount:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:"
+                + "instanceCount:baseVertex:baseInstance:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("drawIndexedPrimitives:indexType:indexBuffer:indexBufferOffset:"
+                + "indirectBuffer:indirectBufferOffset:");
+    private static final long DRAW_PATCHES_PATCH_START_PATCH_COUNT_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_INSTANCE = ObjC.sel("drawPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:"
+                + "instanceCount:baseInstance:");
+    private static final long DRAW_PATCHES_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("drawPatches:patchIndexBuffer:patchIndexBufferOffset:indirectBuffer:"
+                + "indirectBufferOffset:");
+    private static final long DRAW_INDEXED_PATCHES_PATCH_START_PATCH_COUNT_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_CONTROL_POINT_INDEX_BUFFER_CONTROL_POINT_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_INSTANCE = ObjC.sel("drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:"
+                + "patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:"
+                + "baseInstance:");
+    private static final long DRAW_INDEXED_PATCHES_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_CONTROL_POINT_INDEX_BUFFER_CONTROL_POINT_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("drawIndexedPatches:patchIndexBuffer:patchIndexBufferOffset:"
+                + "controlPointIndexBuffer:controlPointIndexBufferOffset:indirectBuffer:indirectBufferOffset:");
+
     private static final long DISPATCH_THREADS_PER_TILE = ObjC.sel("dispatchThreadsPerTile:");
     private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:");
     private static final long DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
@@ -600,8 +618,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawMeshThreadgroupsWithIndirectBuffer(MTLBuffer indirectBuffer, long indirectBufferOffset,
             MemorySegment threadsPerObjectThreadgroup, MemorySegment threadsPerMeshThreadgroup) {
-        LLSS.invokeExact(id, ObjC.sel("drawMeshThreadgroupsWithIndirectBuffer:indirectBufferOffset:"
-                + "threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:"),
+        LLSS.invokeExact(id, DRAW_MESH_THREADGROUPS_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 indirectBuffer.getId(), indirectBufferOffset, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 
@@ -620,8 +637,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawIndexedPrimitives(long primitiveType, long indexCount, long indexType, MTLBuffer indexBuffer,
             long indexBufferOffset, long instanceCount) {
-        LLLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:"
-                + "instanceCount:"),
+        LLLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT,
                 primitiveType, indexCount, indexType, indexBuffer.getId(), indexBufferOffset, instanceCount);
     }
 
@@ -642,8 +658,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawIndexedPrimitives(long primitiveType, long indexCount, long indexType, MTLBuffer indexBuffer,
             long indexBufferOffset, long instanceCount, long baseVertex, long baseInstance) {
-        LLLLLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:"
-                + "instanceCount:baseVertex:baseInstance:"),
+        LLLLLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_VERTEX_BASE_INSTANCE,
                 primitiveType, indexCount, indexType, indexBuffer.getId(), indexBufferOffset, instanceCount,
                 baseVertex, baseInstance);
     }
@@ -657,8 +672,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawIndexedPrimitives(long primitiveType, long indexType, MTLBuffer indexBuffer,
             long indexBufferOffset, MTLBuffer indirectBuffer, long indirectBufferOffset) {
-        LLLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexType:indexBuffer:indexBufferOffset:"
-                + "indirectBuffer:indirectBufferOffset:"),
+        LLLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 primitiveType, indexType, indexBuffer.getId(), indexBufferOffset, indirectBuffer.getId(),
                 indirectBufferOffset);
     }
@@ -677,8 +691,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawPatches(long numberOfPatchControlPoints, long patchStart, long patchCount,
             MTLBuffer patchIndexBuffer, long patchIndexBufferOffset, long instanceCount, long baseInstance) {
-        LLLLLLL.invokeExact(id, ObjC.sel("drawPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:"
-                + "instanceCount:baseInstance:"),
+        LLLLLLL.invokeExact(id, DRAW_PATCHES_PATCH_START_PATCH_COUNT_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_INSTANCE,
                 numberOfPatchControlPoints, patchStart, patchCount, patchIndexBuffer.getId(), patchIndexBufferOffset,
                 instanceCount, baseInstance);
     }
@@ -686,8 +699,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void drawPatches(long numberOfPatchControlPoints, MTLBuffer patchIndexBuffer, long patchIndexBufferOffset,
             MTLBuffer indirectBuffer, long indirectBufferOffset) {
-        LLLLL.invokeExact(id, ObjC.sel("drawPatches:patchIndexBuffer:patchIndexBufferOffset:indirectBuffer:"
-                + "indirectBufferOffset:"),
+        LLLLL.invokeExact(id, DRAW_PATCHES_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 numberOfPatchControlPoints, patchIndexBuffer.getId(), patchIndexBufferOffset, indirectBuffer.getId(),
                 indirectBufferOffset);
     }
@@ -696,9 +708,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     public void drawIndexedPatches(long numberOfPatchControlPoints, long patchStart, long patchCount,
             MTLBuffer patchIndexBuffer, long patchIndexBufferOffset, MTLBuffer controlPointIndexBuffer,
             long controlPointIndexBufferOffset, long instanceCount, long baseInstance) {
-        LLLLLLLLL.invokeExact(id, ObjC.sel("drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:"
-                + "patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:"
-                + "baseInstance:"),
+        LLLLLLLLL.invokeExact(id, DRAW_INDEXED_PATCHES_PATCH_START_PATCH_COUNT_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_CONTROL_POINT_INDEX_BUFFER_CONTROL_POINT_INDEX_BUFFER_OFFSET_INSTANCE_COUNT_BASE_INSTANCE,
                 numberOfPatchControlPoints, patchStart, patchCount, patchIndexBuffer.getId(), patchIndexBufferOffset,
                 controlPointIndexBuffer.getId(), controlPointIndexBufferOffset, instanceCount, baseInstance);
     }
@@ -707,8 +717,7 @@ public class MTLRenderCommandEncoder extends MTLCommandEncoder {
     public void drawIndexedPatches(long numberOfPatchControlPoints, MTLBuffer patchIndexBuffer,
             long patchIndexBufferOffset, MTLBuffer controlPointIndexBuffer, long controlPointIndexBufferOffset,
             MTLBuffer indirectBuffer, long indirectBufferOffset) {
-        LLLLLLL.invokeExact(id, ObjC.sel("drawIndexedPatches:patchIndexBuffer:patchIndexBufferOffset:"
-                + "controlPointIndexBuffer:controlPointIndexBufferOffset:indirectBuffer:indirectBufferOffset:"),
+        LLLLLLL.invokeExact(id, DRAW_INDEXED_PATCHES_PATCH_INDEX_BUFFER_PATCH_INDEX_BUFFER_OFFSET_CONTROL_POINT_INDEX_BUFFER_CONTROL_POINT_INDEX_BUFFER_OFFSET_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 numberOfPatchControlPoints, patchIndexBuffer.getId(), patchIndexBufferOffset,
                 controlPointIndexBuffer.getId(), controlPointIndexBufferOffset, indirectBuffer.getId(),
                 indirectBufferOffset);
