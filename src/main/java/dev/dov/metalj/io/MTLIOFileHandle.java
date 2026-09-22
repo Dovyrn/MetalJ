@@ -7,6 +7,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIOFileHandle extends NSObject {
+    private static final long LABEL = ObjC.sel("label");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTLIOFileHandle(long id) {
@@ -18,11 +21,11 @@ public class MTLIOFileHandle extends NSObject {
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 }

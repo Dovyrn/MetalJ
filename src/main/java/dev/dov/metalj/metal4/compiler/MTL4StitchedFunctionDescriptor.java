@@ -6,6 +6,14 @@ import dev.dov.metalj.objc.ObjC;
 import lombok.SneakyThrows;
 
 public class MTL4StitchedFunctionDescriptor extends MTL4FunctionDescriptor {
+    private static final long MTL_4_STITCHED_FUNCTION_DESCRIPTOR = ObjC.cls("MTL4StitchedFunctionDescriptor");
+
+    private static final long FUNCTION_DESCRIPTORS = ObjC.sel("functionDescriptors");
+    private static final long FUNCTION_GRAPH = ObjC.sel("functionGraph");
+    private static final long NEW = ObjC.sel("new");
+    private static final long SET_FUNCTION_DESCRIPTORS = ObjC.sel("setFunctionDescriptors:");
+    private static final long SET_FUNCTION_GRAPH = ObjC.sel("setFunctionGraph:");
+
     private MTL4StitchedFunctionDescriptor(long id) {
         super(id);
     }
@@ -15,24 +23,24 @@ public class MTL4StitchedFunctionDescriptor extends MTL4FunctionDescriptor {
     }
 
     public static MTL4StitchedFunctionDescriptor new_() {
-        return new MTL4StitchedFunctionDescriptor(sendPtr(ObjC.cls("MTL4StitchedFunctionDescriptor"), "new"));
+        return new MTL4StitchedFunctionDescriptor(sendPtr(MTL_4_STITCHED_FUNCTION_DESCRIPTOR, NEW));
     }
 
     public MTLFunctionStitchingGraph functionGraph() {
-        return MTLFunctionStitchingGraph.of(sendPtr(id, "functionGraph"));
+        return MTLFunctionStitchingGraph.of(sendPtr(id, FUNCTION_GRAPH));
     }
 
     @SneakyThrows
     public void setFunctionGraph(MTLFunctionStitchingGraph graph) {
-        P.invokeExact(id, ObjC.sel("setFunctionGraph:"), graph.getId());
+        P.invokeExact(id, SET_FUNCTION_GRAPH, graph.getId());
     }
 
     public NSArray functionDescriptors() {
-        return NSArray.of(sendPtr(id, "functionDescriptors"));
+        return NSArray.of(sendPtr(id, FUNCTION_DESCRIPTORS));
     }
 
     @SneakyThrows
     public void setFunctionDescriptors(NSArray descriptors) {
-        P.invokeExact(id, ObjC.sel("setFunctionDescriptors:"), descriptors.getId());
+        P.invokeExact(id, SET_FUNCTION_DESCRIPTORS, descriptors.getId());
     }
 }

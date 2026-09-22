@@ -16,6 +16,24 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIOCommandBuffer extends NSObject {
+    private static final long ADD_BARRIER = ObjC.sel("addBarrier");
+    private static final long ADD_COMPLETED_HANDLER = ObjC.sel("addCompletedHandler:");
+    private static final long COMMIT = ObjC.sel("commit");
+    private static final long COPY_STATUS_TO_BUFFER_OFFSET = ObjC.sel("copyStatusToBuffer:offset:");
+    private static final long ENQUEUE = ObjC.sel("enqueue");
+    private static final long ERROR = ObjC.sel("error");
+    private static final long LABEL = ObjC.sel("label");
+    private static final long LOAD_BUFFER_OFFSET_SIZE_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET = ObjC.sel("loadBuffer:offset:size:sourceHandle:sourceHandleOffset:");
+    private static final long LOAD_BYTES_SIZE_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET = ObjC.sel("loadBytes:size:sourceHandle:sourceHandleOffset:");
+    private static final long POP_DEBUG_GROUP = ObjC.sel("popDebugGroup");
+    private static final long PUSH_DEBUG_GROUP = ObjC.sel("pushDebugGroup:");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+    private static final long SIGNAL_EVENT_VALUE = ObjC.sel("signalEvent:value:");
+    private static final long STATUS = ObjC.sel("status");
+    private static final long TRY_CANCEL = ObjC.sel("tryCancel");
+    private static final long WAIT_FOR_EVENT_VALUE = ObjC.sel("waitForEvent:value:");
+    private static final long WAIT_UNTIL_COMPLETED = ObjC.sel("waitUntilCompleted");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle PL = handle(null, ObjC.PTR, ObjC.LONG);
     private static final MethodHandle ALPL = handle(null, ValueLayout.ADDRESS, ObjC.LONG, ObjC.PTR, ObjC.LONG);
@@ -33,13 +51,13 @@ public class MTLIOCommandBuffer extends NSObject {
 
     @SneakyThrows
     public void loadBytes(MemorySegment pointer, long size, MTLIOFileHandle source, long offset) {
-        ALPL.invokeExact(id, ObjC.sel("loadBytes:size:sourceHandle:sourceHandleOffset:"), pointer, size,
+        ALPL.invokeExact(id, LOAD_BYTES_SIZE_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET, pointer, size,
                 source.getId(), offset);
     }
 
     @SneakyThrows
     public void loadBuffer(MTLBuffer buffer, long offset, long size, MTLIOFileHandle source, long sourceOffset) {
-        PLLPL.invokeExact(id, ObjC.sel("loadBuffer:offset:size:sourceHandle:sourceHandleOffset:"), buffer.getId(),
+        PLLPL.invokeExact(id, LOAD_BUFFER_OFFSET_SIZE_SOURCE_HANDLE_SOURCE_HANDLE_OFFSET, buffer.getId(),
                 offset, size, source.getId(), sourceOffset);
     }
 
@@ -53,67 +71,67 @@ public class MTLIOCommandBuffer extends NSObject {
 
     @SneakyThrows
     public void copyStatusToBuffer(MTLBuffer buffer, long offset) {
-        PL.invokeExact(id, ObjC.sel("copyStatusToBuffer:offset:"), buffer.getId(), offset);
+        PL.invokeExact(id, COPY_STATUS_TO_BUFFER_OFFSET, buffer.getId(), offset);
     }
 
     public void enqueue() {
-        sendVoid(id, "enqueue");
+        sendVoid(id, ENQUEUE);
     }
 
     public void commit() {
-        sendVoid(id, "commit");
+        sendVoid(id, COMMIT);
     }
 
     public void waitUntilCompleted() {
-        sendVoid(id, "waitUntilCompleted");
+        sendVoid(id, WAIT_UNTIL_COMPLETED);
     }
 
     public void tryCancel() {
-        sendVoid(id, "tryCancel");
+        sendVoid(id, TRY_CANCEL);
     }
 
     public void addBarrier() {
-        sendVoid(id, "addBarrier");
+        sendVoid(id, ADD_BARRIER);
     }
 
     @SneakyThrows
     public void addCompletedHandler(Block block) {
-        P.invokeExact(id, ObjC.sel("addCompletedHandler:"), block.address());
+        P.invokeExact(id, ADD_COMPLETED_HANDLER, block.address());
     }
 
     @SneakyThrows
     public void signalEvent(MTLSharedEvent event, long value) {
-        PL.invokeExact(id, ObjC.sel("signalEvent:value:"), event.getId(), value);
+        PL.invokeExact(id, SIGNAL_EVENT_VALUE, event.getId(), value);
     }
 
     @SneakyThrows
     public void waitForEvent(MTLSharedEvent event, long value) {
-        PL.invokeExact(id, ObjC.sel("waitForEvent:value:"), event.getId(), value);
+        PL.invokeExact(id, WAIT_FOR_EVENT_VALUE, event.getId(), value);
     }
 
     @SneakyThrows
     public void pushDebugGroup(NSString string) {
-        P.invokeExact(id, ObjC.sel("pushDebugGroup:"), string.getId());
+        P.invokeExact(id, PUSH_DEBUG_GROUP, string.getId());
     }
 
     public void popDebugGroup() {
-        sendVoid(id, "popDebugGroup");
+        sendVoid(id, POP_DEBUG_GROUP);
     }
 
     public long status() {
-        return sendLong(id, "status");
+        return sendLong(id, STATUS);
     }
 
     public NSError error() {
-        return NSError.of(sendPtr(id, "error"));
+        return NSError.of(sendPtr(id, ERROR));
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 }

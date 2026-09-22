@@ -7,6 +7,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4CommandBufferOptions extends NSObject {
+    private static final long MTL_4_COMMAND_BUFFER_OPTIONS = ObjC.cls("MTL4CommandBufferOptions");
+
+    private static final long LOG_STATE = ObjC.sel("logState");
+    private static final long NEW = ObjC.sel("new");
+    private static final long SET_LOG_STATE = ObjC.sel("setLogState:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTL4CommandBufferOptions(long id) {
@@ -18,15 +24,15 @@ public class MTL4CommandBufferOptions extends NSObject {
     }
 
     public static MTL4CommandBufferOptions new_() {
-        return new MTL4CommandBufferOptions(sendPtr(ObjC.cls("MTL4CommandBufferOptions"), "new"));
+        return new MTL4CommandBufferOptions(sendPtr(MTL_4_COMMAND_BUFFER_OPTIONS, NEW));
     }
 
     public MTLLogState logState() {
-        return MTLLogState.of(sendPtr(id, "logState"));
+        return MTLLogState.of(sendPtr(id, LOG_STATE));
     }
 
     @SneakyThrows
     public void setLogState(MTLLogState state) {
-        P.invokeExact(id, ObjC.sel("setLogState:"), state.getId());
+        P.invokeExact(id, SET_LOG_STATE, state.getId());
     }
 }

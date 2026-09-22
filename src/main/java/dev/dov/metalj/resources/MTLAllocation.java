@@ -1,8 +1,11 @@
 package dev.dov.metalj.resources;
 
 import dev.dov.metalj.objc.NSObject;
+import dev.dov.metalj.objc.ObjC;
 
 public class MTLAllocation extends NSObject {
+    private static final long ALLOCATED_SIZE = ObjC.sel("allocatedSize");
+
     protected MTLAllocation(long id) {
         super(id);
     }
@@ -12,6 +15,6 @@ public class MTLAllocation extends NSObject {
     }
 
     public long allocatedSize() {
-        return sendLong(id, "allocatedSize");
+        return sendLong(id, ALLOCATED_SIZE);
     }
 }

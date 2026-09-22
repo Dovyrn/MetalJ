@@ -1,6 +1,13 @@
 package dev.dov.metalj.arguments;
+import dev.dov.metalj.objc.ObjC;
+
 
 public class MTLTensorReferenceType extends MTLType {
+    private static final long ACCESS = ObjC.sel("access");
+    private static final long DIMENSIONS = ObjC.sel("dimensions");
+    private static final long INDEX_TYPE = ObjC.sel("indexType");
+    private static final long TENSOR_DATA_TYPE = ObjC.sel("tensorDataType");
+
     private MTLTensorReferenceType(long id) {
         super(id);
     }
@@ -10,18 +17,18 @@ public class MTLTensorReferenceType extends MTLType {
     }
 
     public long tensorDataType() {
-        return sendLong(id, "tensorDataType");
+        return sendLong(id, TENSOR_DATA_TYPE);
     }
 
     public long indexType() {
-        return sendLong(id, "indexType");
+        return sendLong(id, INDEX_TYPE);
     }
 
     public long dimensions() {
-        return sendPtr(id, "dimensions");
+        return sendPtr(id, DIMENSIONS);
     }
 
     public long access() {
-        return sendLong(id, "access");
+        return sendLong(id, ACCESS);
     }
 }

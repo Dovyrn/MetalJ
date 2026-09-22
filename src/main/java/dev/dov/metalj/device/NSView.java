@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class NSView extends NSObject {
+    private static final long SET_LAYER = ObjC.sel("setLayer:");
+    private static final long SET_WANTS_LAYER = ObjC.sel("setWantsLayer:");
+
     private static final MethodHandle SET_PTR = handle(null, ObjC.PTR);
     private static final MethodHandle SET_BOOL = handle(null, ObjC.BOOL);
 
@@ -19,11 +22,11 @@ public class NSView extends NSObject {
 
     @SneakyThrows
     public void setWantsLayer(boolean wants) {
-        SET_BOOL.invokeExact(id, ObjC.sel("setWantsLayer:"), wants);
+        SET_BOOL.invokeExact(id, SET_WANTS_LAYER, wants);
     }
 
     @SneakyThrows
     public void setLayer(CAMetalLayer layer) {
-        SET_PTR.invokeExact(id, ObjC.sel("setLayer:"), layer.getId());
+        SET_PTR.invokeExact(id, SET_LAYER, layer.getId());
     }
 }

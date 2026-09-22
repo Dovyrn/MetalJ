@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLAccelerationStructureDescriptor extends NSObject {
+    private static final long SET_USAGE = ObjC.sel("setUsage:");
+    private static final long USAGE = ObjC.sel("usage");
+
     protected static final MethodHandle L = handle(null, ObjC.LONG);
     protected static final MethodHandle P = handle(null, ObjC.PTR);
     protected static final MethodHandle F = handle(null, ObjC.FLOAT);
@@ -19,11 +22,11 @@ public class MTLAccelerationStructureDescriptor extends NSObject {
     }
 
     public long usage() {
-        return sendLong(id, "usage");
+        return sendLong(id, USAGE);
     }
 
     @SneakyThrows
     public void setUsage(long usage) {
-        L.invokeExact(id, ObjC.sel("setUsage:"), usage);
+        L.invokeExact(id, SET_USAGE, usage);
     }
 }

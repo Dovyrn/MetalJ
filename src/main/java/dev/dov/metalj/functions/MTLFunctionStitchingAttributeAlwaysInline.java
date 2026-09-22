@@ -4,6 +4,10 @@ import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.ObjC;
 
 public class MTLFunctionStitchingAttributeAlwaysInline extends NSObject {
+    private static final long MTL_FUNCTION_STITCHING_ATTRIBUTE_ALWAYS_INLINE = ObjC.cls("MTLFunctionStitchingAttributeAlwaysInline");
+
+    private static final long NEW = ObjC.sel("new");
+
     private MTLFunctionStitchingAttributeAlwaysInline(long id) {
         super(id);
     }
@@ -14,6 +18,6 @@ public class MTLFunctionStitchingAttributeAlwaysInline extends NSObject {
 
     public static MTLFunctionStitchingAttributeAlwaysInline new_() {
         return new MTLFunctionStitchingAttributeAlwaysInline(
-                sendPtr(ObjC.cls("MTLFunctionStitchingAttributeAlwaysInline"), "new"));
+                sendPtr(MTL_FUNCTION_STITCHING_ATTRIBUTE_ALWAYS_INLINE, NEW));
     }
 }

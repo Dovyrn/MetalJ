@@ -10,6 +10,14 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIndirectRenderCommand extends NSObject {
+    private static final long DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
+    private static final long DRAW_MESH_THREADS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
+    private static final long DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT_BASE_INSTANCE = ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:");
+    private static final long RESET = ObjC.sel("reset");
+    private static final long SET_FRAGMENT_BUFFER_OFFSET_AT_INDEX = ObjC.sel("setFragmentBuffer:offset:atIndex:");
+    private static final long SET_RENDER_PIPELINE_STATE = ObjC.sel("setRenderPipelineState:");
+    private static final long SET_VERTEX_BUFFER_OFFSET_AT_INDEX = ObjC.sel("setVertexBuffer:offset:atIndex:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle LLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle LLLLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG, ObjC.LONG, ObjC.LONG);
@@ -27,23 +35,23 @@ public class MTLIndirectRenderCommand extends NSObject {
 
     @SneakyThrows
     public void setRenderPipelineState(MTLRenderPipelineState pipelineState) {
-        L.invokeExact(id, ObjC.sel("setRenderPipelineState:"), pipelineState.getId());
+        L.invokeExact(id, SET_RENDER_PIPELINE_STATE, pipelineState.getId());
     }
 
     @SneakyThrows
     public void setVertexBuffer(MTLBuffer buffer, long offset, long index) {
-        LLL.invokeExact(id, ObjC.sel("setVertexBuffer:offset:atIndex:"), buffer.getId(), offset, index);
+        LLL.invokeExact(id, SET_VERTEX_BUFFER_OFFSET_AT_INDEX, buffer.getId(), offset, index);
     }
 
     @SneakyThrows
     public void setFragmentBuffer(MTLBuffer buffer, long offset, long index) {
-        LLL.invokeExact(id, ObjC.sel("setFragmentBuffer:offset:atIndex:"), buffer.getId(), offset, index);
+        LLL.invokeExact(id, SET_FRAGMENT_BUFFER_OFFSET_AT_INDEX, buffer.getId(), offset, index);
     }
 
     @SneakyThrows
     public void drawPrimitives(long primitiveType, long vertexStart, long vertexCount, long instanceCount,
             long baseInstance) {
-        LLLLL.invokeExact(id, ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:"),
+        LLLLL.invokeExact(id, DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT_BASE_INSTANCE,
                 primitiveType, vertexStart, vertexCount, instanceCount, baseInstance);
     }
 
@@ -58,18 +66,18 @@ public class MTLIndirectRenderCommand extends NSObject {
     @SneakyThrows
     public void drawMeshThreadgroups(MemorySegment threadgroupsPerGrid, MemorySegment threadsPerObjectThreadgroup,
             MemorySegment threadsPerMeshThreadgroup) {
-        SSS.invokeExact(id, ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:"),
+        SSS.invokeExact(id, DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 threadgroupsPerGrid, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 
     @SneakyThrows
     public void drawMeshThreads(MemorySegment threadsPerGrid, MemorySegment threadsPerObjectThreadgroup,
             MemorySegment threadsPerMeshThreadgroup) {
-        SSS.invokeExact(id, ObjC.sel("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:"),
+        SSS.invokeExact(id, DRAW_MESH_THREADS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 threadsPerGrid, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 
     public void reset() {
-        sendVoid(id, "reset");
+        sendVoid(id, RESET);
     }
 }

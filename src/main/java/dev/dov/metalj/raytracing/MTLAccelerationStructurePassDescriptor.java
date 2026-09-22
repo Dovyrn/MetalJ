@@ -4,6 +4,11 @@ import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.ObjC;
 
 public class MTLAccelerationStructurePassDescriptor extends NSObject {
+    private static final long MTL_ACCELERATION_STRUCTURE_PASS_DESCRIPTOR = ObjC.cls("MTLAccelerationStructurePassDescriptor");
+
+    private static final long ACCELERATION_STRUCTURE_PASS_DESCRIPTOR = ObjC.sel("accelerationStructurePassDescriptor");
+    private static final long SAMPLE_BUFFER_ATTACHMENTS = ObjC.sel("sampleBufferAttachments");
+
     private MTLAccelerationStructurePassDescriptor(long id) {
         super(id);
     }
@@ -14,11 +19,11 @@ public class MTLAccelerationStructurePassDescriptor extends NSObject {
 
     public static MTLAccelerationStructurePassDescriptor accelerationStructurePassDescriptor() {
         return new MTLAccelerationStructurePassDescriptor(sendPtr(
-                ObjC.cls("MTLAccelerationStructurePassDescriptor"), "accelerationStructurePassDescriptor"));
+                MTL_ACCELERATION_STRUCTURE_PASS_DESCRIPTOR, ACCELERATION_STRUCTURE_PASS_DESCRIPTOR));
     }
 
     public MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray sampleBufferAttachments() {
         return MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray.of(
-                sendPtr(id, "sampleBufferAttachments"));
+                sendPtr(id, SAMPLE_BUFFER_ATTACHMENTS));
     }
 }

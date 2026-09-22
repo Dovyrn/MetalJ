@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLTileRenderPipelineColorAttachmentDescriptorArray extends NSObject {
+    private static final long OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("objectAtIndexedSubscript:");
+    private static final long SET_OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("setObject:atIndexedSubscript:");
+
     private static final MethodHandle P_L = handle(ObjC.PTR, ObjC.LONG);
     private static final MethodHandle PL = handle(null, ObjC.PTR, ObjC.LONG);
 
@@ -20,11 +23,11 @@ public class MTLTileRenderPipelineColorAttachmentDescriptorArray extends NSObjec
     @SneakyThrows
     public MTLTileRenderPipelineColorAttachmentDescriptor objectAtIndexedSubscript(long index) {
         return MTLTileRenderPipelineColorAttachmentDescriptor.of(
-                (long) P_L.invokeExact(id, ObjC.sel("objectAtIndexedSubscript:"), index));
+                (long) P_L.invokeExact(id, OBJECT_AT_INDEXED_SUBSCRIPT, index));
     }
 
     @SneakyThrows
     public void setObjectAtIndexedSubscript(MTLTileRenderPipelineColorAttachmentDescriptor attachment, long index) {
-        PL.invokeExact(id, ObjC.sel("setObject:atIndexedSubscript:"), attachment.getId(), index);
+        PL.invokeExact(id, SET_OBJECT_AT_INDEXED_SUBSCRIPT, attachment.getId(), index);
     }
 }

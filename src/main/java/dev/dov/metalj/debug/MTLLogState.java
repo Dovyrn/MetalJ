@@ -13,6 +13,8 @@ import java.lang.invoke.MethodType;
 import lombok.SneakyThrows;
 
 public class MTLLogState extends NSObject {
+    private static final long ADD_LOG_HANDLER = ObjC.sel("addLogHandler:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     public interface Handler {
@@ -44,6 +46,6 @@ public class MTLLogState extends NSObject {
 
     @SneakyThrows
     public void addLogHandler(Block handler) {
-        P.invokeExact(id, ObjC.sel("addLogHandler:"), handler.address());
+        P.invokeExact(id, ADD_LOG_HANDLER, handler.address());
     }
 }

@@ -7,6 +7,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLStructType extends MTLType {
+    private static final long MEMBER_BY_NAME = ObjC.sel("memberByName:");
+    private static final long MEMBERS = ObjC.sel("members");
+
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
 
     private MTLStructType(long id) {
@@ -18,11 +21,11 @@ public class MTLStructType extends MTLType {
     }
 
     public NSArray members() {
-        return NSArray.of(sendPtr(id, "members"));
+        return NSArray.of(sendPtr(id, MEMBERS));
     }
 
     @SneakyThrows
     public MTLStructMember memberByName(NSString name) {
-        return MTLStructMember.of((long) P_P.invokeExact(id, ObjC.sel("memberByName:"), name.getId()));
+        return MTLStructMember.of((long) P_P.invokeExact(id, MEMBER_BY_NAME, name.getId()));
     }
 }

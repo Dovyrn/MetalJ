@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.Test;
 
 class ObjCTest {
+    private static final long INIT = ObjC.sel("init");
+
     @Test
     void string() {
         assertEquals("hello metal", NSString.stringWithUTF8String("hello metal").UTF8String());
@@ -21,7 +23,7 @@ class ObjCTest {
 
     @Test
     void object() {
-        long object = NSObject.sendPtr(NSObject.alloc("NSObject"), "init");
+        long object = NSObject.sendPtr(NSObject.alloc("NSObject"), INIT);
         assertTrue(new NSObject(object) {}.description().startsWith("<NSObject"));
     }
 

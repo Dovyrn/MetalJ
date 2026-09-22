@@ -9,6 +9,16 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLFunction extends NSObject {
+    private static final long DEVICE = ObjC.sel("device");
+    private static final long FUNCTION_TYPE = ObjC.sel("functionType");
+    private static final long LABEL = ObjC.sel("label");
+    private static final long NAME = ObjC.sel("name");
+    private static final long NEW_ARGUMENT_ENCODER_WITH_BUFFER_INDEX = ObjC.sel("newArgumentEncoderWithBufferIndex:");
+    private static final long OPTIONS = ObjC.sel("options");
+    private static final long PATCH_CONTROL_POINT_COUNT = ObjC.sel("patchControlPointCount");
+    private static final long PATCH_TYPE = ObjC.sel("patchType");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle P_L = handle(ObjC.PTR, ObjC.LONG);
 
@@ -21,40 +31,40 @@ public class MTLFunction extends NSObject {
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 
     public MTLDevice device() {
-        return MTLDevice.of(sendPtr(id, "device"));
+        return MTLDevice.of(sendPtr(id, DEVICE));
     }
 
     public long functionType() {
-        return sendLong(id, "functionType");
+        return sendLong(id, FUNCTION_TYPE);
     }
 
     public NSString name() {
-        return NSString.of(sendPtr(id, "name"));
+        return NSString.of(sendPtr(id, NAME));
     }
 
     public long patchType() {
-        return sendLong(id, "patchType");
+        return sendLong(id, PATCH_TYPE);
     }
 
     public long patchControlPointCount() {
-        return sendLong(id, "patchControlPointCount");
+        return sendLong(id, PATCH_CONTROL_POINT_COUNT);
     }
 
     public long options() {
-        return sendLong(id, "options");
+        return sendLong(id, OPTIONS);
     }
 
     @SneakyThrows
     public MTLArgumentEncoder newArgumentEncoderWithBufferIndex(long index) {
-        return MTLArgumentEncoder.of((long) P_L.invokeExact(id, ObjC.sel("newArgumentEncoderWithBufferIndex:"), index));
+        return MTLArgumentEncoder.of((long) P_L.invokeExact(id, NEW_ARGUMENT_ENCODER_WITH_BUFFER_INDEX, index));
     }
 }

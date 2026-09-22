@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderPassColorAttachmentDescriptorArray extends NSObject {
+    private static final long OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("objectAtIndexedSubscript:");
+    private static final long SET_OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("setObject:atIndexedSubscript:");
+
     private static final MethodHandle AT = handle(ObjC.PTR, ObjC.LONG);
     private static final MethodHandle SET = handle(null, ObjC.PTR, ObjC.LONG);
 
@@ -19,11 +22,11 @@ public class MTLRenderPassColorAttachmentDescriptorArray extends NSObject {
 
     @SneakyThrows
     public MTLRenderPassColorAttachmentDescriptor objectAtIndexedSubscript(long attachmentIndex) {
-        return MTLRenderPassColorAttachmentDescriptor.of((long) AT.invokeExact(id, ObjC.sel("objectAtIndexedSubscript:"), attachmentIndex));
+        return MTLRenderPassColorAttachmentDescriptor.of((long) AT.invokeExact(id, OBJECT_AT_INDEXED_SUBSCRIPT, attachmentIndex));
     }
 
     @SneakyThrows
     public void setObject(MTLRenderPassColorAttachmentDescriptor attachment, long attachmentIndex) {
-        SET.invokeExact(id, ObjC.sel("setObject:atIndexedSubscript:"), attachment.getId(), attachmentIndex);
+        SET.invokeExact(id, SET_OBJECT_AT_INDEXED_SUBSCRIPT, attachment.getId(), attachmentIndex);
     }
 }

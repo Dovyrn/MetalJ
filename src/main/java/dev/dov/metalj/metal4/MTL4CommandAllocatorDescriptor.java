@@ -7,6 +7,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4CommandAllocatorDescriptor extends NSObject {
+    private static final long MTL_4_COMMAND_ALLOCATOR_DESCRIPTOR = ObjC.cls("MTL4CommandAllocatorDescriptor");
+
+    private static final long LABEL = ObjC.sel("label");
+    private static final long NEW = ObjC.sel("new");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTL4CommandAllocatorDescriptor(long id) {
@@ -18,15 +24,15 @@ public class MTL4CommandAllocatorDescriptor extends NSObject {
     }
 
     public static MTL4CommandAllocatorDescriptor new_() {
-        return new MTL4CommandAllocatorDescriptor(sendPtr(ObjC.cls("MTL4CommandAllocatorDescriptor"), "new"));
+        return new MTL4CommandAllocatorDescriptor(sendPtr(MTL_4_COMMAND_ALLOCATOR_DESCRIPTOR, NEW));
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 }

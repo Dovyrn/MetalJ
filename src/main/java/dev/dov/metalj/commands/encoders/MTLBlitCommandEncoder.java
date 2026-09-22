@@ -16,6 +16,24 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLBlitCommandEncoder extends MTLCommandEncoder {
+    private static final long COPY_FROM_BUFFER_SOURCE_OFFSET_TO_BUFFER_DESTINATION_OFFSET_SIZE = ObjC.sel("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:");
+    private static final long COPY_FROM_TEXTURE_TO_TEXTURE = ObjC.sel("copyFromTexture:toTexture:");
+    private static final long COPY_INDIRECT_COMMAND_BUFFER_SOURCE_RANGE_DESTINATION_DESTINATION_INDEX = ObjC.sel("copyIndirectCommandBuffer:sourceRange:destination:destinationIndex:");
+    private static final long FILL_BUFFER_RANGE_VALUE = ObjC.sel("fillBuffer:range:value:");
+    private static final long GENERATE_MIPMAPS_FOR_TEXTURE = ObjC.sel("generateMipmapsForTexture:");
+    private static final long OPTIMIZE_CONTENTS_FOR_CPU_ACCESS = ObjC.sel("optimizeContentsForCPUAccess:");
+    private static final long OPTIMIZE_CONTENTS_FOR_CPU_ACCESS_SLICE_LEVEL = ObjC.sel("optimizeContentsForCPUAccess:slice:level:");
+    private static final long OPTIMIZE_CONTENTS_FOR_GPU_ACCESS = ObjC.sel("optimizeContentsForGPUAccess:");
+    private static final long OPTIMIZE_CONTENTS_FOR_GPU_ACCESS_SLICE_LEVEL = ObjC.sel("optimizeContentsForGPUAccess:slice:level:");
+    private static final long OPTIMIZE_INDIRECT_COMMAND_BUFFER_WITH_RANGE = ObjC.sel("optimizeIndirectCommandBuffer:withRange:");
+    private static final long RESET_COMMANDS_IN_BUFFER_WITH_RANGE = ObjC.sel("resetCommandsInBuffer:withRange:");
+    private static final long RESOLVE_COUNTERS_IN_RANGE_DESTINATION_BUFFER_DESTINATION_OFFSET = ObjC.sel("resolveCounters:inRange:destinationBuffer:destinationOffset:");
+    private static final long SAMPLE_COUNTERS_IN_BUFFER_AT_SAMPLE_INDEX_WITH_BARRIER = ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:");
+    private static final long SYNCHRONIZE_RESOURCE = ObjC.sel("synchronizeResource:");
+    private static final long SYNCHRONIZE_TEXTURE_SLICE_LEVEL = ObjC.sel("synchronizeTexture:slice:level:");
+    private static final long UPDATE_FENCE = ObjC.sel("updateFence:");
+    private static final long WAIT_FOR_FENCE = ObjC.sel("waitForFence:");
+
     private static final MethodHandle L = handle(null, ObjC.PTR);
     private static final MethodHandle LL = handle(null, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle LLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG);
@@ -51,12 +69,12 @@ public class MTLBlitCommandEncoder extends MTLCommandEncoder {
 
     @SneakyThrows
     public void synchronizeResource(MTLResource resource) {
-        L.invokeExact(id, ObjC.sel("synchronizeResource:"), resource.getId());
+        L.invokeExact(id, SYNCHRONIZE_RESOURCE, resource.getId());
     }
 
     @SneakyThrows
     public void synchronizeTexture(MTLTexture texture, long slice, long level) {
-        LLL.invokeExact(id, ObjC.sel("synchronizeTexture:slice:level:"), texture.getId(), slice, level);
+        LLL.invokeExact(id, SYNCHRONIZE_TEXTURE_SLICE_LEVEL, texture.getId(), slice, level);
     }
 
     @SneakyThrows
@@ -112,12 +130,12 @@ public class MTLBlitCommandEncoder extends MTLCommandEncoder {
 
     @SneakyThrows
     public void generateMipmapsForTexture(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("generateMipmapsForTexture:"), texture.getId());
+        L.invokeExact(id, GENERATE_MIPMAPS_FOR_TEXTURE, texture.getId());
     }
 
     @SneakyThrows
     public void fillBuffer(MTLBuffer buffer, MemorySegment range, byte value) {
-        LRB.invokeExact(id, ObjC.sel("fillBuffer:range:value:"), buffer.getId(), range, value);
+        LRB.invokeExact(id, FILL_BUFFER_RANGE_VALUE, buffer.getId(), range, value);
     }
 
     @SneakyThrows
@@ -132,73 +150,73 @@ public class MTLBlitCommandEncoder extends MTLCommandEncoder {
 
     @SneakyThrows
     public void copyFromTexture(MTLTexture sourceTexture, MTLTexture destinationTexture) {
-        LL.invokeExact(id, ObjC.sel("copyFromTexture:toTexture:"), sourceTexture.getId(), destinationTexture.getId());
+        LL.invokeExact(id, COPY_FROM_TEXTURE_TO_TEXTURE, sourceTexture.getId(), destinationTexture.getId());
     }
 
     @SneakyThrows
     public void copyFromBuffer(MTLBuffer sourceBuffer, long sourceOffset, MTLBuffer destinationBuffer,
             long destinationOffset, long size) {
-        LLLLL.invokeExact(id, ObjC.sel("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:"),
+        LLLLL.invokeExact(id, COPY_FROM_BUFFER_SOURCE_OFFSET_TO_BUFFER_DESTINATION_OFFSET_SIZE,
                 sourceBuffer.getId(), sourceOffset, destinationBuffer.getId(), destinationOffset, size);
     }
 
     @SneakyThrows
     public void optimizeContentsForGPUAccess(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("optimizeContentsForGPUAccess:"), texture.getId());
+        L.invokeExact(id, OPTIMIZE_CONTENTS_FOR_GPU_ACCESS, texture.getId());
     }
 
     @SneakyThrows
     public void optimizeContentsForGPUAccess(MTLTexture texture, long slice, long level) {
-        LLL.invokeExact(id, ObjC.sel("optimizeContentsForGPUAccess:slice:level:"), texture.getId(), slice, level);
+        LLL.invokeExact(id, OPTIMIZE_CONTENTS_FOR_GPU_ACCESS_SLICE_LEVEL, texture.getId(), slice, level);
     }
 
     @SneakyThrows
     public void optimizeContentsForCPUAccess(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("optimizeContentsForCPUAccess:"), texture.getId());
+        L.invokeExact(id, OPTIMIZE_CONTENTS_FOR_CPU_ACCESS, texture.getId());
     }
 
     @SneakyThrows
     public void optimizeContentsForCPUAccess(MTLTexture texture, long slice, long level) {
-        LLL.invokeExact(id, ObjC.sel("optimizeContentsForCPUAccess:slice:level:"), texture.getId(), slice, level);
+        LLL.invokeExact(id, OPTIMIZE_CONTENTS_FOR_CPU_ACCESS_SLICE_LEVEL, texture.getId(), slice, level);
     }
 
     @SneakyThrows
     public void resetCommandsInBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("resetCommandsInBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, RESET_COMMANDS_IN_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void copyIndirectCommandBuffer(MTLIndirectCommandBuffer source, MemorySegment sourceRange,
             MTLIndirectCommandBuffer destination, long destinationIndex) {
-        LRLL.invokeExact(id, ObjC.sel("copyIndirectCommandBuffer:sourceRange:destination:destinationIndex:"),
+        LRLL.invokeExact(id, COPY_INDIRECT_COMMAND_BUFFER_SOURCE_RANGE_DESTINATION_DESTINATION_INDEX,
                 source.getId(), sourceRange, destination.getId(), destinationIndex);
     }
 
     @SneakyThrows
     public void optimizeIndirectCommandBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("optimizeIndirectCommandBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, OPTIMIZE_INDIRECT_COMMAND_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void sampleCountersInBuffer(MTLCounterSampleBuffer sampleBuffer, long sampleIndex, boolean barrier) {
-        LLB.invokeExact(id, ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:"), sampleBuffer.getId(),
+        LLB.invokeExact(id, SAMPLE_COUNTERS_IN_BUFFER_AT_SAMPLE_INDEX_WITH_BARRIER, sampleBuffer.getId(),
                 sampleIndex, barrier);
     }
 
     @SneakyThrows
     public void resolveCounters(MTLCounterSampleBuffer sampleBuffer, MemorySegment range,
             MTLBuffer destinationBuffer, long destinationOffset) {
-        LRLL.invokeExact(id, ObjC.sel("resolveCounters:inRange:destinationBuffer:destinationOffset:"),
+        LRLL.invokeExact(id, RESOLVE_COUNTERS_IN_RANGE_DESTINATION_BUFFER_DESTINATION_OFFSET,
                 sampleBuffer.getId(), range, destinationBuffer.getId(), destinationOffset);
     }
 
     @SneakyThrows
     public void updateFence(MTLFence fence) {
-        L.invokeExact(id, ObjC.sel("updateFence:"), fence.getId());
+        L.invokeExact(id, UPDATE_FENCE, fence.getId());
     }
 
     @SneakyThrows
     public void waitForFence(MTLFence fence) {
-        L.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
+        L.invokeExact(id, WAIT_FOR_FENCE, fence.getId());
     }
 }

@@ -9,6 +9,16 @@ import lombok.SneakyThrows;
 
 public class MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor
         extends MTL4AccelerationStructureGeometryDescriptor {
+    private static final long MTL_4_ACCELERATION_STRUCTURE_MOTION_BOUNDING_BOX_GEOMETRY_DESCRIPTOR = ObjC.cls("MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor");
+
+    private static final long BOUNDING_BOX_BUFFERS = ObjC.sel("boundingBoxBuffers");
+    private static final long BOUNDING_BOX_COUNT = ObjC.sel("boundingBoxCount");
+    private static final long BOUNDING_BOX_STRIDE = ObjC.sel("boundingBoxStride");
+    private static final long NEW = ObjC.sel("new");
+    private static final long SET_BOUNDING_BOX_BUFFERS = ObjC.sel("setBoundingBoxBuffers:");
+    private static final long SET_BOUNDING_BOX_COUNT = ObjC.sel("setBoundingBoxCount:");
+    private static final long SET_BOUNDING_BOX_STRIDE = ObjC.sel("setBoundingBoxStride:");
+
     private static final MethodHandle RANGE = handle(null, MTL4BufferRange.LAYOUT);
     private static final MethodHandle R = structHandle(MTL4BufferRange.LAYOUT);
 
@@ -22,34 +32,34 @@ public class MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor
 
     public static MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor new_() {
         return new MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor(
-                sendPtr(ObjC.cls("MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor"), "new"));
+                sendPtr(MTL_4_ACCELERATION_STRUCTURE_MOTION_BOUNDING_BOX_GEOMETRY_DESCRIPTOR, NEW));
     }
 
     @SneakyThrows
     public MemorySegment boundingBoxBuffers(SegmentAllocator allocator) {
-        return (MemorySegment) R.invokeExact(allocator, id, ObjC.sel("boundingBoxBuffers"));
+        return (MemorySegment) R.invokeExact(allocator, id, BOUNDING_BOX_BUFFERS);
     }
 
     @SneakyThrows
     public void setBoundingBoxBuffers(MemorySegment buffers) {
-        RANGE.invokeExact(id, ObjC.sel("setBoundingBoxBuffers:"), buffers);
+        RANGE.invokeExact(id, SET_BOUNDING_BOX_BUFFERS, buffers);
     }
 
     public long boundingBoxStride() {
-        return sendLong(id, "boundingBoxStride");
+        return sendLong(id, BOUNDING_BOX_STRIDE);
     }
 
     @SneakyThrows
     public void setBoundingBoxStride(long stride) {
-        L.invokeExact(id, ObjC.sel("setBoundingBoxStride:"), stride);
+        L.invokeExact(id, SET_BOUNDING_BOX_STRIDE, stride);
     }
 
     public long boundingBoxCount() {
-        return sendLong(id, "boundingBoxCount");
+        return sendLong(id, BOUNDING_BOX_COUNT);
     }
 
     @SneakyThrows
     public void setBoundingBoxCount(long count) {
-        L.invokeExact(id, ObjC.sel("setBoundingBoxCount:"), count);
+        L.invokeExact(id, SET_BOUNDING_BOX_COUNT, count);
     }
 }

@@ -12,6 +12,12 @@ import java.util.function.LongConsumer;
 import lombok.SneakyThrows;
 
 public class MTLSharedEvent extends MTLEvent {
+    private static final long NEW_SHARED_EVENT_HANDLE = ObjC.sel("newSharedEventHandle");
+    private static final long NOTIFY_LISTENER_AT_VALUE_BLOCK = ObjC.sel("notifyListener:atValue:block:");
+    private static final long SET_SIGNALED_VALUE = ObjC.sel("setSignaledValue:");
+    private static final long SIGNALED_VALUE = ObjC.sel("signaledValue");
+    private static final long WAIT_UNTIL_SIGNALED_VALUE_TIMEOUT_MS = ObjC.sel("waitUntilSignaledValue:timeoutMS:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle PLP = handle(null, ObjC.PTR, ObjC.LONG, ObjC.PTR);
     private static final MethodHandle B_LL = handle(ObjC.BOOL, ObjC.LONG, ObjC.LONG);
@@ -25,26 +31,26 @@ public class MTLSharedEvent extends MTLEvent {
     }
 
     public long signaledValue() {
-        return sendLong(id, "signaledValue");
+        return sendLong(id, SIGNALED_VALUE);
     }
 
     @SneakyThrows
     public void setSignaledValue(long value) {
-        L.invokeExact(id, ObjC.sel("setSignaledValue:"), value);
+        L.invokeExact(id, SET_SIGNALED_VALUE, value);
     }
 
     public MTLSharedEventHandle newSharedEventHandle() {
-        return MTLSharedEventHandle.of(sendPtr(id, "newSharedEventHandle"));
+        return MTLSharedEventHandle.of(sendPtr(id, NEW_SHARED_EVENT_HANDLE));
     }
 
     @SneakyThrows
     public void notifyListener(MTLSharedEventListener listener, long value, Block block) {
-        PLP.invokeExact(id, ObjC.sel("notifyListener:atValue:block:"), listener.getId(), value, block.address());
+        PLP.invokeExact(id, NOTIFY_LISTENER_AT_VALUE_BLOCK, listener.getId(), value, block.address());
     }
 
     @SneakyThrows
     public boolean waitUntilSignaledValue(long value, long milliseconds) {
-        return (boolean) B_LL.invokeExact(id, ObjC.sel("waitUntilSignaledValue:timeoutMS:"), value, milliseconds);
+        return (boolean) B_LL.invokeExact(id, WAIT_UNTIL_SIGNALED_VALUE_TIMEOUT_MS, value, milliseconds);
     }
 
     @SneakyThrows

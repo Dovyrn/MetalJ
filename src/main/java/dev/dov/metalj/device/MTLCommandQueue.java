@@ -12,6 +12,16 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLCommandQueue extends NSObject {
+    private static final long ADD_RESIDENCY_SET = ObjC.sel("addResidencySet:");
+    private static final long ADD_RESIDENCY_SETS_COUNT = ObjC.sel("addResidencySets:count:");
+    private static final long COMMAND_BUFFER = ObjC.sel("commandBuffer");
+    private static final long COMMAND_BUFFER_WITH_DESCRIPTOR = ObjC.sel("commandBufferWithDescriptor:");
+    private static final long COMMAND_BUFFER_WITH_UNRETAINED_REFERENCES = ObjC.sel("commandBufferWithUnretainedReferences");
+    private static final long LABEL = ObjC.sel("label");
+    private static final long REMOVE_RESIDENCY_SET = ObjC.sel("removeResidencySet:");
+    private static final long REMOVE_RESIDENCY_SETS_COUNT = ObjC.sel("removeResidencySets:count:");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle P_P = handle(ObjC.PTR, ObjC.PTR);
     private static final MethodHandle AL = handle(null, ValueLayout.ADDRESS, ObjC.LONG);
@@ -25,45 +35,45 @@ public class MTLCommandQueue extends NSObject {
     }
 
     public MTLCommandBuffer commandBuffer() {
-        return MTLCommandBuffer.of(owned(() -> sendPtr(id, "commandBuffer")));
+        return MTLCommandBuffer.of(owned(() -> sendPtr(id, COMMAND_BUFFER)));
     }
 
     @SneakyThrows
     public void addResidencySet(MTLResidencySet set) {
-        P.invokeExact(id, ObjC.sel("addResidencySet:"), set.getId());
+        P.invokeExact(id, ADD_RESIDENCY_SET, set.getId());
     }
 
     @SneakyThrows
     public void addResidencySets(MemorySegment sets, long count) {
-        AL.invokeExact(id, ObjC.sel("addResidencySets:count:"), sets, count);
+        AL.invokeExact(id, ADD_RESIDENCY_SETS_COUNT, sets, count);
     }
 
     @SneakyThrows
     public void removeResidencySet(MTLResidencySet set) {
-        P.invokeExact(id, ObjC.sel("removeResidencySet:"), set.getId());
+        P.invokeExact(id, REMOVE_RESIDENCY_SET, set.getId());
     }
 
     @SneakyThrows
     public void removeResidencySets(MemorySegment sets, long count) {
-        AL.invokeExact(id, ObjC.sel("removeResidencySets:count:"), sets, count);
+        AL.invokeExact(id, REMOVE_RESIDENCY_SETS_COUNT, sets, count);
     }
 
     @SneakyThrows
     public MTLCommandBuffer commandBufferWithDescriptor(MTLCommandBufferDescriptor descriptor) {
-        return MTLCommandBuffer.of(owned(() -> (long) P_P.invokeExact(id, ObjC.sel("commandBufferWithDescriptor:"),
+        return MTLCommandBuffer.of(owned(() -> (long) P_P.invokeExact(id, COMMAND_BUFFER_WITH_DESCRIPTOR,
                 descriptor.getId())));
     }
 
     public MTLCommandBuffer commandBufferWithUnretainedReferences() {
-        return MTLCommandBuffer.of(owned(() -> sendPtr(id, "commandBufferWithUnretainedReferences")));
+        return MTLCommandBuffer.of(owned(() -> sendPtr(id, COMMAND_BUFFER_WITH_UNRETAINED_REFERENCES)));
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 }

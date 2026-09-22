@@ -6,6 +6,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class NSArray extends NSObject {
+    private static final long NS_ARRAY = ObjC.cls("NSArray");
+
+    private static final long ARRAY_WITH_OBJECTS_COUNT = ObjC.sel("arrayWithObjects:count:");
+    private static final long COUNT = ObjC.sel("count");
+    private static final long OBJECT_AT_INDEX = ObjC.sel("objectAtIndex:");
+
     private static final MethodHandle AT = handle(ObjC.PTR, ObjC.LONG);
     private static final MethodHandle WITH = handle(ObjC.PTR, ValueLayout.ADDRESS, ObjC.LONG);
 
@@ -24,18 +30,18 @@ public class NSArray extends NSObject {
             for (int i = 0; i < objects.length; i++) {
                 ids.setAtIndex(ObjC.PTR, i, objects[i].getId());
             }
-            long id = owned(() -> (long) WITH.invokeExact(ObjC.cls("NSArray"), ObjC.sel("arrayWithObjects:count:"),
+            long id = owned(() -> (long) WITH.invokeExact(NS_ARRAY, ARRAY_WITH_OBJECTS_COUNT,
                     ids, (long) objects.length));
             return new NSArray(id);
         }
     }
 
     public long count() {
-        return sendLong(id, "count");
+        return sendLong(id, COUNT);
     }
 
     @SneakyThrows
     public long objectAtIndex(long index) {
-        return (long) AT.invokeExact(id, ObjC.sel("objectAtIndex:"), index);
+        return (long) AT.invokeExact(id, OBJECT_AT_INDEX, index);
     }
 }

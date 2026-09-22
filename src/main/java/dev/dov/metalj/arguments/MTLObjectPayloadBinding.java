@@ -1,6 +1,11 @@
 package dev.dov.metalj.arguments;
+import dev.dov.metalj.objc.ObjC;
+
 
 public class MTLObjectPayloadBinding extends MTLBinding {
+    private static final long OBJECT_PAYLOAD_ALIGNMENT = ObjC.sel("objectPayloadAlignment");
+    private static final long OBJECT_PAYLOAD_DATA_SIZE = ObjC.sel("objectPayloadDataSize");
+
     private MTLObjectPayloadBinding(long id) {
         super(id);
     }
@@ -10,10 +15,10 @@ public class MTLObjectPayloadBinding extends MTLBinding {
     }
 
     public long objectPayloadAlignment() {
-        return sendLong(id, "objectPayloadAlignment");
+        return sendLong(id, OBJECT_PAYLOAD_ALIGNMENT);
     }
 
     public long objectPayloadDataSize() {
-        return sendLong(id, "objectPayloadDataSize");
+        return sendLong(id, OBJECT_PAYLOAD_DATA_SIZE);
     }
 }

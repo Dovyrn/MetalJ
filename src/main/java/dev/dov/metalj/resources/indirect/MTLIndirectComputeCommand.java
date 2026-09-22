@@ -11,6 +11,17 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIndirectComputeCommand extends NSObject {
+    private static final long CLEAR_BARRIER = ObjC.sel("clearBarrier");
+    private static final long CONCURRENT_DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP = ObjC.sel("concurrentDispatchThreadgroups:threadsPerThreadgroup:");
+    private static final long CONCURRENT_DISPATCH_THREADS_THREADS_PER_THREADGROUP = ObjC.sel("concurrentDispatchThreads:threadsPerThreadgroup:");
+    private static final long RESET = ObjC.sel("reset");
+    private static final long SET_BARRIER = ObjC.sel("setBarrier");
+    private static final long SET_COMPUTE_PIPELINE_STATE = ObjC.sel("setComputePipelineState:");
+    private static final long SET_IMAGEBLOCK_WIDTH_HEIGHT = ObjC.sel("setImageblockWidth:height:");
+    private static final long SET_KERNEL_BUFFER_OFFSET_AT_INDEX = ObjC.sel("setKernelBuffer:offset:atIndex:");
+    private static final long SET_STAGE_IN_REGION = ObjC.sel("setStageInRegion:");
+    private static final long SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX = ObjC.sel("setThreadgroupMemoryLength:atIndex:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle LL = handle(null, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle LLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG);
@@ -27,50 +38,50 @@ public class MTLIndirectComputeCommand extends NSObject {
 
     @SneakyThrows
     public void setComputePipelineState(MTLComputePipelineState pipelineState) {
-        L.invokeExact(id, ObjC.sel("setComputePipelineState:"), pipelineState.getId());
+        L.invokeExact(id, SET_COMPUTE_PIPELINE_STATE, pipelineState.getId());
     }
 
     @SneakyThrows
     public void setKernelBuffer(MTLBuffer buffer, long offset, long index) {
-        LLL.invokeExact(id, ObjC.sel("setKernelBuffer:offset:atIndex:"), buffer.getId(), offset, index);
+        LLL.invokeExact(id, SET_KERNEL_BUFFER_OFFSET_AT_INDEX, buffer.getId(), offset, index);
     }
 
     @SneakyThrows
     public void concurrentDispatchThreadgroups(MemorySegment threadgroupsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("concurrentDispatchThreadgroups:threadsPerThreadgroup:"), threadgroupsPerGrid,
+        SS.invokeExact(id, CONCURRENT_DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP, threadgroupsPerGrid,
                 threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void concurrentDispatchThreads(MemorySegment threadsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("concurrentDispatchThreads:threadsPerThreadgroup:"), threadsPerGrid,
+        SS.invokeExact(id, CONCURRENT_DISPATCH_THREADS_THREADS_PER_THREADGROUP, threadsPerGrid,
                 threadsPerThreadgroup);
     }
 
     public void setBarrier() {
-        sendVoid(id, "setBarrier");
+        sendVoid(id, SET_BARRIER);
     }
 
     public void clearBarrier() {
-        sendVoid(id, "clearBarrier");
+        sendVoid(id, CLEAR_BARRIER);
     }
 
     @SneakyThrows
     public void setImageblockWidth(long width, long height) {
-        LL.invokeExact(id, ObjC.sel("setImageblockWidth:height:"), width, height);
+        LL.invokeExact(id, SET_IMAGEBLOCK_WIDTH_HEIGHT, width, height);
     }
 
     public void reset() {
-        sendVoid(id, "reset");
+        sendVoid(id, RESET);
     }
 
     @SneakyThrows
     public void setThreadgroupMemoryLength(long length, long index) {
-        LL.invokeExact(id, ObjC.sel("setThreadgroupMemoryLength:atIndex:"), length, index);
+        LL.invokeExact(id, SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX, length, index);
     }
 
     @SneakyThrows
     public void setStageInRegion(MemorySegment region) {
-        REGION.invokeExact(id, ObjC.sel("setStageInRegion:"), region);
+        REGION.invokeExact(id, SET_STAGE_IN_REGION, region);
     }
 }

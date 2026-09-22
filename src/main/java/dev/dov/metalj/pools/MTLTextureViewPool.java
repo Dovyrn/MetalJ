@@ -9,6 +9,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLTextureViewPool extends MTLResourceViewPool {
+    private static final long SET_TEXTURE_VIEW_AT_INDEX = ObjC.sel("setTextureView:atIndex:");
+    private static final long SET_TEXTURE_VIEW_DESCRIPTOR_AT_INDEX = ObjC.sel("setTextureView:descriptor:atIndex:");
+
     private static final MethodHandle L_PL = handle(ObjC.LONG, ObjC.PTR, ObjC.LONG);
     private static final MethodHandle L_PPL = handle(ObjC.LONG, ObjC.PTR, ObjC.PTR, ObjC.LONG);
     private static final MethodHandle L_PPLLL = handle(ObjC.LONG, ObjC.PTR, ObjC.PTR, ObjC.LONG, ObjC.LONG,
@@ -24,12 +27,12 @@ public class MTLTextureViewPool extends MTLResourceViewPool {
 
     @SneakyThrows
     public long setTextureView(MTLTexture texture, long index) {
-        return (long) L_PL.invokeExact(id, ObjC.sel("setTextureView:atIndex:"), texture.getId(), index);
+        return (long) L_PL.invokeExact(id, SET_TEXTURE_VIEW_AT_INDEX, texture.getId(), index);
     }
 
     @SneakyThrows
     public long setTextureView(MTLTexture texture, MTLTextureViewDescriptor descriptor, long index) {
-        return (long) L_PPL.invokeExact(id, ObjC.sel("setTextureView:descriptor:atIndex:"), texture.getId(),
+        return (long) L_PPL.invokeExact(id, SET_TEXTURE_VIEW_DESCRIPTOR_AT_INDEX, texture.getId(),
                 descriptor.getId(), index);
     }
 

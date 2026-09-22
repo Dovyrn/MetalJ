@@ -7,6 +7,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLBinaryArchiveDescriptor extends NSObject {
+    private static final long MTL_BINARY_ARCHIVE_DESCRIPTOR = ObjC.cls("MTLBinaryArchiveDescriptor");
+
+    private static final long NEW = ObjC.sel("new");
+    private static final long SET_URL = ObjC.sel("setUrl:");
+    private static final long URL = ObjC.sel("url");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTLBinaryArchiveDescriptor(long id) {
@@ -18,15 +24,15 @@ public class MTLBinaryArchiveDescriptor extends NSObject {
     }
 
     public static MTLBinaryArchiveDescriptor new_() {
-        return new MTLBinaryArchiveDescriptor(sendPtr(ObjC.cls("MTLBinaryArchiveDescriptor"), "new"));
+        return new MTLBinaryArchiveDescriptor(sendPtr(MTL_BINARY_ARCHIVE_DESCRIPTOR, NEW));
     }
 
     public NSURL url() {
-        return NSURL.of(sendPtr(id, "url"));
+        return NSURL.of(sendPtr(id, URL));
     }
 
     @SneakyThrows
     public void setUrl(NSURL url) {
-        P.invokeExact(id, ObjC.sel("setUrl:"), url.getId());
+        P.invokeExact(id, SET_URL, url.getId());
     }
 }

@@ -1,6 +1,5 @@
 package dev.dov.metalj.objc;
 
-import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -9,11 +8,15 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 public class NSObject {
-    private static final FunctionDescriptor VOID = ObjC.of(null);
-    private static final FunctionDescriptor PTR = ObjC.of(ObjC.PTR);
-    private static final FunctionDescriptor LONG = ObjC.of(ObjC.LONG);
-    private static final FunctionDescriptor BOOL = ObjC.of(ObjC.BOOL);
-    private static final FunctionDescriptor FLOAT = ObjC.of(ObjC.FLOAT);
+    private static final MethodHandle VOID = ObjC.send(ObjC.of(null));
+    private static final MethodHandle PTR = ObjC.send(ObjC.of(ObjC.PTR));
+    private static final MethodHandle LONG = ObjC.send(ObjC.of(ObjC.LONG));
+    private static final MethodHandle BOOL = ObjC.send(ObjC.of(ObjC.BOOL));
+    private static final MethodHandle FLOAT = ObjC.send(ObjC.of(ObjC.FLOAT));
+    private static final long ALLOC = ObjC.sel("alloc");
+    private static final long RETAIN = ObjC.sel("retain");
+    private static final long RELEASE = ObjC.sel("release");
+    private static final long DESCRIPTION = ObjC.sel("description");
 
     @Getter
     protected final long id;
@@ -23,7 +26,7 @@ public class NSObject {
     }
 
     public static long alloc(String cls) {
-        return sendPtr(ObjC.cls(cls), "alloc");
+        return sendPtr(ObjC.cls(cls), ALLOC);
     }
 
     public boolean isNull() {
@@ -31,16 +34,16 @@ public class NSObject {
     }
 
     public NSObject retain() {
-        sendPtr(id, "retain");
+        sendPtr(id, RETAIN);
         return this;
     }
 
     public void release() {
-        sendVoid(id, "release");
+        sendVoid(id, RELEASE);
     }
 
     public String description() {
-        return drained(() -> NSString.of(sendPtr(id, "description")).UTF8String());
+        return drained(() -> NSString.of(sendPtr(id, DESCRIPTION)).UTF8String());
     }
 
     public interface Call {
@@ -53,7 +56,7 @@ public class NSObject {
         try {
             long created = call.get();
             if (created != 0) {
-                sendPtr(created, "retain");
+                sendPtr(created, RETAIN);
             }
             return created;
         } finally {
@@ -71,28 +74,28 @@ public class NSObject {
     }
 
     @SneakyThrows
-    public static void sendVoid(long target, String selector) {
-        ObjC.send(VOID).invokeExact(target, ObjC.sel(selector));
+    public static void sendVoid(long target, long selector) {
+        VOID.invokeExact(target, selector);
     }
 
     @SneakyThrows
-    public static long sendPtr(long target, String selector) {
-        return (long) ObjC.send(PTR).invokeExact(target, ObjC.sel(selector));
+    public static long sendPtr(long target, long selector) {
+        return (long) PTR.invokeExact(target, selector);
     }
 
     @SneakyThrows
-    public static long sendLong(long target, String selector) {
-        return (long) ObjC.send(LONG).invokeExact(target, ObjC.sel(selector));
+    public static long sendLong(long target, long selector) {
+        return (long) LONG.invokeExact(target, selector);
     }
 
     @SneakyThrows
-    public static float sendFloat(long target, String selector) {
-        return (float) ObjC.send(FLOAT).invokeExact(target, ObjC.sel(selector));
+    public static float sendFloat(long target, long selector) {
+        return (float) FLOAT.invokeExact(target, selector);
     }
 
     @SneakyThrows
-    public static boolean sendBool(long target, String selector) {
-        return (boolean) ObjC.send(BOOL).invokeExact(target, ObjC.sel(selector));
+    public static boolean sendBool(long target, long selector) {
+        return (boolean) BOOL.invokeExact(target, selector);
     }
 
     public static MethodHandle handle(MemoryLayout result, MemoryLayout... args) {

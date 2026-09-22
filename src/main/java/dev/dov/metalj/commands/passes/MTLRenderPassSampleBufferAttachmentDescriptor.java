@@ -7,6 +7,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderPassSampleBufferAttachmentDescriptor extends NSObject {
+    private static final long SET_END_OF_FRAGMENT_SAMPLE_INDEX = ObjC.sel("setEndOfFragmentSampleIndex:");
+    private static final long SET_END_OF_VERTEX_SAMPLE_INDEX = ObjC.sel("setEndOfVertexSampleIndex:");
+    private static final long SET_SAMPLE_BUFFER = ObjC.sel("setSampleBuffer:");
+    private static final long SET_START_OF_FRAGMENT_SAMPLE_INDEX = ObjC.sel("setStartOfFragmentSampleIndex:");
+    private static final long SET_START_OF_VERTEX_SAMPLE_INDEX = ObjC.sel("setStartOfVertexSampleIndex:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
 
     private MTLRenderPassSampleBufferAttachmentDescriptor(long id) {
@@ -19,26 +25,26 @@ public class MTLRenderPassSampleBufferAttachmentDescriptor extends NSObject {
 
     @SneakyThrows
     public void setSampleBuffer(MTLCounterSampleBuffer sampleBuffer) {
-        L.invokeExact(id, ObjC.sel("setSampleBuffer:"), sampleBuffer.getId());
+        L.invokeExact(id, SET_SAMPLE_BUFFER, sampleBuffer.getId());
     }
 
     @SneakyThrows
     public void setStartOfVertexSampleIndex(long index) {
-        L.invokeExact(id, ObjC.sel("setStartOfVertexSampleIndex:"), index);
+        L.invokeExact(id, SET_START_OF_VERTEX_SAMPLE_INDEX, index);
     }
 
     @SneakyThrows
     public void setEndOfVertexSampleIndex(long index) {
-        L.invokeExact(id, ObjC.sel("setEndOfVertexSampleIndex:"), index);
+        L.invokeExact(id, SET_END_OF_VERTEX_SAMPLE_INDEX, index);
     }
 
     @SneakyThrows
     public void setStartOfFragmentSampleIndex(long index) {
-        L.invokeExact(id, ObjC.sel("setStartOfFragmentSampleIndex:"), index);
+        L.invokeExact(id, SET_START_OF_FRAGMENT_SAMPLE_INDEX, index);
     }
 
     @SneakyThrows
     public void setEndOfFragmentSampleIndex(long index) {
-        L.invokeExact(id, ObjC.sel("setEndOfFragmentSampleIndex:"), index);
+        L.invokeExact(id, SET_END_OF_FRAGMENT_SAMPLE_INDEX, index);
     }
 }

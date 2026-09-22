@@ -20,6 +20,36 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
+    private static final long BUILD_ACCELERATION_STRUCTURE_DESCRIPTOR_SCRATCH_BUFFER = ObjC.sel("buildAccelerationStructure:descriptor:scratchBuffer:");
+    private static final long COPY_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE = ObjC.sel("copyAccelerationStructure:toAccelerationStructure:");
+    private static final long COPY_AND_COMPACT_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE = ObjC.sel("copyAndCompactAccelerationStructure:toAccelerationStructure:");
+    private static final long COPY_FROM_BUFFER_SOURCE_OFFSET_TO_BUFFER_DESTINATION_OFFSET_SIZE = ObjC.sel("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:");
+    private static final long COPY_FROM_TEXTURE_TO_TEXTURE = ObjC.sel("copyFromTexture:toTexture:");
+    private static final long COPY_INDIRECT_COMMAND_BUFFER_SOURCE_RANGE_DESTINATION_DESTINATION_INDEX = ObjC.sel("copyIndirectCommandBuffer:sourceRange:destination:destinationIndex:");
+    private static final long DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreadgroups:threadsPerThreadgroup:");
+    private static final long DISPATCH_THREADGROUPS_WITH_INDIRECT_BUFFER_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreadgroupsWithIndirectBuffer:threadsPerThreadgroup:");
+    private static final long DISPATCH_THREADS_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreads:threadsPerThreadgroup:");
+    private static final long DISPATCH_THREADS_WITH_INDIRECT_BUFFER = ObjC.sel("dispatchThreadsWithIndirectBuffer:");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER = ObjC.sel("executeCommandsInBuffer:indirectBuffer:");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE = ObjC.sel("executeCommandsInBuffer:withRange:");
+    private static final long FILL_BUFFER_RANGE_VALUE = ObjC.sel("fillBuffer:range:value:");
+    private static final long GENERATE_MIPMAPS_FOR_TEXTURE = ObjC.sel("generateMipmapsForTexture:");
+    private static final long OPTIMIZE_CONTENTS_FOR_CPU_ACCESS = ObjC.sel("optimizeContentsForCPUAccess:");
+    private static final long OPTIMIZE_CONTENTS_FOR_CPU_ACCESS_SLICE_LEVEL = ObjC.sel("optimizeContentsForCPUAccess:slice:level:");
+    private static final long OPTIMIZE_CONTENTS_FOR_GPU_ACCESS = ObjC.sel("optimizeContentsForGPUAccess:");
+    private static final long OPTIMIZE_CONTENTS_FOR_GPU_ACCESS_SLICE_LEVEL = ObjC.sel("optimizeContentsForGPUAccess:slice:level:");
+    private static final long OPTIMIZE_INDIRECT_COMMAND_BUFFER_WITH_RANGE = ObjC.sel("optimizeIndirectCommandBuffer:withRange:");
+    private static final long REFIT_ACCELERATION_STRUCTURE_DESCRIPTOR_DESTINATION_SCRATCH_BUFFER = ObjC.sel("refitAccelerationStructure:descriptor:destination:scratchBuffer:");
+    private static final long REFIT_ACCELERATION_STRUCTURE_DESCRIPTOR_DESTINATION_SCRATCH_BUFFER_OPTIONS = ObjC.sel("refitAccelerationStructure:descriptor:destination:scratchBuffer:options:");
+    private static final long RESET_COMMANDS_IN_BUFFER_WITH_RANGE = ObjC.sel("resetCommandsInBuffer:withRange:");
+    private static final long SET_ARGUMENT_TABLE = ObjC.sel("setArgumentTable:");
+    private static final long SET_COMPUTE_PIPELINE_STATE = ObjC.sel("setComputePipelineState:");
+    private static final long SET_IMAGEBLOCK_WIDTH_HEIGHT = ObjC.sel("setImageblockWidth:height:");
+    private static final long SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX = ObjC.sel("setThreadgroupMemoryLength:atIndex:");
+    private static final long STAGES = ObjC.sel("stages");
+    private static final long WRITE_COMPACTED_ACCELERATION_STRUCTURE_SIZE_TO_BUFFER = ObjC.sel("writeCompactedAccelerationStructureSize:toBuffer:");
+    private static final long WRITE_TIMESTAMP_WITH_GRANULARITY_INTO_HEAP_AT_INDEX = ObjC.sel("writeTimestampWithGranularity:intoHeap:atIndex:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle LL = handle(null, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle LLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG);
@@ -58,65 +88,65 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     }
 
     public long stages() {
-        return sendLong(id, "stages");
+        return sendLong(id, STAGES);
     }
 
     @SneakyThrows
     public void setComputePipelineState(MTLComputePipelineState state) {
-        L.invokeExact(id, ObjC.sel("setComputePipelineState:"), state.getId());
+        L.invokeExact(id, SET_COMPUTE_PIPELINE_STATE, state.getId());
     }
 
     @SneakyThrows
     public void setArgumentTable(MTL4ArgumentTable table) {
-        L.invokeExact(id, ObjC.sel("setArgumentTable:"), table.getId());
+        L.invokeExact(id, SET_ARGUMENT_TABLE, table.getId());
     }
 
     @SneakyThrows
     public void setThreadgroupMemoryLength(long length, long index) {
-        LL.invokeExact(id, ObjC.sel("setThreadgroupMemoryLength:atIndex:"), length, index);
+        LL.invokeExact(id, SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX, length, index);
     }
 
     @SneakyThrows
     public void setImageblockWidth(long width, long height) {
-        LL.invokeExact(id, ObjC.sel("setImageblockWidth:height:"), width, height);
+        LL.invokeExact(id, SET_IMAGEBLOCK_WIDTH_HEIGHT, width, height);
     }
 
     @SneakyThrows
     public void dispatchThreads(MemorySegment threadsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("dispatchThreads:threadsPerThreadgroup:"), threadsPerGrid,
+        SS.invokeExact(id, DISPATCH_THREADS_THREADS_PER_THREADGROUP, threadsPerGrid,
                 threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void dispatchThreadgroups(MemorySegment threadgroupsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("dispatchThreadgroups:threadsPerThreadgroup:"), threadgroupsPerGrid,
+        SS.invokeExact(id, DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP, threadgroupsPerGrid,
                 threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void dispatchThreadgroupsWithIndirectBuffer(long indirectBuffer, MemorySegment threadsPerThreadgroup) {
-        LS.invokeExact(id, ObjC.sel("dispatchThreadgroupsWithIndirectBuffer:threadsPerThreadgroup:"), indirectBuffer,
+        LS.invokeExact(id, DISPATCH_THREADGROUPS_WITH_INDIRECT_BUFFER_THREADS_PER_THREADGROUP, indirectBuffer,
                 threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void dispatchThreadsWithIndirectBuffer(long indirectBuffer) {
-        L.invokeExact(id, ObjC.sel("dispatchThreadsWithIndirectBuffer:"), indirectBuffer);
+        L.invokeExact(id, DISPATCH_THREADS_WITH_INDIRECT_BUFFER, indirectBuffer);
     }
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("executeCommandsInBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, long indirectBuffer) {
-        LL.invokeExact(id, ObjC.sel("executeCommandsInBuffer:indirectBuffer:"), buffer.getId(), indirectBuffer);
+        LL.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER, buffer.getId(), indirectBuffer);
     }
 
     @SneakyThrows
     public void copyFromTexture(MTLTexture source, MTLTexture destination) {
-        LL.invokeExact(id, ObjC.sel("copyFromTexture:toTexture:"), source.getId(), destination.getId());
+        LL.invokeExact(id, COPY_FROM_TEXTURE_TO_TEXTURE, source.getId(), destination.getId());
     }
 
     @SneakyThrows
@@ -161,7 +191,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     @SneakyThrows
     public void copyFromBuffer(MTLBuffer source, long sourceOffset, MTLBuffer destination, long destinationOffset,
             long size) {
-        LLLLL.invokeExact(id, ObjC.sel("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:"),
+        LLLLL.invokeExact(id, COPY_FROM_BUFFER_SOURCE_OFFSET_TO_BUFFER_DESTINATION_OFFSET_SIZE,
                 source.getId(), sourceOffset, destination.getId(), destinationOffset, size);
     }
 
@@ -196,55 +226,55 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
 
     @SneakyThrows
     public void generateMipmapsForTexture(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("generateMipmapsForTexture:"), texture.getId());
+        L.invokeExact(id, GENERATE_MIPMAPS_FOR_TEXTURE, texture.getId());
     }
 
     @SneakyThrows
     public void fillBuffer(MTLBuffer buffer, MemorySegment range, byte value) {
-        LRB.invokeExact(id, ObjC.sel("fillBuffer:range:value:"), buffer.getId(), range, value);
+        LRB.invokeExact(id, FILL_BUFFER_RANGE_VALUE, buffer.getId(), range, value);
     }
 
     @SneakyThrows
     public void optimizeContentsForGPUAccess(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("optimizeContentsForGPUAccess:"), texture.getId());
+        L.invokeExact(id, OPTIMIZE_CONTENTS_FOR_GPU_ACCESS, texture.getId());
     }
 
     @SneakyThrows
     public void optimizeContentsForGPUAccess(MTLTexture texture, long slice, long level) {
-        LLL.invokeExact(id, ObjC.sel("optimizeContentsForGPUAccess:slice:level:"), texture.getId(), slice, level);
+        LLL.invokeExact(id, OPTIMIZE_CONTENTS_FOR_GPU_ACCESS_SLICE_LEVEL, texture.getId(), slice, level);
     }
 
     @SneakyThrows
     public void optimizeContentsForCPUAccess(MTLTexture texture) {
-        L.invokeExact(id, ObjC.sel("optimizeContentsForCPUAccess:"), texture.getId());
+        L.invokeExact(id, OPTIMIZE_CONTENTS_FOR_CPU_ACCESS, texture.getId());
     }
 
     @SneakyThrows
     public void optimizeContentsForCPUAccess(MTLTexture texture, long slice, long level) {
-        LLL.invokeExact(id, ObjC.sel("optimizeContentsForCPUAccess:slice:level:"), texture.getId(), slice, level);
+        LLL.invokeExact(id, OPTIMIZE_CONTENTS_FOR_CPU_ACCESS_SLICE_LEVEL, texture.getId(), slice, level);
     }
 
     @SneakyThrows
     public void resetCommandsInBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("resetCommandsInBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, RESET_COMMANDS_IN_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void copyIndirectCommandBuffer(MTLIndirectCommandBuffer source, MemorySegment sourceRange,
             MTLIndirectCommandBuffer destination, long destinationIndex) {
-        LRLL.invokeExact(id, ObjC.sel("copyIndirectCommandBuffer:sourceRange:destination:destinationIndex:"),
+        LRLL.invokeExact(id, COPY_INDIRECT_COMMAND_BUFFER_SOURCE_RANGE_DESTINATION_DESTINATION_INDEX,
                 source.getId(), sourceRange, destination.getId(), destinationIndex);
     }
 
     @SneakyThrows
     public void optimizeIndirectCommandBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("optimizeIndirectCommandBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, OPTIMIZE_INDIRECT_COMMAND_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void buildAccelerationStructure(MTLAccelerationStructure structure,
             MTL4AccelerationStructureDescriptor descriptor, MemorySegment scratch) {
-        LLB.invokeExact(id, ObjC.sel("buildAccelerationStructure:descriptor:scratchBuffer:"), structure.getId(),
+        LLB.invokeExact(id, BUILD_ACCELERATION_STRUCTURE_DESCRIPTOR_SCRATCH_BUFFER, structure.getId(),
                 descriptor.getId(), scratch);
     }
 
@@ -252,7 +282,7 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void refitAccelerationStructure(MTLAccelerationStructure source,
             MTL4AccelerationStructureDescriptor descriptor, MTLAccelerationStructure destination,
             MemorySegment scratch) {
-        LLLB.invokeExact(id, ObjC.sel("refitAccelerationStructure:descriptor:destination:scratchBuffer:"),
+        LLLB.invokeExact(id, REFIT_ACCELERATION_STRUCTURE_DESCRIPTOR_DESTINATION_SCRATCH_BUFFER,
                 source.getId(), descriptor.getId(), destination.getId(), scratch);
     }
 
@@ -260,31 +290,31 @@ public class MTL4ComputeCommandEncoder extends MTL4CommandEncoder {
     public void refitAccelerationStructure(MTLAccelerationStructure source,
             MTL4AccelerationStructureDescriptor descriptor, MTLAccelerationStructure destination,
             MemorySegment scratch, long options) {
-        LLLBL.invokeExact(id, ObjC.sel("refitAccelerationStructure:descriptor:destination:scratchBuffer:options:"),
+        LLLBL.invokeExact(id, REFIT_ACCELERATION_STRUCTURE_DESCRIPTOR_DESTINATION_SCRATCH_BUFFER_OPTIONS,
                 source.getId(), descriptor.getId(), destination.getId(), scratch, options);
     }
 
     @SneakyThrows
     public void copyAccelerationStructure(MTLAccelerationStructure source, MTLAccelerationStructure destination) {
-        LL.invokeExact(id, ObjC.sel("copyAccelerationStructure:toAccelerationStructure:"), source.getId(),
+        LL.invokeExact(id, COPY_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE, source.getId(),
                 destination.getId());
     }
 
     @SneakyThrows
     public void writeCompactedAccelerationStructureSize(MTLAccelerationStructure structure, MemorySegment buffer) {
-        LB.invokeExact(id, ObjC.sel("writeCompactedAccelerationStructureSize:toBuffer:"), structure.getId(), buffer);
+        LB.invokeExact(id, WRITE_COMPACTED_ACCELERATION_STRUCTURE_SIZE_TO_BUFFER, structure.getId(), buffer);
     }
 
     @SneakyThrows
     public void copyAndCompactAccelerationStructure(MTLAccelerationStructure source,
             MTLAccelerationStructure destination) {
-        LL.invokeExact(id, ObjC.sel("copyAndCompactAccelerationStructure:toAccelerationStructure:"), source.getId(),
+        LL.invokeExact(id, COPY_AND_COMPACT_ACCELERATION_STRUCTURE_TO_ACCELERATION_STRUCTURE, source.getId(),
                 destination.getId());
     }
 
     @SneakyThrows
     public void writeTimestampWithGranularity(long granularity, MTL4CounterHeap heap, long index) {
-        LLL.invokeExact(id, ObjC.sel("writeTimestampWithGranularity:intoHeap:atIndex:"), granularity, heap.getId(),
+        LLL.invokeExact(id, WRITE_TIMESTAMP_WITH_GRANULARITY_INTO_HEAP_AT_INDEX, granularity, heap.getId(),
                 index);
     }
 }

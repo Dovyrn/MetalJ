@@ -14,6 +14,14 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4Archive extends NSObject {
+    private static final long LABEL = ObjC.sel("label");
+    private static final long NEW_BINARY_FUNCTION_WITH_DESCRIPTOR_ERROR = ObjC.sel("newBinaryFunctionWithDescriptor:error:");
+    private static final long NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_ERROR = ObjC.sel("newComputePipelineStateWithDescriptor:dynamicLinkingDescriptor:error:");
+    private static final long NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_ERROR = ObjC.sel("newComputePipelineStateWithDescriptor:error:");
+    private static final long NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_ERROR = ObjC.sel("newRenderPipelineStateWithDescriptor:dynamicLinkingDescriptor:error:");
+    private static final long NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_ERROR = ObjC.sel("newRenderPipelineStateWithDescriptor:error:");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle P_PA = handle(ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
     private static final MethodHandle P_PPA = handle(ObjC.PTR, ObjC.PTR, ObjC.PTR, ValueLayout.ADDRESS);
@@ -27,19 +35,19 @@ public class MTL4Archive extends NSObject {
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 
     @SneakyThrows
     public MTLComputePipelineState newComputePipelineStateWithDescriptor(MTL4ComputePipelineDescriptor descriptor) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long state = (long) P_PA.invokeExact(id, ObjC.sel("newComputePipelineStateWithDescriptor:error:"),
+            long state = (long) P_PA.invokeExact(id, NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_ERROR,
                     descriptor.getId(), error);
             NSError.check(error, "newComputePipelineStateWithDescriptor:error:");
             return MTLComputePipelineState.of(state);
@@ -52,7 +60,7 @@ public class MTL4Archive extends NSObject {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
             long state = (long) P_PPA.invokeExact(id,
-                    ObjC.sel("newComputePipelineStateWithDescriptor:dynamicLinkingDescriptor:error:"),
+                    NEW_COMPUTE_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_ERROR,
                     descriptor.getId(), linking.getId(), error);
             NSError.check(error, "newComputePipelineStateWithDescriptor:dynamicLinkingDescriptor:error:");
             return MTLComputePipelineState.of(state);
@@ -63,7 +71,7 @@ public class MTL4Archive extends NSObject {
     public MTLRenderPipelineState newRenderPipelineStateWithDescriptor(MTL4PipelineDescriptor descriptor) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long state = (long) P_PA.invokeExact(id, ObjC.sel("newRenderPipelineStateWithDescriptor:error:"),
+            long state = (long) P_PA.invokeExact(id, NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_ERROR,
                     descriptor.getId(), error);
             NSError.check(error, "newRenderPipelineStateWithDescriptor:error:");
             return MTLRenderPipelineState.of(state);
@@ -76,7 +84,7 @@ public class MTL4Archive extends NSObject {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
             long state = (long) P_PPA.invokeExact(id,
-                    ObjC.sel("newRenderPipelineStateWithDescriptor:dynamicLinkingDescriptor:error:"),
+                    NEW_RENDER_PIPELINE_STATE_WITH_DESCRIPTOR_DYNAMIC_LINKING_DESCRIPTOR_ERROR,
                     descriptor.getId(), linking.getId(), error);
             NSError.check(error, "newRenderPipelineStateWithDescriptor:dynamicLinkingDescriptor:error:");
             return MTLRenderPipelineState.of(state);
@@ -87,7 +95,7 @@ public class MTL4Archive extends NSObject {
     public MTL4BinaryFunction newBinaryFunctionWithDescriptor(MTL4BinaryFunctionDescriptor descriptor) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long function = (long) P_PA.invokeExact(id, ObjC.sel("newBinaryFunctionWithDescriptor:error:"),
+            long function = (long) P_PA.invokeExact(id, NEW_BINARY_FUNCTION_WITH_DESCRIPTOR_ERROR,
                     descriptor.getId(), error);
             NSError.check(error, "newBinaryFunctionWithDescriptor:error:");
             return MTL4BinaryFunction.of(function);

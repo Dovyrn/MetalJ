@@ -4,6 +4,8 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
 public class NSError extends NSObject {
+    private static final long LOCALIZED_DESCRIPTION = ObjC.sel("localizedDescription");
+
     private NSError(long id) {
         super(id);
     }
@@ -25,6 +27,6 @@ public class NSError extends NSObject {
     }
 
     public NSString localizedDescription() {
-        return NSString.of(sendPtr(id, "localizedDescription"));
+        return NSString.of(sendPtr(id, LOCALIZED_DESCRIPTION));
     }
 }

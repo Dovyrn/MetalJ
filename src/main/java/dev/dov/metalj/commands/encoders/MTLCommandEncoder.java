@@ -7,6 +7,13 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLCommandEncoder extends NSObject {
+    private static final long END_ENCODING = ObjC.sel("endEncoding");
+    private static final long INSERT_DEBUG_SIGNPOST = ObjC.sel("insertDebugSignpost:");
+    private static final long LABEL = ObjC.sel("label");
+    private static final long POP_DEBUG_GROUP = ObjC.sel("popDebugGroup");
+    private static final long PUSH_DEBUG_GROUP = ObjC.sel("pushDebugGroup:");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     protected MTLCommandEncoder(long id) {
@@ -18,29 +25,29 @@ public class MTLCommandEncoder extends NSObject {
     }
 
     public void endEncoding() {
-        sendVoid(id, "endEncoding");
+        sendVoid(id, END_ENCODING);
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 
     @SneakyThrows
     public void insertDebugSignpost(NSString string) {
-        P.invokeExact(id, ObjC.sel("insertDebugSignpost:"), string.getId());
+        P.invokeExact(id, INSERT_DEBUG_SIGNPOST, string.getId());
     }
 
     @SneakyThrows
     public void pushDebugGroup(NSString string) {
-        P.invokeExact(id, ObjC.sel("pushDebugGroup:"), string.getId());
+        P.invokeExact(id, PUSH_DEBUG_GROUP, string.getId());
     }
 
     public void popDebugGroup() {
-        sendVoid(id, "popDebugGroup");
+        sendVoid(id, POP_DEBUG_GROUP);
     }
 }

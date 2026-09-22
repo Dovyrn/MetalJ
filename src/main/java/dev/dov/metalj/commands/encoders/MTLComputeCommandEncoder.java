@@ -22,6 +22,42 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLComputeCommandEncoder extends MTLCommandEncoder {
+    private static final long DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreadgroups:threadsPerThreadgroup:");
+    private static final long DISPATCH_THREADGROUPS_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:");
+    private static final long DISPATCH_THREADS_THREADS_PER_THREADGROUP = ObjC.sel("dispatchThreads:threadsPerThreadgroup:");
+    private static final long DISPATCH_TYPE = ObjC.sel("dispatchType");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("executeCommandsInBuffer:indirectBuffer:indirectBufferOffset:");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE = ObjC.sel("executeCommandsInBuffer:withRange:");
+    private static final long MEMORY_BARRIER_WITH_RESOURCES_COUNT = ObjC.sel("memoryBarrierWithResources:count:");
+    private static final long MEMORY_BARRIER_WITH_SCOPE = ObjC.sel("memoryBarrierWithScope:");
+    private static final long SAMPLE_COUNTERS_IN_BUFFER_AT_SAMPLE_INDEX_WITH_BARRIER = ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:");
+    private static final long SET_ACCELERATION_STRUCTURE_AT_BUFFER_INDEX = ObjC.sel("setAccelerationStructure:atBufferIndex:");
+    private static final long SET_BUFFER_OFFSET_AT_INDEX = ObjC.sel("setBuffer:offset:atIndex:");
+    private static final long SETBUFFEROFFSET_ATINDEX = ObjC.sel("setBufferOffset:atIndex:");
+    private static final long SET_BUFFERS_OFFSETS_WITH_RANGE = ObjC.sel("setBuffers:offsets:withRange:");
+    private static final long SET_BYTES_LENGTH_AT_INDEX = ObjC.sel("setBytes:length:atIndex:");
+    private static final long SET_COMPUTE_PIPELINE_STATE = ObjC.sel("setComputePipelineState:");
+    private static final long SET_IMAGEBLOCK_WIDTH_HEIGHT = ObjC.sel("setImageblockWidth:height:");
+    private static final long SET_INTERSECTION_FUNCTION_TABLE_AT_BUFFER_INDEX = ObjC.sel("setIntersectionFunctionTable:atBufferIndex:");
+    private static final long SET_INTERSECTION_FUNCTION_TABLES_WITH_BUFFER_RANGE = ObjC.sel("setIntersectionFunctionTables:withBufferRange:");
+    private static final long SET_SAMPLER_STATE_AT_INDEX = ObjC.sel("setSamplerState:atIndex:");
+    private static final long SET_SAMPLER_STATE_LOD_MIN_CLAMP_LOD_MAX_CLAMP_AT_INDEX = ObjC.sel("setSamplerState:lodMinClamp:lodMaxClamp:atIndex:");
+    private static final long SET_SAMPLER_STATES_LOD_MIN_CLAMPS_LOD_MAX_CLAMPS_WITH_RANGE = ObjC.sel("setSamplerStates:lodMinClamps:lodMaxClamps:withRange:");
+    private static final long SET_SAMPLER_STATES_WITH_RANGE = ObjC.sel("setSamplerStates:withRange:");
+    private static final long SET_STAGE_IN_REGION = ObjC.sel("setStageInRegion:");
+    private static final long SET_STAGE_IN_REGION_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("setStageInRegionWithIndirectBuffer:indirectBufferOffset:");
+    private static final long SET_TEXTURE_AT_INDEX = ObjC.sel("setTexture:atIndex:");
+    private static final long SET_TEXTURES_WITH_RANGE = ObjC.sel("setTextures:withRange:");
+    private static final long SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX = ObjC.sel("setThreadgroupMemoryLength:atIndex:");
+    private static final long SET_VISIBLE_FUNCTION_TABLE_AT_BUFFER_INDEX = ObjC.sel("setVisibleFunctionTable:atBufferIndex:");
+    private static final long SET_VISIBLE_FUNCTION_TABLES_WITH_BUFFER_RANGE = ObjC.sel("setVisibleFunctionTables:withBufferRange:");
+    private static final long UPDATE_FENCE = ObjC.sel("updateFence:");
+    private static final long USE_HEAP = ObjC.sel("useHeap:");
+    private static final long USE_HEAPS_COUNT = ObjC.sel("useHeaps:count:");
+    private static final long USE_RESOURCE_USAGE = ObjC.sel("useResource:usage:");
+    private static final long USE_RESOURCES_COUNT_USAGE = ObjC.sel("useResources:count:usage:");
+    private static final long WAIT_FOR_FENCE = ObjC.sel("waitForFence:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle LL = handle(null, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle LLL = handle(null, ObjC.LONG, ObjC.LONG, ObjC.LONG);
@@ -47,186 +83,186 @@ public class MTLComputeCommandEncoder extends MTLCommandEncoder {
     }
 
     public long dispatchType() {
-        return sendLong(id, "dispatchType");
+        return sendLong(id, DISPATCH_TYPE);
     }
 
     @SneakyThrows
     public void setComputePipelineState(MTLComputePipelineState state) {
-        L.invokeExact(id, ObjC.sel("setComputePipelineState:"), state.getId());
+        L.invokeExact(id, SET_COMPUTE_PIPELINE_STATE, state.getId());
     }
 
     @SneakyThrows
     public void setBytes(MemorySegment bytes, long length, long index) {
-        ALL.invokeExact(id, ObjC.sel("setBytes:length:atIndex:"), bytes, length, index);
+        ALL.invokeExact(id, SET_BYTES_LENGTH_AT_INDEX, bytes, length, index);
     }
 
     @SneakyThrows
     public void setBuffer(MTLBuffer buffer, long offset, long index) {
-        LLL.invokeExact(id, ObjC.sel("setBuffer:offset:atIndex:"), buffer.getId(), offset, index);
+        LLL.invokeExact(id, SET_BUFFER_OFFSET_AT_INDEX, buffer.getId(), offset, index);
     }
 
     @SneakyThrows
     public void setBufferOffset(long offset, long index) {
-        LL.invokeExact(id, ObjC.sel("setBufferOffset:atIndex:"), offset, index);
+        LL.invokeExact(id, SETBUFFEROFFSET_ATINDEX, offset, index);
     }
 
     @SneakyThrows
     public void setBuffers(MemorySegment buffers, MemorySegment offsets, MemorySegment range) {
-        AAR.invokeExact(id, ObjC.sel("setBuffers:offsets:withRange:"), buffers, offsets, range);
+        AAR.invokeExact(id, SET_BUFFERS_OFFSETS_WITH_RANGE, buffers, offsets, range);
     }
 
     @SneakyThrows
     public void setTexture(MTLTexture texture, long index) {
-        LL.invokeExact(id, ObjC.sel("setTexture:atIndex:"), texture.getId(), index);
+        LL.invokeExact(id, SET_TEXTURE_AT_INDEX, texture.getId(), index);
     }
 
     @SneakyThrows
     public void setTextures(MemorySegment textures, MemorySegment range) {
-        AR.invokeExact(id, ObjC.sel("setTextures:withRange:"), textures, range);
+        AR.invokeExact(id, SET_TEXTURES_WITH_RANGE, textures, range);
     }
 
     @SneakyThrows
     public void setSamplerState(MTLSamplerState sampler, long index) {
-        LL.invokeExact(id, ObjC.sel("setSamplerState:atIndex:"), sampler.getId(), index);
+        LL.invokeExact(id, SET_SAMPLER_STATE_AT_INDEX, sampler.getId(), index);
     }
 
     @SneakyThrows
     public void setSamplerStates(MemorySegment samplers, MemorySegment range) {
-        AR.invokeExact(id, ObjC.sel("setSamplerStates:withRange:"), samplers, range);
+        AR.invokeExact(id, SET_SAMPLER_STATES_WITH_RANGE, samplers, range);
     }
 
     @SneakyThrows
     public void setSamplerState(MTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, long index) {
-        LFFL.invokeExact(id, ObjC.sel("setSamplerState:lodMinClamp:lodMaxClamp:atIndex:"), sampler.getId(),
+        LFFL.invokeExact(id, SET_SAMPLER_STATE_LOD_MIN_CLAMP_LOD_MAX_CLAMP_AT_INDEX, sampler.getId(),
                 lodMinClamp, lodMaxClamp, index);
     }
 
     @SneakyThrows
     public void setSamplerStates(MemorySegment samplers, MemorySegment lodMinClamps, MemorySegment lodMaxClamps,
             MemorySegment range) {
-        AAAR.invokeExact(id, ObjC.sel("setSamplerStates:lodMinClamps:lodMaxClamps:withRange:"), samplers,
+        AAAR.invokeExact(id, SET_SAMPLER_STATES_LOD_MIN_CLAMPS_LOD_MAX_CLAMPS_WITH_RANGE, samplers,
                 lodMinClamps, lodMaxClamps, range);
     }
 
     @SneakyThrows
     public void setThreadgroupMemoryLength(long length, long index) {
-        LL.invokeExact(id, ObjC.sel("setThreadgroupMemoryLength:atIndex:"), length, index);
+        LL.invokeExact(id, SET_THREADGROUP_MEMORY_LENGTH_AT_INDEX, length, index);
     }
 
     @SneakyThrows
     public void setImageblockWidth(long width, long height) {
-        LL.invokeExact(id, ObjC.sel("setImageblockWidth:height:"), width, height);
+        LL.invokeExact(id, SET_IMAGEBLOCK_WIDTH_HEIGHT, width, height);
     }
 
     @SneakyThrows
     public void setStageInRegion(MemorySegment region) {
-        REGION.invokeExact(id, ObjC.sel("setStageInRegion:"), region);
+        REGION.invokeExact(id, SET_STAGE_IN_REGION, region);
     }
 
     @SneakyThrows
     public void setStageInRegionWithIndirectBuffer(MTLBuffer indirectBuffer, long indirectBufferOffset) {
-        LL.invokeExact(id, ObjC.sel("setStageInRegionWithIndirectBuffer:indirectBufferOffset:"),
+        LL.invokeExact(id, SET_STAGE_IN_REGION_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 indirectBuffer.getId(), indirectBufferOffset);
     }
 
     @SneakyThrows
     public void dispatchThreadgroups(MemorySegment threadgroupsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("dispatchThreadgroups:threadsPerThreadgroup:"), threadgroupsPerGrid,
+        SS.invokeExact(id, DISPATCH_THREADGROUPS_THREADS_PER_THREADGROUP, threadgroupsPerGrid,
                 threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void dispatchThreadgroupsWithIndirectBuffer(MTLBuffer indirectBuffer, long indirectBufferOffset,
             MemorySegment threadsPerThreadgroup) {
-        LLS.invokeExact(id, ObjC.sel("dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:"),
+        LLS.invokeExact(id, DISPATCH_THREADGROUPS_WITH_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET_THREADS_PER_THREADGROUP,
                 indirectBuffer.getId(), indirectBufferOffset, threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void dispatchThreads(MemorySegment threadsPerGrid, MemorySegment threadsPerThreadgroup) {
-        SS.invokeExact(id, ObjC.sel("dispatchThreads:threadsPerThreadgroup:"), threadsPerGrid, threadsPerThreadgroup);
+        SS.invokeExact(id, DISPATCH_THREADS_THREADS_PER_THREADGROUP, threadsPerGrid, threadsPerThreadgroup);
     }
 
     @SneakyThrows
     public void useResource(MTLResource resource, long usage) {
-        LL.invokeExact(id, ObjC.sel("useResource:usage:"), resource.getId(), usage);
+        LL.invokeExact(id, USE_RESOURCE_USAGE, resource.getId(), usage);
     }
 
     @SneakyThrows
     public void useResources(MemorySegment resources, long count, long usage) {
-        ALL.invokeExact(id, ObjC.sel("useResources:count:usage:"), resources, count, usage);
+        ALL.invokeExact(id, USE_RESOURCES_COUNT_USAGE, resources, count, usage);
     }
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("executeCommandsInBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, MTLBuffer indirectBuffer,
             long indirectBufferOffset) {
-        LLL.invokeExact(id, ObjC.sel("executeCommandsInBuffer:indirectBuffer:indirectBufferOffset:"),
+        LLL.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 buffer.getId(), indirectBuffer.getId(), indirectBufferOffset);
     }
 
     @SneakyThrows
     public void memoryBarrierWithScope(long scope) {
-        L.invokeExact(id, ObjC.sel("memoryBarrierWithScope:"), scope);
+        L.invokeExact(id, MEMORY_BARRIER_WITH_SCOPE, scope);
     }
 
     @SneakyThrows
     public void memoryBarrierWithResources(MemorySegment resources, long count) {
-        AL.invokeExact(id, ObjC.sel("memoryBarrierWithResources:count:"), resources, count);
+        AL.invokeExact(id, MEMORY_BARRIER_WITH_RESOURCES_COUNT, resources, count);
     }
 
     @SneakyThrows
     public void sampleCountersInBuffer(MTLCounterSampleBuffer sampleBuffer, long sampleIndex, boolean barrier) {
-        LLB.invokeExact(id, ObjC.sel("sampleCountersInBuffer:atSampleIndex:withBarrier:"), sampleBuffer.getId(),
+        LLB.invokeExact(id, SAMPLE_COUNTERS_IN_BUFFER_AT_SAMPLE_INDEX_WITH_BARRIER, sampleBuffer.getId(),
                 sampleIndex, barrier);
     }
 
     @SneakyThrows
     public void setAccelerationStructure(MTLAccelerationStructure structure, long index) {
-        LL.invokeExact(id, ObjC.sel("setAccelerationStructure:atBufferIndex:"), structure.getId(), index);
+        LL.invokeExact(id, SET_ACCELERATION_STRUCTURE_AT_BUFFER_INDEX, structure.getId(), index);
     }
 
     @SneakyThrows
     public void setIntersectionFunctionTable(MTLIntersectionFunctionTable table, long index) {
-        LL.invokeExact(id, ObjC.sel("setIntersectionFunctionTable:atBufferIndex:"), table.getId(), index);
+        LL.invokeExact(id, SET_INTERSECTION_FUNCTION_TABLE_AT_BUFFER_INDEX, table.getId(), index);
     }
 
     @SneakyThrows
     public void setIntersectionFunctionTables(MemorySegment tables, MemorySegment range) {
-        AR.invokeExact(id, ObjC.sel("setIntersectionFunctionTables:withBufferRange:"), tables, range);
+        AR.invokeExact(id, SET_INTERSECTION_FUNCTION_TABLES_WITH_BUFFER_RANGE, tables, range);
     }
 
     @SneakyThrows
     public void updateFence(MTLFence fence) {
-        L.invokeExact(id, ObjC.sel("updateFence:"), fence.getId());
+        L.invokeExact(id, UPDATE_FENCE, fence.getId());
     }
 
     @SneakyThrows
     public void waitForFence(MTLFence fence) {
-        L.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
+        L.invokeExact(id, WAIT_FOR_FENCE, fence.getId());
     }
 
     @SneakyThrows
     public void setVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
-        LL.invokeExact(id, ObjC.sel("setVisibleFunctionTable:atBufferIndex:"), table.getId(), index);
+        LL.invokeExact(id, SET_VISIBLE_FUNCTION_TABLE_AT_BUFFER_INDEX, table.getId(), index);
     }
 
     @SneakyThrows
     public void setVisibleFunctionTables(MemorySegment tables, MemorySegment range) {
-        AR.invokeExact(id, ObjC.sel("setVisibleFunctionTables:withBufferRange:"), tables, range);
+        AR.invokeExact(id, SET_VISIBLE_FUNCTION_TABLES_WITH_BUFFER_RANGE, tables, range);
     }
 
     @SneakyThrows
     public void useHeap(MTLHeap heap) {
-        L.invokeExact(id, ObjC.sel("useHeap:"), heap.getId());
+        L.invokeExact(id, USE_HEAP, heap.getId());
     }
 
     @SneakyThrows
     public void useHeaps(MemorySegment heaps, long count) {
-        AL.invokeExact(id, ObjC.sel("useHeaps:count:"), heaps, count);
+        AL.invokeExact(id, USE_HEAPS_COUNT, heaps, count);
     }
 }

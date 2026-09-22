@@ -14,6 +14,12 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLResourceStateCommandEncoder extends MTLCommandEncoder {
+    private static final long UPDATE_FENCE = ObjC.sel("updateFence:");
+    private static final long UPDATE_TEXTURE_MAPPING_MODE_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET = ObjC.sel("updateTextureMapping:mode:indirectBuffer:indirectBufferOffset:");
+    private static final long UPDATE_TEXTURE_MAPPING_MODE_REGION_MIP_LEVEL_SLICE = ObjC.sel("updateTextureMapping:mode:region:mipLevel:slice:");
+    private static final long UPDATE_TEXTURE_MAPPINGS_MODE_REGIONS_MIP_LEVELS_SLICES_NUM_REGIONS = ObjC.sel("updateTextureMappings:mode:regions:mipLevels:slices:numRegions:");
+    private static final long WAIT_FOR_FENCE = ObjC.sel("waitForFence:");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
     private static final MethodHandle MANY = handle(null, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS,
             ValueLayout.ADDRESS, ValueLayout.ADDRESS, ObjC.LONG);
@@ -33,19 +39,19 @@ public class MTLResourceStateCommandEncoder extends MTLCommandEncoder {
     @SneakyThrows
     public void updateTextureMappings(MTLTexture texture, long mode, MemorySegment regions, MemorySegment levels,
             MemorySegment slices, long count) {
-        MANY.invokeExact(id, ObjC.sel("updateTextureMappings:mode:regions:mipLevels:slices:numRegions:"),
+        MANY.invokeExact(id, UPDATE_TEXTURE_MAPPINGS_MODE_REGIONS_MIP_LEVELS_SLICES_NUM_REGIONS,
                 texture.getId(), mode, regions, levels, slices, count);
     }
 
     @SneakyThrows
     public void updateTextureMapping(MTLTexture texture, long mode, MemorySegment region, long level, long slice) {
-        ONE.invokeExact(id, ObjC.sel("updateTextureMapping:mode:region:mipLevel:slice:"), texture.getId(), mode,
+        ONE.invokeExact(id, UPDATE_TEXTURE_MAPPING_MODE_REGION_MIP_LEVEL_SLICE, texture.getId(), mode,
                 region, level, slice);
     }
 
     @SneakyThrows
     public void updateTextureMapping(MTLTexture texture, long mode, MTLBuffer indirectBuffer, long offset) {
-        INDIRECT.invokeExact(id, ObjC.sel("updateTextureMapping:mode:indirectBuffer:indirectBufferOffset:"),
+        INDIRECT.invokeExact(id, UPDATE_TEXTURE_MAPPING_MODE_INDIRECT_BUFFER_INDIRECT_BUFFER_OFFSET,
                 texture.getId(), mode, indirectBuffer.getId(), offset);
     }
 
@@ -61,11 +67,11 @@ public class MTLResourceStateCommandEncoder extends MTLCommandEncoder {
 
     @SneakyThrows
     public void updateFence(MTLFence fence) {
-        P.invokeExact(id, ObjC.sel("updateFence:"), fence.getId());
+        P.invokeExact(id, UPDATE_FENCE, fence.getId());
     }
 
     @SneakyThrows
     public void waitForFence(MTLFence fence) {
-        P.invokeExact(id, ObjC.sel("waitForFence:"), fence.getId());
+        P.invokeExact(id, WAIT_FOR_FENCE, fence.getId());
     }
 }

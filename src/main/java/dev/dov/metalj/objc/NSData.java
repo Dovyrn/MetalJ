@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class NSData extends NSObject {
+    private static final long BYTES_SEL = ObjC.sel("bytes");
+    private static final long LENGTH = ObjC.sel("length");
+
     private static final MethodHandle BYTES = handle(ValueLayout.ADDRESS);
 
     private NSData(long id) {
@@ -17,12 +20,12 @@ public class NSData extends NSObject {
     }
 
     public long length() {
-        return sendLong(id, "length");
+        return sendLong(id, LENGTH);
     }
 
     @SneakyThrows
     public MemorySegment bytes() {
-        var address = (MemorySegment) BYTES.invokeExact(id, ObjC.sel("bytes"));
+        var address = (MemorySegment) BYTES.invokeExact(id, BYTES_SEL);
         return address.reinterpret(length());
     }
 }

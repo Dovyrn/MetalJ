@@ -13,6 +13,11 @@ import java.util.function.Consumer;
 import lombok.SneakyThrows;
 
 public class MTL4CommitOptions extends NSObject {
+    private static final long MTL_4_COMMIT_OPTIONS = ObjC.cls("MTL4CommitOptions");
+
+    private static final long ADD_FEEDBACK_HANDLER = ObjC.sel("addFeedbackHandler:");
+    private static final long NEW = ObjC.sel("new");
+
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
     private MTL4CommitOptions(long id) {
@@ -24,12 +29,12 @@ public class MTL4CommitOptions extends NSObject {
     }
 
     public static MTL4CommitOptions new_() {
-        return new MTL4CommitOptions(sendPtr(ObjC.cls("MTL4CommitOptions"), "new"));
+        return new MTL4CommitOptions(sendPtr(MTL_4_COMMIT_OPTIONS, NEW));
     }
 
     @SneakyThrows
     public void addFeedbackHandler(Block block) {
-        P.invokeExact(id, ObjC.sel("addFeedbackHandler:"), block.address());
+        P.invokeExact(id, ADD_FEEDBACK_HANDLER, block.address());
     }
 
     @SneakyThrows

@@ -5,6 +5,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderPassStencilAttachmentDescriptor extends MTLRenderPassAttachmentDescriptor {
+    private static final long SET_CLEAR_STENCIL = ObjC.sel("setClearStencil:");
+    private static final long SET_STENCIL_RESOLVE_FILTER = ObjC.sel("setStencilResolveFilter:");
+
     private static final MethodHandle I = handle(null, ObjC.INT);
     private static final MethodHandle L = handle(null, ObjC.LONG);
 
@@ -21,11 +24,11 @@ public class MTLRenderPassStencilAttachmentDescriptor extends MTLRenderPassAttac
 
     @SneakyThrows
     public void setClearStencil(int clearStencil) {
-        I.invokeExact(id, ObjC.sel("setClearStencil:"), clearStencil);
+        I.invokeExact(id, SET_CLEAR_STENCIL, clearStencil);
     }
 
     @SneakyThrows
     public void setStencilResolveFilter(long stencilResolveFilter) {
-        L.invokeExact(id, ObjC.sel("setStencilResolveFilter:"), stencilResolveFilter);
+        L.invokeExact(id, SET_STENCIL_RESOLVE_FILTER, stencilResolveFilter);
     }
 }

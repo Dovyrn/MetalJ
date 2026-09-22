@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLVertexBufferLayoutDescriptorArray extends NSObject {
+    private static final long OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("objectAtIndexedSubscript:");
+    private static final long SET_OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("setObject:atIndexedSubscript:");
+
     private static final MethodHandle AT = handle(ObjC.PTR, ObjC.LONG);
     private static final MethodHandle SET = handle(null, ObjC.PTR, ObjC.LONG);
 
@@ -19,11 +22,11 @@ public class MTLVertexBufferLayoutDescriptorArray extends NSObject {
 
     @SneakyThrows
     public MTLVertexBufferLayoutDescriptor objectAtIndexedSubscript(long index) {
-        return MTLVertexBufferLayoutDescriptor.of((long) AT.invokeExact(id, ObjC.sel("objectAtIndexedSubscript:"), index));
+        return MTLVertexBufferLayoutDescriptor.of((long) AT.invokeExact(id, OBJECT_AT_INDEXED_SUBSCRIPT, index));
     }
 
     @SneakyThrows
     public void setObject(MTLVertexBufferLayoutDescriptor object, long index) {
-        SET.invokeExact(id, ObjC.sel("setObject:atIndexedSubscript:"), object.getId(), index);
+        SET.invokeExact(id, SET_OBJECT_AT_INDEXED_SUBSCRIPT, object.getId(), index);
     }
 }

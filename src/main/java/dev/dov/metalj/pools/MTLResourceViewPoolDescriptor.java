@@ -7,6 +7,14 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLResourceViewPoolDescriptor extends NSObject {
+    private static final long MTL_RESOURCE_VIEW_POOL_DESCRIPTOR = ObjC.cls("MTLResourceViewPoolDescriptor");
+
+    private static final long LABEL = ObjC.sel("label");
+    private static final long NEW = ObjC.sel("new");
+    private static final long RESOURCE_VIEW_COUNT = ObjC.sel("resourceViewCount");
+    private static final long SET_LABEL = ObjC.sel("setLabel:");
+    private static final long SET_RESOURCE_VIEW_COUNT = ObjC.sel("setResourceViewCount:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle P = handle(null, ObjC.PTR);
 
@@ -19,24 +27,24 @@ public class MTLResourceViewPoolDescriptor extends NSObject {
     }
 
     public static MTLResourceViewPoolDescriptor new_() {
-        return new MTLResourceViewPoolDescriptor(sendPtr(ObjC.cls("MTLResourceViewPoolDescriptor"), "new"));
+        return new MTLResourceViewPoolDescriptor(sendPtr(MTL_RESOURCE_VIEW_POOL_DESCRIPTOR, NEW));
     }
 
     public long resourceViewCount() {
-        return sendLong(id, "resourceViewCount");
+        return sendLong(id, RESOURCE_VIEW_COUNT);
     }
 
     @SneakyThrows
     public void setResourceViewCount(long count) {
-        L.invokeExact(id, ObjC.sel("setResourceViewCount:"), count);
+        L.invokeExact(id, SET_RESOURCE_VIEW_COUNT, count);
     }
 
     public NSString label() {
-        return NSString.of(sendPtr(id, "label"));
+        return NSString.of(sendPtr(id, LABEL));
     }
 
     @SneakyThrows
     public void setLabel(NSString label) {
-        P.invokeExact(id, ObjC.sel("setLabel:"), label.getId());
+        P.invokeExact(id, SET_LABEL, label.getId());
     }
 }

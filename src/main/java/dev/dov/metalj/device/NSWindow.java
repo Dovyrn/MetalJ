@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class NSWindow extends NSObject {
+    private static final long BACKING_SCALE_FACTOR = ObjC.sel("backingScaleFactor");
+    private static final long CONTENT_VIEW = ObjC.sel("contentView");
+
     private static final MethodHandle SCALE = handle(ObjC.DOUBLE);
 
     private NSWindow(long id) {
@@ -18,10 +21,10 @@ public class NSWindow extends NSObject {
 
     @SneakyThrows
     public double backingScaleFactor() {
-        return (double) SCALE.invokeExact(id, ObjC.sel("backingScaleFactor"));
+        return (double) SCALE.invokeExact(id, BACKING_SCALE_FACTOR);
     }
 
     public NSView contentView() {
-        return NSView.of(sendPtr(id, "contentView"));
+        return NSView.of(sendPtr(id, CONTENT_VIEW));
     }
 }

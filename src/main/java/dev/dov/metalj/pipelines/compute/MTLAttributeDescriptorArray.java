@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLAttributeDescriptorArray extends NSObject {
+    private static final long OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("objectAtIndexedSubscript:");
+    private static final long SET_OBJECT_AT_INDEXED_SUBSCRIPT = ObjC.sel("setObject:atIndexedSubscript:");
+
     private static final MethodHandle P_L = handle(ObjC.PTR, ObjC.LONG);
     private static final MethodHandle PL = handle(null, ObjC.PTR, ObjC.LONG);
 
@@ -19,11 +22,11 @@ public class MTLAttributeDescriptorArray extends NSObject {
 
     @SneakyThrows
     public MTLAttributeDescriptor objectAtIndexedSubscript(long index) {
-        return MTLAttributeDescriptor.of((long) P_L.invokeExact(id, ObjC.sel("objectAtIndexedSubscript:"), index));
+        return MTLAttributeDescriptor.of((long) P_L.invokeExact(id, OBJECT_AT_INDEXED_SUBSCRIPT, index));
     }
 
     @SneakyThrows
     public void setObjectAtIndexedSubscript(MTLAttributeDescriptor attribute, long index) {
-        PL.invokeExact(id, ObjC.sel("setObject:atIndexedSubscript:"), attribute.getId(), index);
+        PL.invokeExact(id, SET_OBJECT_AT_INDEXED_SUBSCRIPT, attribute.getId(), index);
     }
 }

@@ -5,6 +5,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderPassDepthAttachmentDescriptor extends MTLRenderPassAttachmentDescriptor {
+    private static final long SET_CLEAR_DEPTH = ObjC.sel("setClearDepth:");
+    private static final long SET_DEPTH_RESOLVE_FILTER = ObjC.sel("setDepthResolveFilter:");
+
     private static final MethodHandle D = handle(null, ObjC.DOUBLE);
     private static final MethodHandle L = handle(null, ObjC.LONG);
 
@@ -22,11 +25,11 @@ public class MTLRenderPassDepthAttachmentDescriptor extends MTLRenderPassAttachm
 
     @SneakyThrows
     public void setClearDepth(double clearDepth) {
-        D.invokeExact(id, ObjC.sel("setClearDepth:"), clearDepth);
+        D.invokeExact(id, SET_CLEAR_DEPTH, clearDepth);
     }
 
     @SneakyThrows
     public void setDepthResolveFilter(long depthResolveFilter) {
-        L.invokeExact(id, ObjC.sel("setDepthResolveFilter:"), depthResolveFilter);
+        L.invokeExact(id, SET_DEPTH_RESOLVE_FILTER, depthResolveFilter);
     }
 }

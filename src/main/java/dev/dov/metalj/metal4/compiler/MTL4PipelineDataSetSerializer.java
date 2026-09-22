@@ -11,6 +11,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4PipelineDataSetSerializer extends NSObject {
+    private static final long SERIALIZE_AS_ARCHIVE_AND_FLUSH_TO_URL_ERROR = ObjC.sel("serializeAsArchiveAndFlushToURL:error:");
+    private static final long SERIALIZE_AS_PIPELINES_SCRIPT_WITH_ERROR = ObjC.sel("serializeAsPipelinesScriptWithError:");
+
     private static final MethodHandle B_PA = handle(ObjC.BOOL, ObjC.PTR, ValueLayout.ADDRESS);
     private static final MethodHandle P_A = handle(ObjC.PTR, ValueLayout.ADDRESS);
 
@@ -26,7 +29,7 @@ public class MTL4PipelineDataSetSerializer extends NSObject {
     public boolean serializeAsArchiveAndFlushToURL(NSURL url) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            boolean done = (boolean) B_PA.invokeExact(id, ObjC.sel("serializeAsArchiveAndFlushToURL:error:"),
+            boolean done = (boolean) B_PA.invokeExact(id, SERIALIZE_AS_ARCHIVE_AND_FLUSH_TO_URL_ERROR,
                     url.getId(), error);
             NSError.check(error, "serializeAsArchiveAndFlushToURL:error:");
             return done;
@@ -37,7 +40,7 @@ public class MTL4PipelineDataSetSerializer extends NSObject {
     public NSData serializeAsPipelinesScript() {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long data = (long) P_A.invokeExact(id, ObjC.sel("serializeAsPipelinesScriptWithError:"), error);
+            long data = (long) P_A.invokeExact(id, SERIALIZE_AS_PIPELINES_SCRIPT_WITH_ERROR, error);
             NSError.check(error, "serializeAsPipelinesScriptWithError:");
             return NSData.of(data);
         }

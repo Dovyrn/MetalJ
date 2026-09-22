@@ -2,8 +2,11 @@ package dev.dov.metalj.device;
 
 import dev.dov.metalj.objc.NSObject;
 import dev.dov.metalj.objc.NSString;
+import dev.dov.metalj.objc.ObjC;
 
 public class MTLArchitecture extends NSObject {
+    private static final long NAME = ObjC.sel("name");
+
     private MTLArchitecture(long id) {
         super(id);
     }
@@ -13,6 +16,6 @@ public class MTLArchitecture extends NSObject {
     }
 
     public NSString name() {
-        return NSString.of(sendPtr(id, "name"));
+        return NSString.of(sendPtr(id, NAME));
     }
 }

@@ -12,6 +12,14 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLIntersectionFunctionTable extends MTLResource {
+    private static final long GPU_RESOURCE_ID = ObjC.sel("gpuResourceID");
+    private static final long SET_BUFFER_OFFSET_AT_INDEX = ObjC.sel("setBuffer:offset:atIndex:");
+    private static final long SET_FUNCTION_AT_INDEX = ObjC.sel("setFunction:atIndex:");
+    private static final long SET_FUNCTIONS_WITH_RANGE = ObjC.sel("setFunctions:withRange:");
+    private static final long SET_OPAQUE_TRIANGLE_INTERSECTION_FUNCTION_WITH_SIGNATURE_AT_INDEX = ObjC.sel("setOpaqueTriangleIntersectionFunctionWithSignature:atIndex:");
+    private static final long SET_OPAQUE_TRIANGLE_INTERSECTION_FUNCTION_WITH_SIGNATURE_WITH_RANGE = ObjC.sel("setOpaqueTriangleIntersectionFunctionWithSignature:withRange:");
+    private static final long SET_VISIBLE_FUNCTION_TABLE_AT_BUFFER_INDEX = ObjC.sel("setVisibleFunctionTable:atBufferIndex:");
+
     private static final MethodHandle PL = handle(null, ObjC.PTR, ObjC.LONG);
     private static final MethodHandle PLL = handle(null, ObjC.PTR, ObjC.LONG, ObjC.LONG);
     private static final MethodHandle AR = handle(null, ValueLayout.ADDRESS, NSRange.LAYOUT);
@@ -27,37 +35,37 @@ public class MTLIntersectionFunctionTable extends MTLResource {
     }
 
     public long gpuResourceID() {
-        return sendLong(id, "gpuResourceID");
+        return sendLong(id, GPU_RESOURCE_ID);
     }
 
     @SneakyThrows
     public void setBuffer(MTLBuffer buffer, long offset, long index) {
-        PLL.invokeExact(id, ObjC.sel("setBuffer:offset:atIndex:"), buffer.getId(), offset, index);
+        PLL.invokeExact(id, SET_BUFFER_OFFSET_AT_INDEX, buffer.getId(), offset, index);
     }
 
     @SneakyThrows
     public void setFunction(MTLFunctionHandle function, long index) {
-        PL.invokeExact(id, ObjC.sel("setFunction:atIndex:"), function.getId(), index);
+        PL.invokeExact(id, SET_FUNCTION_AT_INDEX, function.getId(), index);
     }
 
     @SneakyThrows
     public void setFunctions(MemorySegment functions, MemorySegment range) {
-        AR.invokeExact(id, ObjC.sel("setFunctions:withRange:"), functions, range);
+        AR.invokeExact(id, SET_FUNCTIONS_WITH_RANGE, functions, range);
     }
 
     @SneakyThrows
     public void setOpaqueTriangleIntersectionFunctionWithSignature(long signature, long index) {
-        LL.invokeExact(id, ObjC.sel("setOpaqueTriangleIntersectionFunctionWithSignature:atIndex:"), signature, index);
+        LL.invokeExact(id, SET_OPAQUE_TRIANGLE_INTERSECTION_FUNCTION_WITH_SIGNATURE_AT_INDEX, signature, index);
     }
 
     @SneakyThrows
     public void setOpaqueTriangleIntersectionFunctionWithSignature(long signature, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("setOpaqueTriangleIntersectionFunctionWithSignature:withRange:"), signature,
+        LR.invokeExact(id, SET_OPAQUE_TRIANGLE_INTERSECTION_FUNCTION_WITH_SIGNATURE_WITH_RANGE, signature,
                 range);
     }
 
     @SneakyThrows
     public void setVisibleFunctionTable(MTLVisibleFunctionTable table, long index) {
-        PL.invokeExact(id, ObjC.sel("setVisibleFunctionTable:atBufferIndex:"), table.getId(), index);
+        PL.invokeExact(id, SET_VISIBLE_FUNCTION_TABLE_AT_BUFFER_INDEX, table.getId(), index);
     }
 }

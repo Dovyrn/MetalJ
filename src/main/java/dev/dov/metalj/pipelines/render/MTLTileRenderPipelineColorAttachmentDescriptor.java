@@ -6,6 +6,9 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLTileRenderPipelineColorAttachmentDescriptor extends NSObject {
+    private static final long PIXEL_FORMAT = ObjC.sel("pixelFormat");
+    private static final long SET_PIXEL_FORMAT = ObjC.sel("setPixelFormat:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
 
     private MTLTileRenderPipelineColorAttachmentDescriptor(long id) {
@@ -17,11 +20,11 @@ public class MTLTileRenderPipelineColorAttachmentDescriptor extends NSObject {
     }
 
     public long pixelFormat() {
-        return sendLong(id, "pixelFormat");
+        return sendLong(id, PIXEL_FORMAT);
     }
 
     @SneakyThrows
     public void setPixelFormat(long format) {
-        L.invokeExact(id, ObjC.sel("setPixelFormat:"), format);
+        L.invokeExact(id, SET_PIXEL_FORMAT, format);
     }
 }

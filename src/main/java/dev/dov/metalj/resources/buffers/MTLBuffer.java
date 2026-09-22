@@ -17,6 +17,17 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLBuffer extends MTLResource {
+    private static final long ADD_DEBUG_MARKER_RANGE = ObjC.sel("addDebugMarker:range:");
+    private static final long CONTENTS = ObjC.sel("contents");
+    private static final long DID_MODIFY_RANGE = ObjC.sel("didModifyRange:");
+    private static final long GPU_ADDRESS = ObjC.sel("gpuAddress");
+    private static final long LENGTH = ObjC.sel("length");
+    private static final long NEW_REMOTE_BUFFER_VIEW_FOR_DEVICE = ObjC.sel("newRemoteBufferViewForDevice:");
+    private static final long NEW_TENSOR_WITH_DESCRIPTOR_OFFSET_ERROR = ObjC.sel("newTensorWithDescriptor:offset:error:");
+    private static final long NEW_TEXTURE_WITH_DESCRIPTOR_OFFSET_BYTES_PER_ROW = ObjC.sel("newTextureWithDescriptor:offset:bytesPerRow:");
+    private static final long REMOTE_STORAGE_BUFFER = ObjC.sel("remoteStorageBuffer");
+    private static final long REMOVE_ALL_DEBUG_MARKERS = ObjC.sel("removeAllDebugMarkers");
+
     private static final MethodHandle P_PLA = handle(ObjC.PTR, ObjC.PTR, ObjC.LONG, ValueLayout.ADDRESS);
     private static final MethodHandle R = handle(null, NSRange.LAYOUT);
     private static final MethodHandle PR = handle(null, ObjC.PTR, NSRange.LAYOUT);
@@ -32,51 +43,51 @@ public class MTLBuffer extends MTLResource {
     }
 
     public long length() {
-        return sendLong(id, "length");
+        return sendLong(id, LENGTH);
     }
 
     public MemorySegment contents() {
-        return segment(sendPtr(id, "contents"), length());
+        return segment(sendPtr(id, CONTENTS), length());
     }
 
     @SneakyThrows
     public void didModifyRange(MemorySegment range) {
-        R.invokeExact(id, ObjC.sel("didModifyRange:"), range);
+        R.invokeExact(id, DID_MODIFY_RANGE, range);
     }
 
     @SneakyThrows
     public MTLTexture newTextureWithDescriptor(MTLTextureDescriptor descriptor, long offset, long bytesPerRow) {
-        return MTLTexture.of((long) P_PLL.invokeExact(id, ObjC.sel("newTextureWithDescriptor:offset:bytesPerRow:"),
+        return MTLTexture.of((long) P_PLL.invokeExact(id, NEW_TEXTURE_WITH_DESCRIPTOR_OFFSET_BYTES_PER_ROW,
                 descriptor.getId(), offset, bytesPerRow));
     }
 
     @SneakyThrows
     public void addDebugMarker(NSString marker, MemorySegment range) {
-        PR.invokeExact(id, ObjC.sel("addDebugMarker:range:"), marker.getId(), range);
+        PR.invokeExact(id, ADD_DEBUG_MARKER_RANGE, marker.getId(), range);
     }
 
     public void removeAllDebugMarkers() {
-        sendVoid(id, "removeAllDebugMarkers");
+        sendVoid(id, REMOVE_ALL_DEBUG_MARKERS);
     }
 
     public long gpuAddress() {
-        return sendLong(id, "gpuAddress");
+        return sendLong(id, GPU_ADDRESS);
     }
 
     public MTLBuffer remoteStorageBuffer() {
-        return new MTLBuffer(sendPtr(id, "remoteStorageBuffer"));
+        return new MTLBuffer(sendPtr(id, REMOTE_STORAGE_BUFFER));
     }
 
     @SneakyThrows
     public MTLBuffer newRemoteBufferViewForDevice(MTLDevice device) {
-        return new MTLBuffer((long) P_P.invokeExact(id, ObjC.sel("newRemoteBufferViewForDevice:"), device.getId()));
+        return new MTLBuffer((long) P_P.invokeExact(id, NEW_REMOTE_BUFFER_VIEW_FOR_DEVICE, device.getId()));
     }
 
     @SneakyThrows
     public MTLTensor newTensorWithDescriptor(MTLTensorDescriptor descriptor, long offset) {
         try (var arena = Arena.ofConfined()) {
             var error = NSError.slot(arena);
-            long tensor = (long) P_PLA.invokeExact(id, ObjC.sel("newTensorWithDescriptor:offset:error:"),
+            long tensor = (long) P_PLA.invokeExact(id, NEW_TENSOR_WITH_DESCRIPTOR_OFFSET_ERROR,
                     descriptor.getId(), offset, error);
             NSError.check(error, "newTensorWithDescriptor:offset:error:");
             return MTLTensor.of(tensor);

@@ -17,6 +17,44 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
+    private static final long DISPATCH_THREADS_PER_TILE = ObjC.sel("dispatchThreadsPerTile:");
+    private static final long DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH = ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:");
+    private static final long DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
+    private static final long DRAW_MESH_THREADS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP = ObjC.sel("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:");
+    private static final long DRAW_PRIMITIVES_INDIRECT_BUFFER = ObjC.sel("drawPrimitives:indirectBuffer:");
+    private static final long DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT = ObjC.sel("drawPrimitives:vertexStart:vertexCount:");
+    private static final long DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT = ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:");
+    private static final long DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT_BASE_INSTANCE = ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER = ObjC.sel("executeCommandsInBuffer:indirectBuffer:");
+    private static final long EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE = ObjC.sel("executeCommandsInBuffer:withRange:");
+    private static final long SET_ARGUMENT_TABLE_AT_STAGES = ObjC.sel("setArgumentTable:atStages:");
+    private static final long SET_BLEND_COLOR_RED_GREEN_BLUE_ALPHA = ObjC.sel("setBlendColorRed:green:blue:alpha:");
+    private static final long SET_COLOR_ATTACHMENT_MAP = ObjC.sel("setColorAttachmentMap:");
+    private static final long SET_COLOR_STORE_ACTION_AT_INDEX = ObjC.sel("setColorStoreAction:atIndex:");
+    private static final long SET_CULL_MODE = ObjC.sel("setCullMode:");
+    private static final long SET_DEPTH_BIAS_SLOPE_SCALE_CLAMP = ObjC.sel("setDepthBias:slopeScale:clamp:");
+    private static final long SET_DEPTH_CLIP_MODE = ObjC.sel("setDepthClipMode:");
+    private static final long SET_DEPTH_STENCIL_STATE = ObjC.sel("setDepthStencilState:");
+    private static final long SET_DEPTH_STORE_ACTION = ObjC.sel("setDepthStoreAction:");
+    private static final long SET_DEPTH_TEST_MIN_BOUND_MAX_BOUND = ObjC.sel("setDepthTestMinBound:maxBound:");
+    private static final long SET_FRONT_FACING_WINDING = ObjC.sel("setFrontFacingWinding:");
+    private static final long SET_OBJECT_THREADGROUP_MEMORY_LENGTH_AT_INDEX = ObjC.sel("setObjectThreadgroupMemoryLength:atIndex:");
+    private static final long SET_RENDER_PIPELINE_STATE = ObjC.sel("setRenderPipelineState:");
+    private static final long SET_SCISSOR_RECT = ObjC.sel("setScissorRect:");
+    private static final long SET_SCISSOR_RECTS_COUNT = ObjC.sel("setScissorRects:count:");
+    private static final long SET_STENCIL_FRONT_REFERENCE_VALUE_BACK_REFERENCE_VALUE = ObjC.sel("setStencilFrontReferenceValue:backReferenceValue:");
+    private static final long SET_STENCIL_REFERENCE_VALUE = ObjC.sel("setStencilReferenceValue:");
+    private static final long SET_STENCIL_STORE_ACTION = ObjC.sel("setStencilStoreAction:");
+    private static final long SET_THREADGROUP_MEMORY_LENGTH_OFFSET_AT_INDEX = ObjC.sel("setThreadgroupMemoryLength:offset:atIndex:");
+    private static final long SET_TRIANGLE_FILL_MODE = ObjC.sel("setTriangleFillMode:");
+    private static final long SET_VERTEX_AMPLIFICATION_COUNT_VIEW_MAPPINGS = ObjC.sel("setVertexAmplificationCount:viewMappings:");
+    private static final long SET_VIEWPORT = ObjC.sel("setViewport:");
+    private static final long SET_VIEWPORTS_COUNT = ObjC.sel("setViewports:count:");
+    private static final long SET_VISIBILITY_RESULT_MODE_OFFSET = ObjC.sel("setVisibilityResultMode:offset:");
+    private static final long TILE_HEIGHT = ObjC.sel("tileHeight");
+    private static final long TILE_WIDTH = ObjC.sel("tileWidth");
+    private static final long WRITE_TIMESTAMP_WITH_GRANULARITY_AFTER_STAGE_INTO_HEAP_AT_INDEX = ObjC.sel("writeTimestampWithGranularity:afterStage:intoHeap:atIndex:");
+
     private static final MethodHandle L = handle(null, ObjC.LONG);
     private static final MethodHandle I = handle(null, ObjC.INT);
     private static final MethodHandle II = handle(null, ObjC.INT, ObjC.INT);
@@ -49,150 +87,150 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
     }
 
     public long tileWidth() {
-        return sendLong(id, "tileWidth");
+        return sendLong(id, TILE_WIDTH);
     }
 
     public long tileHeight() {
-        return sendLong(id, "tileHeight");
+        return sendLong(id, TILE_HEIGHT);
     }
 
     @SneakyThrows
     public void setColorAttachmentMap(MTLLogicalToPhysicalColorAttachmentMap map) {
-        L.invokeExact(id, ObjC.sel("setColorAttachmentMap:"), map.getId());
+        L.invokeExact(id, SET_COLOR_ATTACHMENT_MAP, map.getId());
     }
 
     @SneakyThrows
     public void setRenderPipelineState(MTLRenderPipelineState state) {
-        L.invokeExact(id, ObjC.sel("setRenderPipelineState:"), state.getId());
+        L.invokeExact(id, SET_RENDER_PIPELINE_STATE, state.getId());
     }
 
     @SneakyThrows
     public void setArgumentTable(MTL4ArgumentTable table, long stages) {
-        LL.invokeExact(id, ObjC.sel("setArgumentTable:atStages:"), table.getId(), stages);
+        LL.invokeExact(id, SET_ARGUMENT_TABLE_AT_STAGES, table.getId(), stages);
     }
 
     @SneakyThrows
     public void setViewport(MemorySegment viewport) {
-        VIEWPORT.invokeExact(id, ObjC.sel("setViewport:"), viewport);
+        VIEWPORT.invokeExact(id, SET_VIEWPORT, viewport);
     }
 
     @SneakyThrows
     public void setViewports(MemorySegment viewports, long count) {
-        AL.invokeExact(id, ObjC.sel("setViewports:count:"), viewports, count);
+        AL.invokeExact(id, SET_VIEWPORTS_COUNT, viewports, count);
     }
 
     @SneakyThrows
     public void setVertexAmplificationCount(long count, MemorySegment mappings) {
-        LA.invokeExact(id, ObjC.sel("setVertexAmplificationCount:viewMappings:"), count, mappings);
+        LA.invokeExact(id, SET_VERTEX_AMPLIFICATION_COUNT_VIEW_MAPPINGS, count, mappings);
     }
 
     @SneakyThrows
     public void setCullMode(long mode) {
-        L.invokeExact(id, ObjC.sel("setCullMode:"), mode);
+        L.invokeExact(id, SET_CULL_MODE, mode);
     }
 
     @SneakyThrows
     public void setDepthClipMode(long mode) {
-        L.invokeExact(id, ObjC.sel("setDepthClipMode:"), mode);
+        L.invokeExact(id, SET_DEPTH_CLIP_MODE, mode);
     }
 
     @SneakyThrows
     public void setDepthBias(float bias, float slopeScale, float clamp) {
-        FFF.invokeExact(id, ObjC.sel("setDepthBias:slopeScale:clamp:"), bias, slopeScale, clamp);
+        FFF.invokeExact(id, SET_DEPTH_BIAS_SLOPE_SCALE_CLAMP, bias, slopeScale, clamp);
     }
 
     @SneakyThrows
     public void setDepthTestMinBound(float minBound, float maxBound) {
-        FF.invokeExact(id, ObjC.sel("setDepthTestMinBound:maxBound:"), minBound, maxBound);
+        FF.invokeExact(id, SET_DEPTH_TEST_MIN_BOUND_MAX_BOUND, minBound, maxBound);
     }
 
     @SneakyThrows
     public void setScissorRect(MemorySegment rect) {
-        SCISSOR.invokeExact(id, ObjC.sel("setScissorRect:"), rect);
+        SCISSOR.invokeExact(id, SET_SCISSOR_RECT, rect);
     }
 
     @SneakyThrows
     public void setScissorRects(MemorySegment rects, long count) {
-        AL.invokeExact(id, ObjC.sel("setScissorRects:count:"), rects, count);
+        AL.invokeExact(id, SET_SCISSOR_RECTS_COUNT, rects, count);
     }
 
     @SneakyThrows
     public void setTriangleFillMode(long mode) {
-        L.invokeExact(id, ObjC.sel("setTriangleFillMode:"), mode);
+        L.invokeExact(id, SET_TRIANGLE_FILL_MODE, mode);
     }
 
     @SneakyThrows
     public void setFrontFacingWinding(long winding) {
-        L.invokeExact(id, ObjC.sel("setFrontFacingWinding:"), winding);
+        L.invokeExact(id, SET_FRONT_FACING_WINDING, winding);
     }
 
     @SneakyThrows
     public void setBlendColorRed(float red, float green, float blue, float alpha) {
-        FFFF.invokeExact(id, ObjC.sel("setBlendColorRed:green:blue:alpha:"), red, green, blue, alpha);
+        FFFF.invokeExact(id, SET_BLEND_COLOR_RED_GREEN_BLUE_ALPHA, red, green, blue, alpha);
     }
 
     @SneakyThrows
     public void setDepthStencilState(MTLDepthStencilState state) {
-        L.invokeExact(id, ObjC.sel("setDepthStencilState:"), state.getId());
+        L.invokeExact(id, SET_DEPTH_STENCIL_STATE, state.getId());
     }
 
     @SneakyThrows
     public void setStencilReferenceValue(int value) {
-        I.invokeExact(id, ObjC.sel("setStencilReferenceValue:"), value);
+        I.invokeExact(id, SET_STENCIL_REFERENCE_VALUE, value);
     }
 
     @SneakyThrows
     public void setStencilFrontReferenceValue(int front, int back) {
-        II.invokeExact(id, ObjC.sel("setStencilFrontReferenceValue:backReferenceValue:"), front, back);
+        II.invokeExact(id, SET_STENCIL_FRONT_REFERENCE_VALUE_BACK_REFERENCE_VALUE, front, back);
     }
 
     @SneakyThrows
     public void setVisibilityResultMode(long mode, long offset) {
-        LL.invokeExact(id, ObjC.sel("setVisibilityResultMode:offset:"), mode, offset);
+        LL.invokeExact(id, SET_VISIBILITY_RESULT_MODE_OFFSET, mode, offset);
     }
 
     @SneakyThrows
     public void setColorStoreAction(long action, long index) {
-        LL.invokeExact(id, ObjC.sel("setColorStoreAction:atIndex:"), action, index);
+        LL.invokeExact(id, SET_COLOR_STORE_ACTION_AT_INDEX, action, index);
     }
 
     @SneakyThrows
     public void setDepthStoreAction(long action) {
-        L.invokeExact(id, ObjC.sel("setDepthStoreAction:"), action);
+        L.invokeExact(id, SET_DEPTH_STORE_ACTION, action);
     }
 
     @SneakyThrows
     public void setStencilStoreAction(long action) {
-        L.invokeExact(id, ObjC.sel("setStencilStoreAction:"), action);
+        L.invokeExact(id, SET_STENCIL_STORE_ACTION, action);
     }
 
     @SneakyThrows
     public void drawPrimitives(long type, long vertexStart, long vertexCount) {
-        LLL.invokeExact(id, ObjC.sel("drawPrimitives:vertexStart:vertexCount:"), type, vertexStart, vertexCount);
+        LLL.invokeExact(id, DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT, type, vertexStart, vertexCount);
     }
 
     @SneakyThrows
     public void drawPrimitives(long type, long vertexStart, long vertexCount, long instanceCount) {
-        LLLL.invokeExact(id, ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:"), type, vertexStart,
+        LLLL.invokeExact(id, DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT, type, vertexStart,
                 vertexCount, instanceCount);
     }
 
     @SneakyThrows
     public void drawPrimitives(long type, long vertexStart, long vertexCount, long instanceCount,
             long baseInstance) {
-        LLLLL.invokeExact(id, ObjC.sel("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:"), type,
+        LLLLL.invokeExact(id, DRAW_PRIMITIVES_VERTEX_START_VERTEX_COUNT_INSTANCE_COUNT_BASE_INSTANCE, type,
                 vertexStart, vertexCount, instanceCount, baseInstance);
     }
 
     @SneakyThrows
     public void drawPrimitives(long type, long indirectBuffer) {
-        LL.invokeExact(id, ObjC.sel("drawPrimitives:indirectBuffer:"), type, indirectBuffer);
+        LL.invokeExact(id, DRAW_PRIMITIVES_INDIRECT_BUFFER, type, indirectBuffer);
     }
 
     @SneakyThrows
     public void drawIndexedPrimitives(long type, long indexCount, long indexType, long indexBuffer,
             long indexBufferLength) {
-        LLLLL.invokeExact(id, ObjC.sel("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferLength:"),
+        LLLLL.invokeExact(id, DRAW_INDEXED_PRIMITIVES_INDEX_COUNT_INDEX_TYPE_INDEX_BUFFER_INDEX_BUFFER_LENGTH,
                 type, indexCount, indexType, indexBuffer, indexBufferLength);
     }
 
@@ -223,35 +261,35 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, MemorySegment range) {
-        LR.invokeExact(id, ObjC.sel("executeCommandsInBuffer:withRange:"), buffer.getId(), range);
+        LR.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_WITH_RANGE, buffer.getId(), range);
     }
 
     @SneakyThrows
     public void executeCommandsInBuffer(MTLIndirectCommandBuffer buffer, long indirectBuffer) {
-        LL.invokeExact(id, ObjC.sel("executeCommandsInBuffer:indirectBuffer:"), buffer.getId(), indirectBuffer);
+        LL.invokeExact(id, EXECUTE_COMMANDS_IN_BUFFER_INDIRECT_BUFFER, buffer.getId(), indirectBuffer);
     }
 
     @SneakyThrows
     public void setObjectThreadgroupMemoryLength(long length, long index) {
-        LL.invokeExact(id, ObjC.sel("setObjectThreadgroupMemoryLength:atIndex:"), length, index);
+        LL.invokeExact(id, SET_OBJECT_THREADGROUP_MEMORY_LENGTH_AT_INDEX, length, index);
     }
 
     @SneakyThrows
     public void setThreadgroupMemoryLength(long length, long offset, long index) {
-        LLL.invokeExact(id, ObjC.sel("setThreadgroupMemoryLength:offset:atIndex:"), length, offset, index);
+        LLL.invokeExact(id, SET_THREADGROUP_MEMORY_LENGTH_OFFSET_AT_INDEX, length, offset, index);
     }
 
     @SneakyThrows
     public void drawMeshThreadgroups(MemorySegment threadgroupsPerGrid, MemorySegment threadsPerObjectThreadgroup,
             MemorySegment threadsPerMeshThreadgroup) {
-        SSS.invokeExact(id, ObjC.sel("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:"),
+        SSS.invokeExact(id, DRAW_MESH_THREADGROUPS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 threadgroupsPerGrid, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 
     @SneakyThrows
     public void drawMeshThreads(MemorySegment threadsPerGrid, MemorySegment threadsPerObjectThreadgroup,
             MemorySegment threadsPerMeshThreadgroup) {
-        SSS.invokeExact(id, ObjC.sel("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:"),
+        SSS.invokeExact(id, DRAW_MESH_THREADS_THREADS_PER_OBJECT_THREADGROUP_THREADS_PER_MESH_THREADGROUP,
                 threadsPerGrid, threadsPerObjectThreadgroup, threadsPerMeshThreadgroup);
     }
 
@@ -265,12 +303,12 @@ public class MTL4RenderCommandEncoder extends MTL4CommandEncoder {
 
     @SneakyThrows
     public void dispatchThreadsPerTile(MemorySegment threadsPerTile) {
-        S.invokeExact(id, ObjC.sel("dispatchThreadsPerTile:"), threadsPerTile);
+        S.invokeExact(id, DISPATCH_THREADS_PER_TILE, threadsPerTile);
     }
 
     @SneakyThrows
     public void writeTimestampWithGranularity(long granularity, long stage, MTL4CounterHeap heap, long index) {
-        LLLL.invokeExact(id, ObjC.sel("writeTimestampWithGranularity:afterStage:intoHeap:atIndex:"), granularity,
+        LLLL.invokeExact(id, WRITE_TIMESTAMP_WITH_GRANULARITY_AFTER_STAGE_INTO_HEAP_AT_INDEX, granularity,
                 stage, heap.getId(), index);
     }
 }

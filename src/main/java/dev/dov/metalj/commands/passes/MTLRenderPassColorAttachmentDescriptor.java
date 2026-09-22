@@ -6,6 +6,8 @@ import java.lang.invoke.MethodHandle;
 import lombok.SneakyThrows;
 
 public class MTLRenderPassColorAttachmentDescriptor extends MTLRenderPassAttachmentDescriptor {
+    private static final long SET_CLEAR_COLOR = ObjC.sel("setClearColor:");
+
     private static final MethodHandle COLOR = handle(null, MTLClearColor.LAYOUT);
 
     private MTLRenderPassColorAttachmentDescriptor(long id) {
@@ -18,6 +20,6 @@ public class MTLRenderPassColorAttachmentDescriptor extends MTLRenderPassAttachm
 
     @SneakyThrows
     public void setClearColor(MemorySegment clearColor) {
-        COLOR.invokeExact(id, ObjC.sel("setClearColor:"), clearColor);
+        COLOR.invokeExact(id, SET_CLEAR_COLOR, clearColor);
     }
 }
